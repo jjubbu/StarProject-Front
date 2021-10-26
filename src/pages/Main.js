@@ -22,8 +22,10 @@ const Main = () => {
 const Navi = styled.section `
 position: absolute;
 top: 20px;
-right: 0;
-width: 50%;
+left:50% ;
+transform: translateX(-50%);
+width: 100%;
+max-width: 780px;
 display: flex;
 justify-content: space-around;
 text-decoration: none;

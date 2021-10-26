@@ -104,7 +104,7 @@ const Star = () => {
 
     return (
         <React.Fragment>
-            <StyledPage>
+            <StyledPage background={image}>
                 <div>
 
                     <section className="notice">
@@ -174,15 +174,17 @@ height: 100%;
 background: rgba(0,0,0,.5);
 display: flex;
 align-items: center;
+justify-content: center;
 
 & > div {
     display: grid;
     width: 100%;
+    max-width: 780px;
     height: 100%;
-    grid-template-columns: 150px 1fr;
+    grid-template-columns: 1fr 3fr;
     grid-template-rows: 1fr 3fr .5fr .5fr;
     grid-gap: 20px;
-    padding: 100px 3% 50px 3%;
+    padding: 100px 20px 50px 20px;
 
     .notice{
         grid-column: 1/2;
@@ -222,7 +224,7 @@ align-items: center;
     z-index: -10;
     width: 100%;
     height: 100%;
-    background-image: url('https://cdn.pixabay.com/photo/2011/12/14/12/21/orion-nebula-11107_1280.jpg');
+    background-image: url(${props=>props.background});
     background-repeat: none;
     background-position: center;
     background-size: cover;
