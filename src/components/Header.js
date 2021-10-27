@@ -10,7 +10,7 @@ const Header = () => {
     return(
         <React.Fragment>
             <StyledArticle>
-            {!is_login?<a href="/login">login</a>:<a href="/">logout</a>}
+            {!is_login?<React.Fragment><a href="/login">login</a><a href="/signup">signup</a></React.Fragment>:<a href="/">logout</a>}
             </StyledArticle>
         </React.Fragment>
     )
@@ -22,7 +22,7 @@ z-index: 100;
 right: 20px;
 top:20px;
 
-a{color:blueviolet;}
+a{color:blueviolet; margin-right:10px;}
 `
 
 export default Header;
