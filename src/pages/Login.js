@@ -1,5 +1,6 @@
 import React from "react";
 import { apis } from "../lib/axios";
+import styled from "styled-components";
 
 const Login = () => {
 
@@ -20,19 +21,21 @@ const Login = () => {
 
     return (
         <React.Fragment>
-            <h1>로그인</h1>
-            <section>
-            <label>
-                <h3>아이디</h3>
-                <input name="username" onChange={inputValue}/>
-            </label>
-            <label>
-                <h3>비밀번호</h3>
-                <input name="password" onChange={inputValue}/>
-            </label>
-            </section>
-            <button onClick={login}>로그인</button>
-            <button>회원가입</button>
+            <article>
+                <h1>로그인</h1>
+                <section>
+                <label>
+                    <h3>아이디</h3>
+                    <input name="username" onChange={inputValue}/>
+                </label>
+                <label>
+                    <h3>비밀번호</h3>
+                    <input name="password" onChange={inputValue}/>
+                </label>
+                </section>
+                <button onClick={login}>로그인</button>
+                <button>회원가입</button>
+            </article>
         </React.Fragment>
     )
 }

@@ -19,6 +19,7 @@ const instance = axios.create({
 export const apis = {
     //로그인, 회원가입
     loginAX: (loginInfo) => instance.post(`/user/login`, loginInfo),
+    loginCheckAX: () => instance.get(`/user/logincheck`),
     signupAX: (signupInfo) => instance.post(`/user/signup`, signupInfo),
     nicknameAX: (nickname) => instance.get(`/user/nickname/check?nickname=${nickname}`),
     usernameAX: (email) => instance.get(`/user/username/check?username=${email}`),
