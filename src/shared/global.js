@@ -10,7 +10,8 @@ ${normalize};
 html{
     width: 100%;
     height: 100%;
-
+    background-color: #18191E;
+    color:white;
     body{
         width: 100%;
         height: 100%;  
@@ -18,7 +19,7 @@ html{
         a{
             text-decoration: none;
             outline: none;
-            color:#000;
+            color:white;
         }
 
         p{margin:0;}
