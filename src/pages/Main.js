@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import Header from "../components/Header";
 import Star from "../components/Star";
 
 const Main = () => {
@@ -7,6 +8,7 @@ const Main = () => {
     return (
         <React.Fragment>
             <article>
+                <Header/>
                 <Navi>
                     <a href="#">별자리</a>
                     <a href="#">지도</a>
