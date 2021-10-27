@@ -1,7 +1,7 @@
 import React from "react";
 import { history } from "../redux/configureStore";
 
-const Post = (props) => {
+const MainMap = (props) => {
   console.log(props);
   return (
     <React.Fragment>
@@ -13,7 +13,7 @@ const Post = (props) => {
   );
 };
 
-Post.defaultProps = {
+MainMap.defaultProps = {
   user_info: {
     user_name: "mean0",
     user_profile: "https://mean0images.s3.ap-northeast-2.amazonaws.com/4.jpeg",
@@ -24,4 +24,4 @@ Post.defaultProps = {
   insert_dt: "2021-02-27 10:00:00",
 };
 
-export default Post;
+export default MainMap;

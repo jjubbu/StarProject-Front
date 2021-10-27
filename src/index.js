@@ -4,10 +4,11 @@ import App from './shared/App';
 import reportWebVitals from './reportWebVitals';
 import {Provider} from "react-redux";
 import store from "./redux/configureStore";
+import {GlobalStyle} from "./shared/global";
 
 ReactDOM.render(
   <Provider store={store}>
-    
+    <GlobalStyle/>
     <App />
   </Provider>,
   document.getElementById('root')

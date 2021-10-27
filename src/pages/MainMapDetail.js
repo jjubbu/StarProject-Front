@@ -1,5 +1,5 @@
 import React from "react";
-import Post from "../components/MainMap";
+import MainMap from "../components/MainMap";
 
 const PostDetail = (props) => {
   return (
