@@ -20,12 +20,10 @@ const Footer = () => {
 }
 
 const StyledFooter = styled.footer`
-position: absolute;
-bottom: 0;
-left: 0;
 width: 100%;
 background: #111111;
-
+/* height: 100%; */
+/* margin-top: 24px; */
 .footer{
     max-width: 1200px;
     width: 100%;
@@ -33,7 +31,7 @@ background: #111111;
     display: flex;
     justify-content: space-between;
     align-items: center;
-
+    margin: 0 auto;
     div{
         display: flex;
         gap:63px;

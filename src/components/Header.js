@@ -3,6 +3,8 @@ import styled from "styled-components";
 
 import {useSelector} from "react-redux";
 
+import ic_user from "../img/header/ic_mypage.svg";
+
 const Header = () => {
 
     const is_login = useSelector(state => state.login.is_login);
@@ -24,18 +26,21 @@ const Header = () => {
                             ? <a href="/login">로그인/회원가입</a>
                             : <a href="/">로그아웃</a>
                     }
-                    <img src="#" alt="user"/>
+                    <div className="userIcon">
+                    <img src={ic_user} alt="user"/>
+                    </div>
                 </StyledUser>
             </StyledHeader>
         </React.Fragment>
     )
 }
 
-const StyledHeader = styled.article `
+const StyledHeader = styled.header `
 display: flex;
 justify-content: space-between;
 align-self: center;
-padding: 34px 0 33px;
+width: 100%;
+margin: 34px 0 33px;
     &>div{display:flex;}
 `
 
@@ -43,7 +48,7 @@ const StyledLogo = styled.h3 `
 font-size: 24px;
 `
 
-const StyledNav = styled.div `
+const StyledNav = styled.nav `
 display: flex;
 align-self: center;
 gap:84px;
@@ -61,12 +66,17 @@ gap:40px;
         line-height: 24px;
     }
 
-    img{
+    .userIcon{
         width: 24px;
         height: 24px;
         background-color: #999DB5;
         border-radius: 24px;
+        overflow: hidden;
     }
+    img{
+     margin-top   : 1px;
+    }
+
 `
 
 export default Header;
