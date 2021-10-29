@@ -5,11 +5,16 @@ export const GlobalStyle = createGlobalStyle `
 
 ${normalize};
 
-*{padding:0; margin:0;box-sizing: border-box;}
+*{
+    padding:0; 
+    margin:0;
+    box-sizing: border-box;
+    list-style: none;
+}
 
 html{
     width: 100%;
-    height: 100%;
+    height: 100vh;
     background-color: #18191E;
     color:white;
     body{
@@ -30,5 +35,11 @@ html{
     width: 100%;
     height: 100%;
     position: relative;
+    overflow: hidden;
+}
+
+.CommonPageStyle{
+    max-width: 1200px;
+    margin: 0 auto;
 }
 `
