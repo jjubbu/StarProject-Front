@@ -366,7 +366,7 @@ padding: 32px 0;
         margin-left: 12px;
     }
 }
-.bar{
+.bar{ 
     margin: 22px auto 0;
     &>div{
         width: 67%;
