@@ -14,6 +14,7 @@
     "react": "^17.0.2",
     "react-cookie": "^4.1.1",
     "react-dom": "^17.0.2",
+    "react-kakao-maps-sdk": "^1.0.3",
     "react-redux": "^7.2.5",
     "react-router-dom": "^5.3.0",
     "react-scripts": "4.0.3",
@@ -49,5 +50,10 @@
     ]
   },
   "main": "index.js",
-  "proxy" : "https://kapi.kakao.com"
+  "proxy": "https://kapi.kakao.com",
+  "devDependencies": {
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "prettier": "^2.4.1"
+  }
 }
