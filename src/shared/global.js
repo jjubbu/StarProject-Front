@@ -1,10 +1,10 @@
-import {createGlobalStyle} from "styled-components";
-import {normalize} from 'react-style-reset/string';
+import { createGlobalStyle } from "styled-components";
+import { normalize } from "react-style-reset/string";
 
-export const GlobalStyle = createGlobalStyle `
+export const GlobalStyle = createGlobalStyle`
 
 ${normalize};
-
+ 
 *{
     padding:0; 
     margin:0;
@@ -42,4 +42,4 @@ html{
     max-width: 1200px;
     margin: 0 auto;
 }
-`
+`;

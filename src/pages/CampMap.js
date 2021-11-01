@@ -1,6 +1,7 @@
 import React from "react";
 import Header from "../components/Header";
-import { Map } from "react-kakao-maps-sdk";
+import { Map, MapMarker } from "react-kakao-maps-sdk";
+// https://github.com/JaeSeoKim/react-kakao-maps-sdk
 
 import ic_location_off from "../img/main-star/ic_location_off.svg";
 
@@ -25,7 +26,14 @@ const CampMap = () => {
             </secion>
           </div>
           <section>
-            <Map></Map>
+            <Map
+              center={{ lat: 33.5563, lng: 126.79581 }}
+              style={{ width: "100%", height: "360px" }}
+            >
+              <MapMarker position={{ lat: 33.55635, lng: 126.795841 }}>
+                <div style={{ color: "#000" }}>Hello World!</div>
+              </MapMarker>
+            </Map>
           </section>
         </main>
       </div>
