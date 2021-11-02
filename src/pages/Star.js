@@ -5,7 +5,6 @@ import dfs_xy_conv from "../transitionXY";
 import { apis } from "../lib/axios";
 
 import Header from "../components/Header";
-import Footer from "../components/Footer";
 
 import ic_sunny from "../img/main-star/weather/ic_sunny.svg";
 import ic_finedust1 from "../img/main-star/weather/ic_finedust_1.svg";
@@ -16,6 +15,7 @@ import ic_moonset from "../img/main-star/moon/ic_moonset.svg";
 import ic_star from "../img/main-star/ic_star.svg";
 import ic_map from "../img/main-star/ic_map.svg";
 import ic_location_off from "../img/main-star/ic_location_off.svg";
+import ic_location_on from "../img/main-star/ic_location_on.svg";
 
 //임시 이미지
 import image_sample from "../img/main-star/Rectangle 16.png";
@@ -116,14 +116,24 @@ const Star = () => {
             <LocationBox className="contentsBox">
               <img src={ic_map} alt="map icon" />
               <h3>서울시 강남구</h3>
-              <img src={ic_location_off} alt="location icon" />
+              <img
+                src={ic_location_off}
+                alt="your location button"
+                className="location"
+              />
+              <img
+                src={ic_location_on}
+                alt="your location button"
+                className="location_on"
+              />
+              <span className="buttonHover">현재위치</span>
             </LocationBox>
             <WeatherBox className="contentsBox">
               <WeatherTemperature>
                 <div>
                   <img src={ic_sunny} alt="weather logo" />
                   <div className="temperature">
-                    <h3>
+                    <h3 className="openSans">
                       10<span>°C</span>
                     </h3>
                     <p>7° / 18°</p>
@@ -136,19 +146,19 @@ const Star = () => {
                 <section>
                   <h3>미세먼지</h3>
                   <img src={ic_finedust1} alt="finedust icon" />
-                  <p>13</p>
+                  <p className="openSans">13</p>
                 </section>
                 <section>
                   <h3>강수확률</h3>
                   <img src={ic_umbrella} alt="ultra finedust icon" />
-                  <p>
+                  <p className="openSans">
                     40<span>%</span>
                   </p>
                 </section>
                 <section>
                   <h3>습도</h3>
                   <img src={ic_humidity} alt="humidity icon" />
-                  <p>
+                  <p className="openSans">
                     20<span>%</span>
                   </p>
                 </section>
@@ -166,7 +176,11 @@ const Star = () => {
                 </div>
                 <ul>
                   {liArray.map((l, idx) => {
-                    return <li key={idx}>{l}</li>;
+                    return (
+                      <li key={idx} className="openSans">
+                        {l}
+                      </li>
+                    );
                   })}
                 </ul>
               </div>
@@ -177,26 +191,83 @@ const Star = () => {
                   <img src={ic_moonrise} alt="moon icon" />
                   월출
                 </h3>
-                <p>16:00</p>
+                <p className="openSans">16:00</p>
               </section>
               <section className="contentsBox">
                 <h3>
                   <img src={ic_moonset} alt="moon icon" />
                   월몰
                 </h3>
-                <p>6:00</p>
+                <p className="openSans">6:00</p>
               </section>
             </MoonBox>
           </div>
           <div>
             <ImageBox className="contentsBox">
-              <button>?</button>
+              <button>
+                <span className="buttonHover">별자리 설명</span>
+                <section className="buttonActive">
+                  <h3>사수자리</h3>
+                  <p>
+                    궁수자리는 황도 12궁의 하나이며, 전갈자리의 동쪽, 염소자리의
+                    서쪽에 있는 별자리이다. 흔히 활을 당기는 켄타우로스로
+                    묘사된다.
+                  </p>
+                </section>
+                ?
+              </button>
               <img src={image_sample} alt="star" />
             </ImageBox>
-            <EmptyBox className="contentsBox">
-              <h3>새로운 컨텐츠</h3>
-              <p>머가 있을고...ㅠ</p>
-            </EmptyBox>
+            <RecommendBox className="contentsBox">
+              <div>
+                <h3>실시간 별보기 좋은 지역</h3>
+                <p className="openSans">2021.11.1 20:00 기준</p>
+              </div>
+              <span className="line" />
+              <ul>
+                <li>
+                  <img
+                    src="https://cdn.pixabay.com/photo/2017/08/30/01/05/milky-way-2695569_1280.jpg"
+                    alt="star"
+                  />
+                  <div>
+                    <h3>강원도 강릉시</h3>
+                    <p>
+                      관측지수 <span className="openSans">10</span>
+                    </p>
+                    <p>
+                      맑음 <span className="openSans">7°</span>
+                    </p>
+                  </div>
+                </li>
+                <li>
+                  <img
+                    src="https://cdn.pixabay.com/photo/2017/08/30/01/05/milky-way-2695569_1280.jpg"
+                    alt="star"
+                  />
+                  <div>
+                    <h3>강원도 강릉시</h3>
+                    <p>
+                      관측지수 <span>10</span>
+                    </p>
+                    <p>맑음 7°</p>
+                  </div>
+                </li>
+                <li>
+                  <img
+                    src="https://cdn.pixabay.com/photo/2017/08/30/01/05/milky-way-2695569_1280.jpg"
+                    alt="star"
+                  />
+                  <div>
+                    <h3>강원도 강릉시</h3>
+                    <p>
+                      관측지수 <span>10</span>
+                    </p>
+                    <p>맑음 7°</p>
+                  </div>
+                </li>
+              </ul>
+            </RecommendBox>
           </div>
         </StyledStar>
       </div>
@@ -232,10 +303,56 @@ const LocationBox = styled.section`
   align-items: center;
   padding: 0 24px;
   height: 68px;
+  position: relative;
 
   h3 {
     width: 100%;
     margin-left: 4px;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 19px;
+  }
+  .location_on {
+    display: none;
+  }
+  .location,
+  .location_on {
+    cursor: pointer;
+  }
+  .buttonHover {
+    display: none;
+  }
+  .location:hover ~ .buttonHover {
+    display: block;
+    position: absolute;
+    padding: 5px 7px;
+    background-color: #000;
+    font-size: 12px;
+    line-height: 15px;
+    border-radius: 4px;
+    right: 8px;
+    top: -10px;
+    &::after {
+      content: "";
+      position: absolute;
+      width: 8px;
+      height: 14px;
+      border-top: 7px solid #000;
+      border-left: 4px solid transparent;
+      border-right: 4px solid transparent;
+      border-bottom: 7px solid transparent;
+      box-sizing: border-box;
+      bottom: -14px;
+      right: 50%;
+      margin-right: -4px;
+    }
+  }
+  .location:active {
+    display: none;
+  }
+  .location:active ~ .location_on {
+    display: block;
   }
 `;
 const WeatherBox = styled.div`
@@ -435,15 +552,143 @@ const ImageBox = styled.div`
     line-height: 33px;
     border: none;
     color: white;
+    cursor: pointer;
   }
   img {
     width: 100%;
     height: 100%;
     object-fit: cover;
   }
+  .buttonHover,
+  .buttonActive {
+    display: none;
+    &::after {
+      content: "";
+      position: absolute;
+      width: 8px;
+      height: 14px;
+      border-top: 7px solid rgba(0, 0, 0, 0.7);
+      border-left: 4px solid transparent;
+      border-right: 4px solid transparent;
+      border-bottom: 7px solid transparent;
+      box-sizing: border-box;
+      bottom: -14px;
+    }
+  }
+  .buttonHover {
+    width: 72px;
+    padding: 5px 7px;
+    font-size: 12px;
+    line-height: 15px;
+    border-radius: 4px;
+    right: -11px;
+    top: -36px;
+    &::after {
+      right: 50%;
+      margin-right: -4px;
+    }
+  }
+  .buttonActive {
+    width: 480px;
+    padding: 24px;
+    border-radius: 11px;
+    right: -12px;
+    bottom: 57px;
+    &::after {
+      right: 32px;
+    }
+    h3 {
+      text-align: left;
+      font-weight: bold;
+      font-size: 20px;
+      line-height: 25px;
+      margin-left: 8px;
+    }
+    p {
+      margin-top: 9px;
+      font-weight: normal;
+      font-size: 14px;
+      line-height: 21px;
+      text-align: left;
+    }
+  }
+  button:hover .buttonHover,
+  button:active .buttonActive {
+    display: block;
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.7);
+  }
+  button:active .buttonHover {
+    display: none;
+  }
 `;
-const EmptyBox = styled.section`
+const RecommendBox = styled.section`
   height: 212px;
+  padding: 32px;
+
+  & > div {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    h3 {
+      font-size: 18px;
+      font-weight: normal;
+    }
+    p {
+      font-size: 12px;
+      line-height: 18px;
+      color: #cccccc;
+    }
+  }
+
+  ul {
+    display: flex;
+    width: 100%;
+    max-width: 700px;
+    justify-content: space-between;
+    li {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+
+      h3 {
+        font-size: 14px;
+        line-height: 18px;
+        font-weight: bold;
+      }
+      p {
+        font-size: 12px;
+        line-height: 25px;
+        span {
+          font-size: 18px;
+          font-weight: bold;
+          vertical-align: middle;
+        }
+      }
+      p:last-child {
+        margin-top: 9px;
+        line-height: 18px;
+        span {
+          font-weight: 400;
+          font-size: 12px;
+        }
+      }
+    }
+
+    img {
+      width: 88px;
+      height: 88px;
+      object-fit: cover;
+      border-radius: 10px;
+    }
+  }
+
+  .line {
+    display: block;
+    border-top: 1px solid #666666;
+    width: 100%;
+    margin: 18px 0 24px;
+  }
 `;
 
 export default Star;

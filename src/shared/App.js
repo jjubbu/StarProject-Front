@@ -10,6 +10,7 @@ import MainMapDetail from "../pages/MainMapDetail";
 import Login from "../pages/Login";
 import Signup from "../pages/Signup";
 import Footer from "../components/Footer";
+import "./font.css";
 
 import { history } from "../redux/configureStore";
 
