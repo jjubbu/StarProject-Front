@@ -4,7 +4,7 @@ import Post from "../components/MainMap";
 const PostDetail = (props) => {
   return (
     <React.Fragment>
-      <MainMap />
+      {/* <MainMap /> */}
     </React.Fragment>
   );
 };

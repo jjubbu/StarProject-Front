@@ -1,0 +1,50 @@
+{
+    "card": [
+            
+        {
+            "id" : 1,
+            "writer" : "salmon",
+            "title" : "제목",
+            "주소" : "대구시",
+            "img" : "https://campimage.s3.ap-northeast-2.amazonaws.com/campimage.jpg",
+            "like" : 3,
+            "contents" : "본문",
+            "modifiedAt" : "수정일"
+        },
+
+        {
+            "id" : 2,
+            "writer" : "tuna",
+            "title" : "제목",
+            "주소" : "대구시",
+            "img" : "https://campimage.s3.ap-northeast-2.amazonaws.com/campimage.jpg",
+            "like" : 4,
+            "contents" : "본문",
+            "modifiedAt" : "수정일"
+        },
+
+        {
+            "id" : 3,
+            "writer" : "anchovy",
+            "title" : "제목",
+            "주소" : "대구시",
+            "img" : "https://campimage.s3.ap-northeast-2.amazonaws.com/campimage.jpg",
+            "like" : 5,
+            "contents" : "https://campimage.s3.ap-northeast-2.amazonaws.com/campimage.jpg",
+            "modifiedAt" : "수정일"
+        },
+
+        {
+            "id" : 4,
+            "writer" : "sardine",
+            "title" : "제목",
+            "주소" : "대구시",
+            "img" : "https://campimage.s3.ap-northeast-2.amazonaws.com/campimage.jpg",
+            "like" : 6,
+            "contents" : "본문",
+            "modifiedAt" : "수정일"
+        }
+
+    ]
+
+}
