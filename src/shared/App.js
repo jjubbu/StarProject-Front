@@ -6,6 +6,7 @@ import styled from "styled-components";
 import Main from "../pages/Main";
 import MainStar from "../pages/MainStar";
 import MainMap from "../pages/MainMap";
+import MainCommunity from "../pages/MainCommunity";
 import MainMapDetail from "../pages/MainMapDetail";
 import MainCommunityDetail from "../pages/MainCommunityDetail";
 import Login from "../pages/Login";
@@ -24,6 +25,7 @@ function App() {
         <Route path="/" exact component={Main} />
         <Route path="/star" exact component={MainStar} />
         <Route path="/map" exact component={MainMap} />
+        <Route path="/community" exact component={MainCommunity} />
         <Route path="/login" exact component={Login} />
         <Route path="/signup" exact component={Signup} />
         <Route path="/map/detail" exact component={MainMapDetail} />

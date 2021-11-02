@@ -37,7 +37,7 @@ const Header = () => {
             </p>
             <p
               onClick={() => {
-                history.push("/");
+                history.push("/community");
               }}
             >
               커뮤니티
