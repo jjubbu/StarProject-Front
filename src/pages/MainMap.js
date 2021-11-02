@@ -7,13 +7,12 @@ import { Map, MapMarker } from "react-kakao-maps-sdk";
 import ic_location_off from "../img/main-star/ic_location_off.svg";
 import { useLocation } from "react-router";
 
-const CampMap = () => {
+const MainMap = () => {
   const location = useLocation();
   console.log(location);
   return (
     <React.Fragment>
       <div className="CommonPageStyle">
-        <Header />
         <StyledMap>
           <MapBox>
             <SearchBox>
@@ -81,4 +80,4 @@ const ResultBox = styled.section`
   width: 32%;
 `;
 
-export default CampMap;
+export default MainMap;

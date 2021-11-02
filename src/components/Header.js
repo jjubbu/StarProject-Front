@@ -13,11 +13,17 @@ const Header = () => {
     <React.Fragment>
       <StyledHeader>
         <div>
-          <StyledLogo>별보러가지않을래?</StyledLogo>
+          <StyledLogo
+            onClick={() => {
+              history.push("/");
+            }}
+          >
+            별보러가지않을래?
+          </StyledLogo>
           <StyledNav>
             <p
               onClick={() => {
-                history.push("/");
+                history.push("/star");
               }}
             >
               별자리
@@ -70,6 +76,7 @@ const StyledHeader = styled.header`
   justify-content: space-between;
   align-self: center;
   width: 100%;
+  max-width: 1200px;
   margin: 34px 0 33px;
   & > div {
     display: flex;
@@ -78,6 +85,7 @@ const StyledHeader = styled.header`
 
 const StyledLogo = styled.h3`
   font-size: 24px;
+  cursor: pointer;
 `;
 
 const StyledNav = styled.nav`

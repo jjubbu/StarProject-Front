@@ -3,12 +3,14 @@ import { Route } from "react-router";
 import { ConnectedRouter } from "connected-react-router";
 import styled from "styled-components";
 
-import Star from "../pages/Star";
-import CampMap from "../pages/CampMap";
-// import MainCommunityDeatail from "../pages/MainCommunityDeatail";
+import Main from "../pages/Main";
+import MainStar from "../pages/MainStar";
+import MainMap from "../pages/MainMap";
 import MainMapDetail from "../pages/MainMapDetail";
+import MainCommunityDetail from "../pages/MainCommunityDetail";
 import Login from "../pages/Login";
 import Signup from "../pages/Signup";
+import Header from "../components/Header";
 import Footer from "../components/Footer";
 import "./font.css";
 
@@ -18,12 +20,14 @@ function App() {
   return (
     <ConnectedRouter history={history}>
       <StyledViewContainer>
-        <Route path="/" exact component={Star} />{" "}
-        {/* <Route path="/" exact component={MainCommunityDeatail} /> */}
-        <Route path="/map" exact component={CampMap} />
-        <Route path="/detail?boardId=3" exact component={MainMapDetail} />
+        <Header />
+        <Route path="/" exact component={Main} />
+        <Route path="/star" exact component={MainStar} />
+        <Route path="/map" exact component={MainMap} />
         <Route path="/login" exact component={Login} />
         <Route path="/signup" exact component={Signup} />
+        <Route path="/map/detail" exact component={MainMapDetail} />
+        <Route path="/community/detail" exact component={MainCommunityDetail} />
         <Footer />
       </StyledViewContainer>
     </ConnectedRouter>

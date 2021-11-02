@@ -1,12 +1,14 @@
 import React from "react";
 import MainMap from "../components/MainMap";
 
-const PostDetail = (props) => {
+const MainMapDetail = (props) => {
   return (
     <React.Fragment>
-      <MainMap />
+      <div className="CommonPageStyle">
+        <MainMap />
+      </div>
     </React.Fragment>
   );
 };
 
-export default PostDetail;
+export default MainMapDetail;

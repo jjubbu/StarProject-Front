@@ -20,7 +20,7 @@ import ic_location_on from "../img/main-star/ic_location_on.svg";
 //임시 이미지
 import image_sample from "../img/main-star/Rectangle 16.png";
 
-const Star = () => {
+const MainStar = () => {
   const [text, setText] = React.useState("지금 내 위치!");
   const [latitude, setLatitude] = React.useState();
   const [longitude, setLongitude] = React.useState();
@@ -110,7 +110,6 @@ const Star = () => {
   return (
     <React.Fragment>
       <div className="CommonPageStyle">
-        <Header />
         <StyledStar>
           <div>
             <LocationBox className="contentsBox">
@@ -691,4 +690,4 @@ const RecommendBox = styled.section`
   }
 `;
 
-export default Star;
+export default MainStar;
