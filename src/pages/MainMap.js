@@ -5,19 +5,65 @@ import { Map, MapMarker } from "react-kakao-maps-sdk";
 // https://github.com/JaeSeoKim/react-kakao-maps-sdk
 
 import ic_location_off from "../img/main-star/ic_location_off.svg";
+import ic_location_on from "../img/main-star/ic_location_on.svg";
+import ic_option from "../img/option.svg";
+import ic_search from "../img/ic_search.svg";
+import ic_star from "../img/main-star/ic_star.svg";
 import { useLocation } from "react-router";
 
 const MainMap = () => {
   const location = useLocation();
   console.log(location);
+
+  const testArray = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
   return (
     <React.Fragment>
       <div className="CommonPageStyle">
         <StyledMap>
+          <ResultBox>
+            <ResultHeader url={ic_option}>
+              <h3>전체(100)</h3>
+              <div>
+                <select>
+                  <option value="descending">내림차순</option>
+                  <option value="ascending">오름차순</option>
+                </select>
+                <span className="styledSelect" />
+              </div>
+            </ResultHeader>
+            <ResultListBox>
+              {testArray.map((l, idx) => {
+                return (
+                  <li key={idx}>
+                    <img
+                      src="https://cdn.pixabay.com/photo/2016/11/21/16/03/campfire-1846142_1280.jpg"
+                      alt="camp"
+                    />
+                    <div className="campInfo">
+                      <div className="title">
+                        <h3>어쩌구캠핑장</h3>
+                        <p>서울특별시 어쩌구</p>
+                      </div>
+                      <div className="starView">
+                        <img src={ic_star} alt="star icon" />
+                        <p>
+                          <strong>관측지수</strong>(좋음) <span>10</span>
+                        </p>
+                      </div>
+                    </div>
+                  </li>
+                );
+              })}
+            </ResultListBox>
+          </ResultBox>
           <MapBox>
             <SearchBox>
-              <img src={ic_location_off} alt="location icon" />
-              <input placeholder="캠핑장명/지역명으로 검색" />
+              <label>
+                <img src={ic_search} alt="search icon" />
+                <input type="text" placeholder="캠핑장명/지역명으로 검색" />
+              </label>
+              <img src={ic_location_off} alt="location icon" className="off" />
+              <img src={ic_location_on} alt="location icon" className="on" />
             </SearchBox>
             <Map
               center={{ lat: 33.5563, lng: 126.79581 }}
@@ -28,24 +74,6 @@ const MainMap = () => {
               </MapMarker>
             </Map>
           </MapBox>
-          <ResultBox>
-            <h3>전체(100)</h3>
-            <ul>
-              <li>
-                <img />
-                <div>
-                  <h3>어쩌구캠핑장</h3>
-                  <p>서울특별시 어쩌구</p>
-                  <div>
-                    <span></span>
-                    <p>
-                      별관측지수(좋음) <span>10</span>
-                    </p>
-                  </div>
-                </div>
-              </li>
-            </ul>
-          </ResultBox>
         </StyledMap>
       </div>
     </React.Fragment>
@@ -60,24 +88,197 @@ const StyledMap = styled.main`
     border-radius: 10px;
     height: 100%;
     background-color: #303136;
-    overflow: scroll;
   }
 `;
 
 const MapBox = styled.section`
   position: relative;
   width: 66%;
+  overflow: hidden;
 `;
 
-const SearchBox = styled.label`
+const SearchBox = styled.div`
   position: absolute;
-  top: 0;
-  left: 0;
+  top: 36px;
+  left: 50%;
+  transform: translateX(-50%);
   z-index: 100;
+  width: 400px;
+  height: 56px;
+  background: #000000;
+  opacity: 0.7;
+  border-radius: 28px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 20px;
+  img {
+    width: 24px;
+    height: 24px;
+  }
+  .on {
+    display: none;
+  }
+  .off:active {
+    display: none;
+  }
+  .off:active ~ .on {
+    display: block;
+  }
+  label {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  input {
+    background: none;
+    border: none;
+    width: 100%;
+    color: white;
+
+    &::placeholder {
+      color: white;
+    }
+    &:focus {
+      outline: none;
+    }
+  }
 `;
 
 const ResultBox = styled.section`
   width: 32%;
+  padding: 36px 28px 0;
+  display: flex;
+  flex-direction: column;
+`;
+
+const ResultHeader = styled.div`
+  display: flex;
+  justify-content: space-between;
+
+  h3 {
+    font-weight: bold;
+    font-size: 16px;
+    line-height: 20px;
+  }
+
+  div {
+    position: relative;
+    width: 57px;
+  }
+
+  select {
+    width: 57px;
+    border: none;
+    background-color: transparent;
+    font-weight: normal;
+    font-size: 12px;
+    line-height: 15px;
+    text-align: right;
+    color: #eeeeee;
+    appearance: none;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
+
+    &:focus {
+      outline: none;
+    }
+    &::-ms-expand {
+      display: none;
+    }
+
+    option {
+      text-align: left;
+    }
+  }
+  .styledSelect {
+    width: 8px;
+    height: 8px;
+    display: block;
+    border-top: 4px solid #999999;
+    border-bottom: 4px solid transparent;
+    border-left: 4px solid transparent;
+    border-right: 4px solid transparent;
+    position: absolute;
+    top: 50%;
+    right: 0;
+    z-index: 0;
+  }
+`;
+
+const ResultListBox = styled.ul`
+  margin-top: 4px;
+  overflow: scroll;
+  li:last-child {
+    border: none;
+  }
+  li {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 20px 0 16.5px;
+    border-bottom: 1px solid #666666;
+
+    img {
+      width: 88px;
+      height: 88px;
+      border-radius: 10px;
+      object-fit: cover;
+    }
+    .campInfo {
+      display: flex;
+      height: 92px;
+      flex-direction: column;
+      justify-content: space-between;
+      h3 {
+        font-weight: bold;
+        font-size: 16px;
+        line-height: 20px;
+      }
+      .title p {
+        font-weight: normal;
+        font-size: 14px;
+        line-height: 18px;
+        color: #eeeeee;
+        margin-top: 6px;
+      }
+    }
+    .starView {
+      font-size: 12px;
+      line-height: 15px;
+      color: #eeeeee;
+      display: flex;
+      align-items: center;
+      gap: 2px;
+      img {
+        width: 16px;
+        height: 16px;
+      }
+      p {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 12px;
+        line-height: 15px;
+        strong {
+          margin-right: 2px;
+        }
+        span {
+          margin-left: 8px;
+        }
+      }
+      span {
+        font-weight: bold;
+        font-size: 18px;
+        height: 25px;
+        color: #ffffff;
+        padding-top: 6px;
+      }
+    }
+  }
 `;
 
 export default MainMap;
