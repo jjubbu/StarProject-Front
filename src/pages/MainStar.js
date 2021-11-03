@@ -29,18 +29,6 @@ const MainStar = () => {
   const image =
     "https://cdn.pixabay.com/photo/2011/12/14/12/21/orion-nebula-11107_1280.jpg";
 
-  //시간이 변하면 수행!
-  const timeChange = () => {
-    const thisTime = new Date();
-    console.log("now time:::", thisTime.getHours());
-    setHour(thisTime.getHours());
-  };
-  // setInterval(timeChange,1000)
-
-  // React.useEffect(() => {
-  //     alert("지금 시간이 바뀌었습니다!")
-  // }, [hour])
-
   const options = {
     enableHighAccuracy: true,
     timeout: 5000,
@@ -64,27 +52,14 @@ const MainStar = () => {
   };
 
   React.useEffect(() => {
-    // const Number_ = dfs_xy_conv("toXY", 37.5330228, 127.0264359);
-    // setText("X: " + Number_.x + ", Y: " + Number_.y);
     if ("geolocation" in navigator) {
       /* 위치정보 사용 가능 */
       console.log("useEffect");
       navigator.geolocation.getCurrentPosition(success, error, options);
-
-      // const coord = new window
-      //     .kakao
-      //     .maps
-      //     .LatLng(37.5330228, 127.0264359);
     } else {
       /* 위치정보 사용 불가능 */
       setText("확인할 수 없다 ㅠㅠ");
     }
-    // window.naver.maps.Service.reverseGeocode({     location: new
-    // window.naver.maps.LatLng(37.3595316, 127.1052133), }, function(status,
-    // response) {     if (status !== window.naver.maps.Service.Status.OK) { return
-    // alert('Something wrong!');     }     const result = response.result; 검색 결과의
-    // 컨테이너        const items = result.items;  검색 결과의 배열
-    // console.log("items:::",items)      do Something });
 
     apis
       .getStarPhotoAX()
@@ -96,7 +71,7 @@ const MainStar = () => {
       });
 
     apis
-      .getNoticeNowAX(1)
+      .getNoticeNowAX(37.3645764, 127.834038)
       .then((response) => {
         console.log(response);
       })

@@ -55,7 +55,7 @@
     ]
   },
   "main": "index.js",
-  "proxy": "https://kapi.kakao.com",
+  "proxy": "https://localhost:3000",
   "devDependencies": {
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^4.0.0",

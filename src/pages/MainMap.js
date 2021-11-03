@@ -13,12 +13,52 @@ import ic_star from "../img/main-star/ic_star.svg";
 import { useLocation } from "react-router";
 
 const MainMap = () => {
-  const [is_search, setSearch] = React.useState(true);
+  const [is_search, setSearch] = React.useState(false);
   const location = useLocation();
   console.log(location);
 
   const testArray = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
   const testSearchArray = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+  const [text, setText] = React.useState("지금 내 위치!");
+  const [latitude, setLatitude] = React.useState(37);
+  const [longitude, setLongitude] = React.useState(121);
+  const [hour, setHour] = React.useState();
+  const options = {
+    enableHighAccuracy: true,
+    timeout: 5000,
+    maximumAge: 0,
+  };
+
+  const success = (x) => {
+    const position = x.coords;
+    const latitude = position.latitude;
+    const longitude = position.longitude;
+    // setText(position)
+    console.log("위도 :::", latitude);
+    console.log("경도 :::", longitude);
+
+    setLatitude(latitude);
+    setLongitude(longitude);
+  };
+
+  const error = (x) => {
+    setText(x.code + ":::" + x.message);
+  };
+
+  const userLocation = () => {
+    console.log("clcik!");
+    if ("geolocation" in navigator) {
+      /* 위치정보 사용 가능 */
+      console.log("useEffect");
+      navigator.geolocation.getCurrentPosition(success, error, options);
+    } else {
+      /* 위치정보 사용 불가능 */
+      console.log("error");
+    }
+  };
+  React.useEffect(() => {
+    userLocation();
+  }, []);
   return (
     <React.Fragment>
       <div className="CommonPageStyle">
@@ -70,8 +110,18 @@ const MainMap = () => {
                   src={ic_location_off}
                   alt="location icon"
                   className="off"
+                  onClick={() => {
+                    console.log("aaa");
+                  }}
                 />
-                <img src={ic_location_on} alt="location icon" className="on" />
+                <img
+                  src={ic_location_on}
+                  alt="location icon"
+                  className="on"
+                  onClick={() => {
+                    console.log("dajfew");
+                  }}
+                />
               </div>
               {is_search ? (
                 <SearchList>
@@ -87,7 +137,7 @@ const MainMap = () => {
               ) : null}
             </SearchBox>
             <Map
-              center={{ lat: 33.5563, lng: 126.79581 }}
+              center={{ lat: latitude, lng: longitude }}
               style={{ width: "100%", height: "792px" }}
             >
               <MapMarker position={{ lat: 33.55635, lng: 126.795841 }}>

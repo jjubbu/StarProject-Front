@@ -5,12 +5,13 @@ const cookies = new Cookies();
 
 const instance = axios.create({
   // 기본적으로 우리가 바라볼 서버의 주소
-  baseURL: "",
+  baseURL: "http://3.38.101.209:8080/",
   // baseURL: "http://localhost:4000",
   headers: {
     "content-type": "application/json;charset=UTF-8",
     accept: "application/json",
     Authorization: `Bearer ${cookies.get("token")}`,
+    "Access-Control-Allow-Origin": "*",
     //   "authorization" :  `${cookies.get("token")}`
   },
   withCredentials: true,
@@ -28,5 +29,6 @@ export const apis = {
   //스타 페이지
   getStarPhotoAX: () => instance.get(`/star/photo`),
   getLocationListAX: () => instance.get(`/star/location`),
-  getNoticeNowAX: (id) => instance.get(`/star/info?locationId=${id}`),
+  getNoticeNowAX: (lat, lon) =>
+    instance.get(`/star/info?latitude=${lat}&longitude=${lon}`),
 };
