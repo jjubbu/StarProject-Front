@@ -4,8 +4,11 @@ import styled from "styled-components";
 import { Cookies } from "react-cookie";
 
 import { history } from "../redux/configureStore";
+import { useDispatch } from "react-redux";
+import { isLogin } from "../redux/modules/user";
 
 const Login = () => {
+  const dispatch = useDispatch();
   const [loginInfo, setLoginInfo] = React.useState({
     username: "",
     password: "",
@@ -20,10 +23,14 @@ const Login = () => {
     console.log(loginInfo);
     apis.loginAX(loginInfo).then((response) => {
       console.log(response);
-      // if(response.data.code === 200){
-      //     alert('로그인 성공!');
-
-      // }
+      if (response.data.code === 200) {
+        const token = response.data.data.token;
+        const cookie = new Cookies();
+        cookie.set("token", token);
+        dispatch(isLogin(true));
+        alert("로그인 성공!");
+        history.push("/");
+      }
     });
   };
 

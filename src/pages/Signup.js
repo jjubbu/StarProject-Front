@@ -1,6 +1,7 @@
 import React from "react";
 import { apis } from "../lib/axios";
 import styled from "styled-components";
+import { history } from "../redux/configureStore";
 
 const Signup = () => {
   const [signupInfo, setSignupInfo] = React.useState({
@@ -17,9 +18,16 @@ const Signup = () => {
 
   const signup = () => {
     console.log(signupInfo);
-    apis.signupAX(signupInfo).then((response) => {
-      console.log(response);
-    });
+    apis
+      .signupAX(signupInfo)
+      .then((response) => {
+        if (response.status === 200) {
+          history.push("/login");
+        }
+      })
+      .catch((err) => {
+        alert(err);
+      });
   };
   return (
     <React.Fragment>
