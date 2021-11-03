@@ -6,16 +6,19 @@ import { Map, MapMarker } from "react-kakao-maps-sdk";
 
 import ic_location_off from "../img/main-star/ic_location_off.svg";
 import ic_location_on from "../img/main-star/ic_location_on.svg";
+import ic_map from "../img/main-star/ic_map.svg";
 import ic_option from "../img/option.svg";
 import ic_search from "../img/ic_search.svg";
 import ic_star from "../img/main-star/ic_star.svg";
 import { useLocation } from "react-router";
 
 const MainMap = () => {
+  const [is_search, setSearch] = React.useState(true);
   const location = useLocation();
   console.log(location);
 
   const testArray = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+  const testSearchArray = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
   return (
     <React.Fragment>
       <div className="CommonPageStyle">
@@ -57,13 +60,31 @@ const MainMap = () => {
             </ResultListBox>
           </ResultBox>
           <MapBox>
-            <SearchBox>
-              <label>
-                <img src={ic_search} alt="search icon" />
-                <input type="text" placeholder="캠핑장명/지역명으로 검색" />
-              </label>
-              <img src={ic_location_off} alt="location icon" className="off" />
-              <img src={ic_location_on} alt="location icon" className="on" />
+            <SearchBox is_search={is_search}>
+              <div>
+                <label>
+                  <img src={ic_search} alt="search icon" />
+                  <input type="text" placeholder="캠핑장명/지역명으로 검색" />
+                </label>
+                <img
+                  src={ic_location_off}
+                  alt="location icon"
+                  className="off"
+                />
+                <img src={ic_location_on} alt="location icon" className="on" />
+              </div>
+              {is_search ? (
+                <SearchList>
+                  {testSearchArray.map((l, idx) => {
+                    return (
+                      <li key={idx}>
+                        <img src={ic_map} alt="map icon" />
+                        서울특별시
+                      </li>
+                    );
+                  })}
+                </SearchList>
+              ) : null}
             </SearchBox>
             <Map
               center={{ lat: 33.5563, lng: 126.79581 }}
@@ -103,15 +124,18 @@ const SearchBox = styled.div`
   left: 50%;
   transform: translateX(-50%);
   z-index: 100;
-  width: 400px;
-  height: 56px;
   background: #000000;
   opacity: 0.7;
-  border-radius: 28px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 16px 20px;
+  ${(props) =>
+    props.is_search ? "border-radius:10px;" : "border-radius:28px;"}
+  & > div {
+    width: 400px;
+    height: 56px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 20px;
+  }
   img {
     width: 24px;
     height: 24px;
@@ -143,6 +167,20 @@ const SearchBox = styled.div`
     &:focus {
       outline: none;
     }
+  }
+`;
+
+const SearchList = styled.ul`
+  margin: 0px 20px;
+  padding: 8px 0;
+  border-top: 1px solid #ccc;
+  li {
+    display: flex;
+    align-items: center;
+    padding: 8px 0;
+    font-size: 14px;
+    line-height: 18px;
+    gap: 8px;
   }
 `;
 
