@@ -6,10 +6,10 @@ const MainCommunity = (props) => {
   console.log(props);
   return (
     <React.Fragment>
-      <div>img / nickname / time / btn</div>
-      <div>contents</div>
+      <div>map</div>
+      <div>nickname / title / hashtag / like / bookmark</div>
       <div>image</div>
-      <div>comment cnt</div>
+      <div>des</div>
       <p> test MainCommunity</p>
     </React.Fragment>
   );
