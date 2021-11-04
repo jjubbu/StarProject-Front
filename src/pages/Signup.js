@@ -29,6 +29,27 @@ const Signup = () => {
         alert(err);
       });
   };
+  const email =
+    /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
+  const overlapCheck = (e) => {
+    const check = e.target.name;
+    if (signupInfo[check] === "") {
+      alert("값을 입력하고 중복확인 버튼을 눌러주세요!");
+      return;
+    }
+    if (check === "username") {
+      if (!email.test(signupInfo[check])) {
+        alert("이메일 형식으로 입력해주세요!");
+        return;
+      }
+    }
+    apis
+      .nicknameAX(signupInfo[check])
+      .then((response) => {
+        console.log(check, " check:::", response);
+      })
+      .catch((err) => console.log(err));
+  };
   return (
     <React.Fragment>
       <StyleArticle>
@@ -37,12 +58,16 @@ const Signup = () => {
           <label>
             <h3>닉네임</h3>
             <input name="nickname" onChange={inputValue} />
-            <button>닉네임 중복확인</button>
+            <button name="nickname" onClick={overlapCheck}>
+              닉네임 중복확인
+            </button>
           </label>
           <label>
             <h3>아이디 이메일형식</h3>
             <input name="username" onChange={inputValue} />
-            <button>이메일 중복확인</button>
+            <button name="username" onClick={overlapCheck}>
+              이메일 중복확인
+            </button>
           </label>
           <label>
             <h3>비밀번호</h3>
