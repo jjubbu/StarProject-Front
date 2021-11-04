@@ -22,9 +22,30 @@ import image_sample from "../img/main-star/Rectangle 16.png";
 
 const MainStar = () => {
   const [text, setText] = React.useState("지금 내 위치!");
-  const [latitude, setLatitude] = React.useState();
-  const [longitude, setLongitude] = React.useState();
-  const [hour, setHour] = React.useState();
+  const [userLocation, setUserLocation] = React.useState({
+    lat: 37.3645764,
+    lon: 127.834038,
+  });
+  const [data, setData] = React.useState({
+    moonrise: "...",
+    moonset: " ...",
+    starGazing: 0,
+    location: "loading...",
+    rainPercent: 0,
+    humidity: 0,
+    weather: "loading...",
+    temperature: 0,
+    maxTemperature: 0,
+    minTemperature: 0,
+    dust: 0,
+  });
+  const [hot, setHot] = React.useState([
+    {
+      cityName: "loading...",
+      starGazing: 0,
+      Temperature: 0,
+    },
+  ]);
 
   const image =
     "https://cdn.pixabay.com/photo/2011/12/14/12/21/orion-nebula-11107_1280.jpg";
@@ -36,51 +57,80 @@ const MainStar = () => {
   };
 
   const success = (x) => {
+    console.log("success");
     const position = x.coords;
     const latitude = position.latitude;
     const longitude = position.longitude;
-    // setText(position)
-    console.log("위도 :::", latitude);
-    console.log("경도 :::", longitude);
-
-    setLatitude(latitude);
-    setLongitude(longitude);
+    setUserLocation({ lat: latitude, lon: longitude });
   };
 
   const error = (x) => {
     setText(x.code + ":::" + x.message);
   };
 
+  const weatherNow = (time) => {
+    apis
+      .getNoticeWeatherAX(37.3645764, 127.834038, 2200)
+      .then((response) => {
+        console.log("weather now:::", response);
+        const resData = response.data.data;
+        setData((prev) => ({
+          ...prev,
+          location: resData.cityName,
+          rainPercent: resData.rainPercent,
+          humidity: resData.humidity,
+          weather: resData.weather,
+          temperature: resData.temperature,
+          maxTemperature: resData.maxTemperature,
+          minTemperature: resData.minTemperature,
+          dust: resData.dust,
+        }));
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   React.useEffect(() => {
     if ("geolocation" in navigator) {
-      /* 위치정보 사용 가능 */
-      console.log("useEffect");
       navigator.geolocation.getCurrentPosition(success, error, options);
     } else {
-      /* 위치정보 사용 불가능 */
       setText("확인할 수 없다 ㅠㅠ");
     }
-
-    apis
-      .getStarPhotoAX()
-      .then((response) => {
-        console.log(response);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-
-    apis
-      .getNoticeNowAX(37.3645764, 127.834038)
-      .then((response) => {
-        console.log(response);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    apis.getStarHotAX().then((response) => {
+      console.log("star hot:::", response);
+      setHot(response.data.data);
+    });
   }, []);
 
+  React.useEffect(() => {
+    weatherNow();
+    apis
+      .getNoticeAX(37.3645764, 127.834038)
+      .then((response) => {
+        console.log("get notice:::", response);
+        const resData = response.data.data;
+        setData((prev) => ({
+          ...prev,
+          moonrise:
+            resData.moonrise.slice(0, 2) + ":" + resData.moonrise.slice(2, 4),
+          moonset:
+            resData.moonset.slice(0, 2) + ":" + resData.moonset.slice(2, 4),
+          starGazing: resData.starGazing,
+        }));
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, [userLocation]);
+
   const liArray = Array.from(new Array(11).keys());
+
+  const locationButton = () => {
+    weatherNow();
+    console.log("user location :::", userLocation);
+    console.log("notice data:::", data);
+  };
 
   return (
     <React.Fragment>
@@ -89,17 +139,21 @@ const MainStar = () => {
           <div>
             <LocationBox className="contentsBox">
               <img src={ic_map} alt="map icon" />
-              <h3>서울시 강남구</h3>
-              <img
-                src={ic_location_off}
-                alt="your location button"
-                className="location"
-              />
-              <img
-                src={ic_location_on}
-                alt="your location button"
-                className="location_on"
-              />
+              <h3>{data.location}</h3>
+              <button onClick={locationButton}>
+                <img
+                  src={ic_location_off}
+                  alt="your location button"
+                  className="location"
+                  onClick={locationButton}
+                />
+                <img
+                  src={ic_location_on}
+                  alt="your location button"
+                  className="location_on"
+                  onClick={locationButton}
+                />
+              </button>
               <span className="buttonHover">현재위치</span>
             </LocationBox>
             <WeatherBox className="contentsBox">
@@ -108,41 +162,46 @@ const MainStar = () => {
                   <img src={ic_sunny} alt="weather logo" />
                   <div className="temperature">
                     <h3 className="openSans">
-                      10<span>°C</span>
+                      {data.temperature}
+                      <span>°C</span>
                     </h3>
-                    <p>7° / 18°</p>
+                    <p>
+                      {data.minTemperature}° / {data.maxTemperature}°
+                    </p>
                   </div>
                 </div>
-                <p className="comment">맑음, 어제보다 2도 낮아요.</p>
+                <p className="comment">{data.weather}</p>
               </WeatherTemperature>
               <span className="line" />
               <WeatherETC>
                 <section>
                   <h3>미세먼지</h3>
                   <img src={ic_finedust1} alt="finedust icon" />
-                  <p className="openSans">13</p>
+                  <p className="openSans">{data.dust}</p>
                 </section>
                 <section>
                   <h3>강수확률</h3>
                   <img src={ic_umbrella} alt="ultra finedust icon" />
                   <p className="openSans">
-                    40<span>%</span>
+                    {data.rainPercent}
+                    <span>%</span>
                   </p>
                 </section>
                 <section>
                   <h3>습도</h3>
                   <img src={ic_humidity} alt="humidity icon" />
                   <p className="openSans">
-                    20<span>%</span>
+                    {data.humidity}
+                    <span>%</span>
                   </p>
                 </section>
               </WeatherETC>
             </WeatherBox>
-            <VisiblityBox className="contentsBox" visiblity={5}>
+            <VisiblityBox className="contentsBox" visiblity={data.starGazing}>
               <div className="title">
                 <img src={ic_star} alt="star icon" />
                 <h3>관측지수</h3>
-                <p>별보기 좋은날</p>
+                <p>별보기 좋은날 :)</p>
               </div>
               <div className="bar">
                 <div>
@@ -165,14 +224,14 @@ const MainStar = () => {
                   <img src={ic_moonrise} alt="moon icon" />
                   월출
                 </h3>
-                <p className="openSans">16:00</p>
+                <p className="openSans">{data.moonrise}</p>
               </section>
               <section className="contentsBox">
                 <h3>
                   <img src={ic_moonset} alt="moon icon" />
                   월몰
                 </h3>
-                <p className="openSans">6:00</p>
+                <p className="openSans">{data.moonset}</p>
               </section>
             </MoonBox>
           </div>
@@ -199,47 +258,27 @@ const MainStar = () => {
               </div>
               <span className="line" />
               <ul>
-                <li>
-                  <img
-                    src="https://cdn.pixabay.com/photo/2017/08/30/01/05/milky-way-2695569_1280.jpg"
-                    alt="star"
-                  />
-                  <div>
-                    <h3>강원도 강릉시</h3>
-                    <p>
-                      관측지수 <span className="openSans">10</span>
-                    </p>
-                    <p>
-                      맑음 <span className="openSans">7°</span>
-                    </p>
-                  </div>
-                </li>
-                <li>
-                  <img
-                    src="https://cdn.pixabay.com/photo/2017/08/30/01/05/milky-way-2695569_1280.jpg"
-                    alt="star"
-                  />
-                  <div>
-                    <h3>강원도 강릉시</h3>
-                    <p>
-                      관측지수 <span>10</span>
-                    </p>
-                    <p>맑음 7°</p>
-                  </div>
-                </li>
-                <li>
-                  <img
-                    src="https://cdn.pixabay.com/photo/2017/08/30/01/05/milky-way-2695569_1280.jpg"
-                    alt="star"
-                  />
-                  <div>
-                    <h3>강원도 강릉시</h3>
-                    <p>
-                      관측지수 <span>10</span>
-                    </p>
-                    <p>맑음 7°</p>
-                  </div>
-                </li>
+                {hot.map((l, idx) => {
+                  return (
+                    <li key={idx}>
+                      <img
+                        src="https://cdn.pixabay.com/photo/2017/08/30/01/05/milky-way-2695569_1280.jpg"
+                        alt="star"
+                      />
+                      <div>
+                        <h3>{l.cityName}</h3>
+                        <p>
+                          관측지수{" "}
+                          <span className="openSans">{l.starGazing}</span>
+                        </p>
+                        <p>
+                          맑음{" "}
+                          <span className="openSans">{l.avgTemperature}°</span>
+                        </p>
+                      </div>
+                    </li>
+                  );
+                })}
               </ul>
             </RecommendBox>
           </div>
@@ -286,6 +325,12 @@ const LocationBox = styled.section`
     font-weight: normal;
     font-size: 14px;
     line-height: 19px;
+  }
+  button {
+    width: 24px;
+    height: 24px;
+    background: none;
+    border: none;
   }
   .location_on {
     display: none;
