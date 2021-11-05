@@ -3,25 +3,26 @@ import styled from "styled-components";
 import Card from "../components/Card";
 import { Grid } from "../elements";
 
+import { useState } from "react";
+
 // redux
-import { actionCreators as postActions } from "../redux/modules/card";
+import card, { actionCreators as postActions } from "../redux/modules/card";
 import { useSelector, useDispatch } from "react-redux";
 
 const MainCommunity = (props) => {
   const card_list = useSelector((state) => state.card.list);
   const dispatch = useDispatch();
 
+  React.useEffect(() => {
+    dispatch(postActions.getCardDB());
+  }, []);
+
   return (
     <React.Fragment>
       <Wrapper>
-        <Card></Card>
-        <Card></Card>
-        <Card></Card>
-        <Card></Card>
-        <Card></Card>
-        <Card></Card>
-        <Card></Card>
-        <Card></Card>
+        {card_list.map((p, i) => {
+          return <Card key={p.id} {...p} />;
+        })}
       </Wrapper>
     </React.Fragment>
   );
