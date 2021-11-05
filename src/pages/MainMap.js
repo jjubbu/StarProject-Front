@@ -10,19 +10,16 @@ import ic_map from "../img/main-star/ic_map.svg";
 import ic_option from "../img/option.svg";
 import ic_search from "../img/ic_search.svg";
 import ic_star from "../img/main-star/ic_star.svg";
-import { useLocation } from "react-router";
 
 const MainMap = () => {
   const [is_search, setSearch] = React.useState(false);
-  const location = useLocation();
-  console.log(location);
 
   const testArray = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
   const testSearchArray = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-  const [text, setText] = React.useState("지금 내 위치!");
-  const [latitude, setLatitude] = React.useState(37);
-  const [longitude, setLongitude] = React.useState(121);
-  const [hour, setHour] = React.useState();
+  const [mapLocation, setUserLocation] = React.useState({
+    lat: 37.3645764,
+    lon: 127.834038,
+  });
   const options = {
     enableHighAccuracy: true,
     timeout: 5000,
@@ -33,31 +30,25 @@ const MainMap = () => {
     const position = x.coords;
     const latitude = position.latitude;
     const longitude = position.longitude;
-    // setText(position)
-    console.log("위도 :::", latitude);
-    console.log("경도 :::", longitude);
-
-    setLatitude(latitude);
-    setLongitude(longitude);
+    setUserLocation({ lat: latitude, lon: longitude });
   };
 
   const error = (x) => {
-    setText(x.code + ":::" + x.message);
+    console.log(x.code + ":::" + x.message);
   };
 
-  const userLocation = () => {
-    console.log("clcik!");
+  const setLocation = () => {
     if ("geolocation" in navigator) {
-      /* 위치정보 사용 가능 */
-      console.log("useEffect");
       navigator.geolocation.getCurrentPosition(success, error, options);
     } else {
-      /* 위치정보 사용 불가능 */
-      console.log("error");
+      console.log("확인할 수 없다 ㅠㅠ");
+      return;
     }
+    console.log("set location");
   };
+
   React.useEffect(() => {
-    userLocation();
+    setLocation();
   }, []);
   return (
     <React.Fragment>
@@ -106,23 +97,26 @@ const MainMap = () => {
                   <img src={ic_search} alt="search icon" />
                   <input type="text" placeholder="캠핑장명/지역명으로 검색" />
                 </label>
-                <img
-                  src={ic_location_off}
-                  alt="location icon"
-                  className="off"
-                  onClick={() => {
-                    console.log("aaa");
-                  }}
-                />
-                <img
-                  src={ic_location_on}
-                  alt="location icon"
-                  className="on"
-                  onClick={() => {
-                    console.log("dajfew");
-                  }}
-                />
+                <button onClick={setLocation}>
+                  <img
+                    src={ic_location_off}
+                    alt="location icon"
+                    className="off"
+                    onClick={() => {
+                      console.log("aaa");
+                    }}
+                  />
+                  <img
+                    src={ic_location_on}
+                    alt="location icon"
+                    className="on"
+                    onClick={() => {
+                      console.log("dajfew");
+                    }}
+                  />
+                </button>
               </div>
+
               {is_search ? (
                 <SearchList>
                   {testSearchArray.map((l, idx) => {
@@ -137,7 +131,10 @@ const MainMap = () => {
               ) : null}
             </SearchBox>
             <Map
-              center={{ lat: latitude, lng: longitude }}
+              center={{
+                lat: mapLocation.lat,
+                lng: mapLocation.lon,
+              }}
               style={{ width: "100%", height: "792px" }}
             >
               <MapMarker position={{ lat: 33.55635, lng: 126.795841 }}>
@@ -185,6 +182,12 @@ const SearchBox = styled.div`
     justify-content: space-between;
     align-items: center;
     padding: 16px 20px;
+  }
+  button {
+    border: none;
+    background: none;
+    width: 24px;
+    height: 24px;
   }
   img {
     width: 24px;
