@@ -156,25 +156,24 @@ const ResultHeader = styled.div`
       line-height: 20px;
       color: #eeeeee;
       margin-top: 6px;
-     
     }
   }
 
   .sub {
-      font-weight: normal;
-      font-size: 14px;
-      color: #eeeeee;
-      margin-top: 35px;
-      margin-left: 240px;
-     
-    }
+    font-weight: normal;
+    font-size: 14px;
+    color: #eeeeee;
+    margin-top: 35px;
+    margin-left: 240px;
+  }
 
-    .starView {
-      img {
-        width: 16px;
-        height: 50px;
-        margin: -60px 0 0 310px;
-      }
+  .starView {
+    img {
+      width: 16px;
+      height: 50px;
+      margin: -60px 0 0 310px;
+    }
+  }
 `;
 
 const ResultBody = styled.ul`
