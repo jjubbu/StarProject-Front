@@ -9,6 +9,8 @@ import { isLogin } from "../redux/modules/user";
 
 const Login = () => {
   const dispatch = useDispatch();
+  const [is_save, setIsSave] = React.useState(false);
+  const [idCookie, setIdCookie] = React.useState();
   const [loginInfo, setLoginInfo] = React.useState({
     username: "",
     password: "",
@@ -17,6 +19,15 @@ const Login = () => {
   const inputValue = (e) => {
     const { name, value } = e.target;
     setLoginInfo((prevState) => ({ ...prevState, [name]: value }));
+  };
+  const cookie = new Cookies();
+
+  const saveID = (e) => {
+    if (e.target.checked) {
+      setIsSave(true);
+    } else {
+      setIsSave(false);
+    }
   };
 
   const login = () => {
@@ -29,14 +40,27 @@ const Login = () => {
       console.log(response);
       if (response.data.code === 200) {
         const token = response.data.data.token;
-        const cookie = new Cookies();
         cookie.set("token", token);
+        if (is_save) {
+          cookie.set("starCampID", loginInfo.username);
+        } else {
+          cookie.remove("starCampID");
+        }
         dispatch(isLogin(true));
         alert("로그인 성공!");
         history.push("/");
       }
     });
   };
+
+  React.useEffect(() => {
+    const userIdCookie = cookie.get("starCampID");
+    if (userIdCookie !== "") {
+      setLoginInfo((prevState) => ({ ...prevState, username: userIdCookie }));
+
+      setIsSave(true);
+    }
+  }, []);
 
   return (
     <React.Fragment>
@@ -49,6 +73,7 @@ const Login = () => {
                 name="username"
                 onChange={inputValue}
                 placeholder="아이디"
+                value={loginInfo.username}
               />
             </label>
             <label>
@@ -57,6 +82,10 @@ const Login = () => {
                 onChange={inputValue}
                 placeholder="비밀번호"
               />
+            </label>
+            <label className="checkboxBox">
+              <input type="checkbox" onClick={saveID} checked={is_save} />
+              <p>아이디 저장</p>
             </label>
           </InputBox>
           <LoginButton onClick={login}>로그인</LoginButton>
@@ -112,6 +141,25 @@ const InputBox = styled.div`
       line-height: 20px;
       color: #cccccc;
     }
+  }
+  .checkboxBox {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+  }
+  .checkboxBox input {
+    width: 18px;
+    height: 18px;
+    background: #18191e;
+    border: 1px solid #666666;
+    box-sizing: border-box;
+    border-radius: 4px;
+  }
+  .checkboxBox p {
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 18px;
+    color: #eeeeee;
   }
 `;
 
