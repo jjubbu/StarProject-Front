@@ -21,6 +21,10 @@ const Login = () => {
 
   const login = () => {
     console.log(loginInfo);
+    if (loginInfo.password === "" || loginInfo.username === "") {
+      alert("값을 입력해주세요!");
+      return;
+    }
     apis.loginAX(loginInfo).then((response) => {
       console.log(response);
       if (response.data.code === 200) {
@@ -36,56 +40,103 @@ const Login = () => {
 
   return (
     <React.Fragment>
-      <StyleArticle>
-        <h1>로그인</h1>
-        <section>
-          <label>
-            <h3>아이디</h3>
-            <input name="username" onChange={inputValue} />
-          </label>
-          <label>
-            <h3>비밀번호</h3>
-            <input name="password" onChange={inputValue} />
-          </label>
-        </section>
-        <button onClick={login}>로그인</button>
-        <button
-          onClick={() => {
-            history.push("/signup");
-          }}
-        >
-          회원가입
-        </button>
-      </StyleArticle>
+      <div className="CommonPageStyle">
+        <StyleArticle>
+          <h3>로그인</h3>
+          <InputBox>
+            <label>
+              <input
+                name="username"
+                onChange={inputValue}
+                placeholder="아이디"
+              />
+            </label>
+            <label>
+              <input
+                name="password"
+                onChange={inputValue}
+                placeholder="비밀번호"
+              />
+            </label>
+          </InputBox>
+          <LoginButton onClick={login}>로그인</LoginButton>
+          <EtcButtonBox>
+            <p
+              onClick={() => {
+                history.push("/signup");
+              }}
+            >
+              회원가입
+            </p>
+          </EtcButtonBox>
+        </StyleArticle>
+      </div>
     </React.Fragment>
   );
 };
 
 const StyleArticle = styled.article`
+  margin: 120px auto 0;
+  max-width: 432px;
+  width: 36%;
+  height: 100%;
+
+  h3 {
+    font-weight: bold;
+    font-size: 32px;
+    line-height: 40px;
+    text-align: center;
+  }
+`;
+
+const InputBox = styled.div`
+  display: block;
+  width: 100%;
   display: flex;
   flex-direction: column;
-  margin: 0 auto;
-  width: 50%;
-  height: 100%;
-  max-width: 780px;
-  gap: 10px;
-
-  justify-content: center;
-  align-items: center;
-  section {
+  gap: 16px;
+  margin-top: 48px;
+  input {
     width: 100%;
-    label {
-      display: block;
-      width: 100%;
-      margin: 20px 0;
-      input {
-        width: 100%;
-      }
+    height: 60px;
+    background: #303136;
+    border-radius: 10px;
+    border: none;
+    padding: 0 24px;
+    font-size: 16px;
+    line-height: 20px;
+    color: #cccccc;
+
+    &::placeholder {
+      font-size: 16px;
+      line-height: 20px;
+      color: #cccccc;
     }
   }
-  button {
-    width: 100%;
-    padding: 10px;
+`;
+
+const LoginButton = styled.button`
+  width: 100%;
+  height: 60px;
+  margin-top: 30px;
+  background: #4688ec;
+  border-radius: 10px;
+  font-weight: bold;
+  font-size: 18px;
+  line-height: 23px;
+  color: white;
+  border: none;
+  cursor: pointer;
+`;
+
+const EtcButtonBox = styled.div`
+  margin-top: 20px;
+  p {
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 18px;
+    color: #eeeeee;
+    cursor: pointer;
   }
 `;
 
