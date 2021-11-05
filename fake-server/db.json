@@ -1,0 +1,79 @@
+{
+  "posts": [
+    {
+      "id": 1,
+      "title": "json-server",
+      "author": "typicode"
+    }
+  ],
+  "comments": [
+    {
+      "id": 1,
+      "body": "some comment",
+      "postId": 1
+    }
+  ],
+  "profile": {
+    "name": "typicode"
+  },
+  "card": [
+            
+    {
+        "id" : 0,
+        "writer" : "salmon",
+        "title" : "제목1",
+        "주소" : "서울시 성북구 성북동",
+        "img" : "https://campimage.s3.ap-northeast-2.amazonaws.com/campimage.jpg",
+        "like" : 3,
+        "contents" : "본문",
+        "modifiedAt" : "2021-01-01"
+    },
+
+    {
+        "id" : 1,
+        "writer" : "tuna",
+        "title" : "제목2",
+        "주소" : "부산시",
+        "img" : "https://campimage.s3.ap-northeast-2.amazonaws.com/campimage.jpg",
+        "like" : 4,
+        "contents" : "본문",
+        "modifiedAt" : "2021-01-01"
+    },
+
+    {
+        "id" : 2,
+        "writer" : "anchovy",
+        "title" : "제목3",
+        "주소" : "대전 어딘가",
+        "img" : "https://campimage.s3.ap-northeast-2.amazonaws.com/campimage.jpg",
+        "like" : 5,
+        "contents" : "가나다라마바사",
+        "modifiedAt" : "2021-01-01"
+    },
+
+    {
+        "id" : 3,
+        "writer" : "sardine",
+        "title" : "제목4",
+        "주소" : "울산시 고래보이는곳",
+        "img" : "https://campimage.s3.ap-northeast-2.amazonaws.com/campimage.jpg",
+        "like" : 6,
+        "contents" : "본문",
+        "modifiedAt" : "2021-01-01"
+    },
+
+    {
+      "id" : 4,
+      "writer" : "shark",
+      "title" : "제목5",
+      "주소" : "광주시",
+      "img" : "https://campimage.s3.ap-northeast-2.amazonaws.com/campimage.jpg",
+      "like" : 6,
+      "contents" : "본문",
+      "modifiedAt" : "2021-01-01"
+  }
+
+]
+
+
+}

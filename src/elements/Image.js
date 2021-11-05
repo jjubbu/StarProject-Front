@@ -33,6 +33,9 @@ Image.defaultProps = {
 const AspectOutter = styled.div`
   width: 100%;
   min-width: 250px;
+  overflow: hidden;
+  border-radius: 10px 10px 0px 0px;
+  z-index: 1;
 `;
 
 const AspectInner = styled.div`

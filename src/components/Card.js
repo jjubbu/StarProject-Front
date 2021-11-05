@@ -2,57 +2,75 @@ import React from "react";
 import styled from "styled-components";
 import { Text, Image, Grid } from "../elements";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faMapMarkerAlt } from "@fortawesome/free-solid-svg-icons";
-import { faHeart } from "@fortawesome/free-regular-svg-icons";
+import {
+  faMapMarkerAlt,
+  faHeart as fullHeart,
+} from "@fortawesome/free-solid-svg-icons";
+import { faHeart as emptyHeart } from "@fortawesome/free-regular-svg-icons";
+
+import { useEffect, useState } from "react";
 
 const Card = (props) => {
+  const [like, setLike] = useState(false);
+  const toggleLike = () => setLike(!like);
+
   return (
     <Wrapper>
+      <Image
+        height="288px"
+        shape={"rectangle"}
+        src={props.img}
+        oject-fit={"cover"}
+      />
       <InfoDiv>
         <FontAwesomeIcon
           icon={faMapMarkerAlt}
           display="inline-block"
           size="1x"
         />
-        <Location>아름다운 금수강산</Location>
-        <NicknameDiv>작성자 홍고구마</NicknameDiv>
+        <Location>{props.주소}</Location>
       </InfoDiv>
-      <Image
-        height="170px"
-        shape={"rectangle"}
-        src="https://campimage.s3.ap-northeast-2.amazonaws.com/campimage.jpg"
-      />
       <TextDiv>
-        <TitleDiv>
-          <Text size="18px" bold margin="0 0 0 0">
-            Title comes here
-          </Text>
-        </TitleDiv>
-
+        <TitleDiv>{props.title}</TitleDiv>
         <ContentDiv>
-          <Text size="15px" lineHeight="23px">
-            Content comes here Content comes here Content comes here Content
-            comes here Content comes hereContent comes here Content comes
-            hereContent comes here Content comes here Content comes here Content
-            comes here Content comes here Content comes here Content comes here
-            Content comes here Content comes here Content comes here
+          <Text size="15px" lineHeight="30px">
+            {props.contents}
           </Text>
         </ContentDiv>
       </TextDiv>
 
       <BottomDiv>
-        <DateDiv>2021년 10월 1일 작성</DateDiv>
+        <DateDiv>{props.modifiedAt}작성</DateDiv>
         <LikeDiv>
-          <FontAwesomeIcon icon={faHeart} /> 좋아요 10개
+          <FontAwesomeIcon
+            type="button"
+            icon={emptyHeart}
+            like={like}
+            onClick={toggleLike}
+          />
+          좋아요 {props.like}개
         </LikeDiv>
       </BottomDiv>
     </Wrapper>
   );
 };
 
+Card.defaultProps = {};
+
 const InfoDiv = styled.div`
   padding: 5px;
   float: left;
+  position: relative;
+  z-index: 3;
+  top: -275px;
+  left: 20px;
+  background-color: #000000;
+  opacity: 0.8;
+  height: 28px;
+  width: fit-content;
+  border-radius: 14px;
+  padding-left: 10px;
+  padding-right: 10px;
 `;
 
 const Location = styled.div`
@@ -69,15 +87,25 @@ const NicknameDiv = styled.div`
   color: gray;
 `;
 
+const TextDiv = styled.div`
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+`;
+
 const TitleDiv = styled.div`
   overflow: hidden;
   line-clamp: 1;
-  height: 20px;
   resize: none;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 18px;
+  line-height: 18px;
 `;
 
 const ContentDiv = styled.div`
-  height: 70px;
+  height: 120px;
   resize: none;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -86,8 +114,8 @@ const ContentDiv = styled.div`
 `;
 
 const Wrapper = styled.div`
-  width: 340px;
-  height: 420px;
+  width: 388px;
+  height: 504px;
   display: flex;
   flex-direction: column;
   justify-content: flex;
@@ -96,21 +124,12 @@ const Wrapper = styled.div`
   margin-right: 20px;
   border-radius: 10px;
   background-color: lightgray;
-  padding: 5px;
 
   :hover {
     cursor: pointer;
     transform: translateY(-12px);
     box-shadow: 0 3px 40px 0 #ddd;
   }
-`;
-
-const TextDiv = styled.div`
-  display: inline-flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: flex-start;
-  margin: 10px;
 `;
 
 const BottomDiv = styled.div`

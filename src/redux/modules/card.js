@@ -1,6 +1,7 @@
 import { createAction, handleActions } from "redux-actions";
 import { produce } from "immer";
-import { apis } from "../../lib/axios";
+
+import { api } from "../../shared/apis";
 
 // Action Types
 
@@ -9,8 +10,8 @@ const SET_CARD = "SET_CARD";
 
 // Action creators
 
-const addCard = createAction(ADD_CARD, (card_list) => ({ card_list }));
-const setCard = createAction(SET_CARD, (card) => ({ card }));
+const setCard = createAction(SET_CARD, (card_list) => ({ card_list }));
+const addCard = createAction(ADD_CARD, (card) => ({ card }));
 
 // initial state
 
@@ -42,7 +43,7 @@ const getCardDB = (
   modifiedAt
 ) => {
   return function (dispatch, getState, { history }) {
-    apis
+    api
       .get("/card", {
         id: id,
         writer: writer,
@@ -56,10 +57,11 @@ const getCardDB = (
       .then((res) => {
         console.log(res);
         const cardList = res.data;
+        console.log(cardList);
         dispatch(setCard(cardList));
       })
       .catch((err) => {
-        window.alert("포스트 정보를 가져올 수 없습니다");
+        window.alert("포스트 정보를 가져올 수 없습니다 ");
         console.log(err);
         return err;
       });
@@ -70,7 +72,10 @@ const getCardDB = (
 
 export default handleActions(
   {
-    [SET_CARD]: (state, action) => produce(state, (draft) => {}),
+    [SET_CARD]: (state, action) =>
+      produce(state, (draft) => {
+        draft.list = action.payload.card_list;
+      }),
 
     [ADD_CARD]: (state, action) => produce(state, (draft) => {}),
   },
@@ -82,6 +87,7 @@ export default handleActions(
 const actionCreators = {
   setCard,
   addCard,
+  getCardDB,
 };
 
 export { actionCreators };
