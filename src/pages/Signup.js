@@ -18,6 +18,15 @@ const Signup = () => {
 
   const signup = () => {
     console.log(signupInfo);
+    if (
+      signupInfo.username === "" ||
+      signupInfo.password === "" ||
+      signupInfo.passwordCheck === "" ||
+      signupInfo.nickname === ""
+    ) {
+      alert("값을 입력해주세요!");
+      return;
+    }
     apis
       .signupAX(signupInfo)
       .then((response) => {
