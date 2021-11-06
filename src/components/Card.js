@@ -30,6 +30,7 @@ const Card = (props) => {
         />
         <Location>{props.주소}</Location>
       </InfoDiv>
+
       <TextDiv>
         <TitleDiv>{props.title}</TitleDiv>
         <ContentDiv>
@@ -116,7 +117,7 @@ const ContentDiv = styled.div`
 const Wrapper = styled.div`
   width: 388px;
   height: 504px;
-  display: flex;
+  /* display: flex; */
   flex-direction: column;
   justify-content: flex;
   transition: box-shadow 0.25s ease-in 0s, transform 0.25s ease-in 0s;
