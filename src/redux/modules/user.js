@@ -2,12 +2,19 @@ import produce from "immer";
 import { createAction, handleActions } from "redux-actions";
 
 const initialState = {
-  userLocation: {
-    latitude: "", //위도
-    longitude: "", //경도
-  },
+  is_login: false,
 };
 
-const LOCATION = "LOCATION";
+const IS_LOGIN = "IS_LOGIN";
 
-// const saveLocation = createAction(LOCATION,(lat,lon)=>)
+export const isLogin = createAction(IS_LOGIN, (boolean) => ({ boolean }));
+
+export default handleActions(
+  {
+    [IS_LOGIN]: (state, action) =>
+      produce(state, (draft) => {
+        draft.is_login = action.payload.boolean;
+      }),
+  },
+  initialState
+);

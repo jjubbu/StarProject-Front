@@ -4,8 +4,13 @@ import styled from "styled-components";
 import { Cookies } from "react-cookie";
 
 import { history } from "../redux/configureStore";
+import { useDispatch } from "react-redux";
+import { isLogin } from "../redux/modules/user";
 
 const Login = () => {
+  const dispatch = useDispatch();
+  const [is_save, setIsSave] = React.useState(false);
+  const [idCookie, setIdCookie] = React.useState();
   const [loginInfo, setLoginInfo] = React.useState({
     username: "",
     password: "",
@@ -15,70 +20,171 @@ const Login = () => {
     const { name, value } = e.target;
     setLoginInfo((prevState) => ({ ...prevState, [name]: value }));
   };
+  const cookie = new Cookies();
+
+  const saveID = (e) => {
+    if (e.target.checked) {
+      setIsSave(true);
+    } else {
+      setIsSave(false);
+    }
+  };
 
   const login = () => {
     console.log(loginInfo);
+    if (loginInfo.password === "" || loginInfo.username === "") {
+      alert("값을 입력해주세요!");
+      return;
+    }
     apis.loginAX(loginInfo).then((response) => {
       console.log(response);
-      // if(response.data.code === 200){
-      //     alert('로그인 성공!');
-
-      // }
+      if (response.data.code === 200) {
+        const token = response.data.data.token;
+        cookie.set("token", token);
+        if (is_save) {
+          cookie.set("starCampID", loginInfo.username);
+        } else {
+          cookie.remove("starCampID");
+        }
+        dispatch(isLogin(true));
+        alert("로그인 성공!");
+        history.push("/");
+      }
     });
   };
 
+  React.useEffect(() => {
+    const userIdCookie = cookie.get("starCampID");
+    if (userIdCookie !== "") {
+      setLoginInfo((prevState) => ({ ...prevState, username: userIdCookie }));
+
+      setIsSave(true);
+    }
+  }, []);
+
   return (
     <React.Fragment>
-      <StyleArticle>
-        <h1>로그인</h1>
-        <section>
-          <label>
-            <h3>아이디</h3>
-            <input name="username" onChange={inputValue} />
-          </label>
-          <label>
-            <h3>비밀번호</h3>
-            <input name="password" onChange={inputValue} />
-          </label>
-        </section>
-        <button onClick={login}>로그인</button>
-        <button
-          onClick={() => {
-            history.push("/signup");
-          }}
-        >
-          회원가입
-        </button>
-      </StyleArticle>
+      <div className="CommonPageStyle">
+        <StyleArticle>
+          <h3>로그인</h3>
+          <InputBox>
+            <label>
+              <input
+                name="username"
+                onChange={inputValue}
+                placeholder="아이디"
+                value={loginInfo.username}
+              />
+            </label>
+            <label>
+              <input
+                name="password"
+                onChange={inputValue}
+                placeholder="비밀번호"
+              />
+            </label>
+            <label className="checkboxBox">
+              <input type="checkbox" onClick={saveID} checked={is_save} />
+              <p>아이디 저장</p>
+            </label>
+          </InputBox>
+          <LoginButton onClick={login}>로그인</LoginButton>
+          <EtcButtonBox>
+            <p
+              onClick={() => {
+                history.push("/signup");
+              }}
+            >
+              회원가입
+            </p>
+          </EtcButtonBox>
+        </StyleArticle>
+      </div>
     </React.Fragment>
   );
 };
 
 const StyleArticle = styled.article`
+  margin: 120px auto 0;
+  max-width: 432px;
+  width: 36%;
+  height: 100%;
+
+  h3 {
+    font-weight: bold;
+    font-size: 32px;
+    line-height: 40px;
+    text-align: center;
+  }
+`;
+
+const InputBox = styled.div`
+  display: block;
+  width: 100%;
   display: flex;
   flex-direction: column;
-  margin: 0 auto;
-  width: 50%;
-  height: 100%;
-  max-width: 780px;
-  gap: 10px;
-
-  justify-content: center;
-  align-items: center;
-  section {
+  gap: 16px;
+  margin-top: 48px;
+  input {
     width: 100%;
-    label {
-      display: block;
-      width: 100%;
-      margin: 20px 0;
-      input {
-        width: 100%;
-      }
+    height: 60px;
+    background: #303136;
+    border-radius: 10px;
+    border: none;
+    padding: 0 24px;
+    font-size: 16px;
+    line-height: 20px;
+    color: #cccccc;
+
+    &::placeholder {
+      font-size: 16px;
+      line-height: 20px;
+      color: #cccccc;
     }
   }
-  button {
-    width: 100%;
-    padding: 10px;
+  .checkboxBox {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+  }
+  .checkboxBox input {
+    width: 18px;
+    height: 18px;
+    background: #18191e;
+    border: 1px solid #666666;
+    box-sizing: border-box;
+    border-radius: 4px;
+  }
+  .checkboxBox p {
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 18px;
+    color: #eeeeee;
+  }
+`;
+
+const LoginButton = styled.button`
+  width: 100%;
+  height: 60px;
+  margin-top: 30px;
+  background: #4688ec;
+  border-radius: 10px;
+  font-weight: bold;
+  font-size: 18px;
+  line-height: 23px;
+  color: white;
+  border: none;
+  cursor: pointer;
+`;
+
+const EtcButtonBox = styled.div`
+  margin-top: 20px;
+  p {
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 18px;
+    color: #eeeeee;
+    cursor: pointer;
   }
 `;
 
