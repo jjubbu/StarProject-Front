@@ -10,16 +10,18 @@ import ic_map from "../img/main-star/ic_map.svg";
 import ic_option from "../img/option.svg";
 import ic_search from "../img/ic_search.svg";
 import ic_star from "../img/main-star/ic_star.svg";
+import { keyframes } from "styled-components";
 
 const MainMap = () => {
   const [is_search, setSearch] = React.useState(false);
-
+  const [is_loading, setLoading] = React.useState();
   const testArray = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
   const testSearchArray = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
   const [mapLocation, setUserLocation] = React.useState({
     lat: 37.3645764,
     lon: 127.834038,
   });
+
   const options = {
     enableHighAccuracy: true,
     timeout: 5000,
@@ -31,6 +33,7 @@ const MainMap = () => {
     const latitude = position.latitude;
     const longitude = position.longitude;
     setUserLocation({ lat: latitude, lon: longitude });
+    setLoading(false);
   };
 
   const error = (x) => {
@@ -38,6 +41,7 @@ const MainMap = () => {
   };
 
   const setLocation = () => {
+    setLoading(true);
     if ("geolocation" in navigator) {
       navigator.geolocation.getCurrentPosition(success, error, options);
     } else {
@@ -48,6 +52,7 @@ const MainMap = () => {
   };
 
   React.useEffect(() => {
+    setLoading(true);
     setLocation();
   }, []);
   return (
@@ -91,6 +96,8 @@ const MainMap = () => {
             </ResultListBox>
           </ResultBox>
           <MapBox>
+            {is_loading ? <span className="loading">로딩중</span> : null}
+
             <SearchBox is_search={is_search}>
               <div>
                 <label>
@@ -159,10 +166,37 @@ const StyledMap = styled.main`
   }
 `;
 
+const loadingAni = keyframes`
+0%{transform:rotate(0)}
+100%{transform:rotate(360deg)}
+`;
+
 const MapBox = styled.section`
   position: relative;
   width: 66%;
   overflow: hidden;
+
+  .loading {
+    position: absolute;
+    text-indent: -9999px;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    &::after {
+      content: "";
+      display: block;
+      width: 100px;
+      height: 100px;
+      border: 5px solid hotpink;
+      animation: ${loadingAni} 3s infinite linear;
+    }
+  }
 `;
 
 const SearchBox = styled.div`
