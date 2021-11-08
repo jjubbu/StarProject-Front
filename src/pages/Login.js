@@ -87,7 +87,7 @@ const Login = () => {
               />
             </label>
             <CheckBox>
-              <input type="checkbox" onClick={saveID} checked={is_save} />
+              <input type="checkbox" onChange={saveID} checked={is_save} />
               <p>아이디 저장</p>
             </CheckBox>
           </InputBox>
