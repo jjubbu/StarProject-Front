@@ -14,15 +14,16 @@ const MainCommunity = (props) => {
   const dispatch = useDispatch();
 
   React.useEffect(() => {
-    dispatch(postActions.getCardDB());
+    // dispatch(postActions.getCardDB());
   }, []);
 
   return (
     <React.Fragment>
       <Wrapper>
-        {card_list.map((p, i) => {
+        {/* {card_list.map((p, i) => {
           return <Card key={p.id} {...p} />;
-        })}
+        })} */}
+        <Card />
       </Wrapper>
     </React.Fragment>
   );

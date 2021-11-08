@@ -28,13 +28,13 @@ const Card = (props) => {
           display="inline-block"
           size="1x"
         />
-        <Location>{props.주소}</Location>
+        <Location>{props.주소}address</Location>
       </InfoDiv>
       <TextDiv>
-        <TitleDiv>{props.title}</TitleDiv>
+        <TitleDiv>{props.title}title</TitleDiv>
         <ContentDiv>
           <Text size="15px" lineHeight="30px">
-            {props.contents}
+            {props.contents}contents
           </Text>
         </ContentDiv>
       </TextDiv>
