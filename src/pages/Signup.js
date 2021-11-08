@@ -1,32 +1,118 @@
 import React from "react";
 import { apis } from "../lib/axios";
 import styled from "styled-components";
+import _ from "lodash";
+
+import { CommonInput, InputBox } from "../elements";
+
 import { history } from "../redux/configureStore";
 
 const Signup = () => {
   const [signupInfo, setSignupInfo] = React.useState({
+    nickname: "",
+    username: "",
+    password: "",
+    passwordCheck: "",
+  });
+
+  const [warning, setWarning] = React.useState({
     username: "",
     password: "",
     passwordCheck: "",
     nickname: "",
   });
 
+  const [inputWarn, setInputWarn] = React.useState({
+    username: "none",
+    password: "none",
+    passwordCheck: "none",
+    nickname: "none",
+  });
+
+  const pwCheck =
+    /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,}$/;
+  const email =
+    /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
+
+  const setWarningFunc = (name, nameValue, text, test) => {
+    if (name === nameValue) {
+      setWarning((prevState) => ({
+        ...prevState,
+        [nameValue]: test ? text : "",
+      }));
+      setInputWarn((prevState) => ({
+        ...prevState,
+        [nameValue]: test ? "warn" : "none",
+      }));
+    }
+  };
+
+  const warnCheck = React.useCallback(
+    _.debounce((name, value) => {
+      setWarningFunc(
+        name,
+        "username",
+        "이메일로 입력해주세요!",
+        !email.test(value)
+      );
+      setWarningFunc(
+        name,
+        "password",
+        "영문,숫자,특수문자를 모두 이용한 최소 8자의 비밀번호를 입력해주세요!",
+        !pwCheck.test(value)
+      );
+      setWarningFunc(
+        name,
+        "nickname",
+        "8자 이하로 입력해주세요!",
+        value.length > 8
+      );
+    }, 500),
+    []
+  );
+
+  const warnCheckPw2 = React.useCallback(
+    _.debounce((name, value) => {
+      setWarningFunc(
+        name,
+        "passwordCheck",
+        "비밀번호가 서로 다릅니다.",
+        !(value === signupInfo.password)
+      );
+    }, 500),
+    [signupInfo.password]
+  );
+
   const inputValue = (e) => {
     const { name, value } = e.target;
     setSignupInfo((prevState) => ({ ...prevState, [name]: value }));
+    warnCheck(name, value);
+    warnCheckPw2(name, value);
   };
 
   const signup = () => {
-    console.log(signupInfo);
     if (
-      signupInfo.username === "" ||
-      signupInfo.password === "" ||
-      signupInfo.passwordCheck === "" ||
-      signupInfo.nickname === ""
+      !signupInfo.nickname ||
+      !signupInfo.username ||
+      !signupInfo.password ||
+      !signupInfo.passwordCheck
     ) {
-      alert("값을 입력해주세요!");
+      const empty = Object.keys(signupInfo).find(
+        (key) => signupInfo[key].length <= 0
+      );
+      setWarning((prevState) => ({
+        ...prevState,
+        [empty]: "값을 입력해주세요!",
+      }));
       return;
     }
+    const warn = Object.keys(inputWarn).find(
+      (key) => inputWarn[key] === "warn"
+    );
+    if (warn !== undefined) {
+      return;
+    }
+    console.log("signupInfo server go!");
     apis
       .signupAX(signupInfo)
       .then((response) => {
@@ -38,87 +124,164 @@ const Signup = () => {
         alert(err);
       });
   };
-  const email =
-    /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
+
   const overlapCheck = (e) => {
     const check = e.target.name;
     if (signupInfo[check] === "") {
-      alert("값을 입력하고 중복확인 버튼을 눌러주세요!");
-      return;
-    }
-    if (check === "username") {
-      if (!email.test(signupInfo[check])) {
-        alert("이메일 형식으로 입력해주세요!");
+      setWarning((prevState) => ({
+        ...prevState,
+        [check]: "값을 입력하고 중복확인 버튼을 눌러주세요!",
+      }));
+      setInputWarn((prevState) => ({ ...prevState, [check]: "warn" }));
+    } else if (check === "nickname") {
+      if (email.test(signupInfo.nickname)) {
+        apis
+          .nicknameAX(signupInfo.nickname)
+          .then((response) => {
+            console.log(check, " check:::", response);
+          })
+          .catch((err) => console.log(err));
+      } else {
+        return;
+      }
+    } else if (check === "username") {
+      if (signupInfo.username.length <= 8) {
+        apis
+          .nicknameAX(signupInfo.username)
+          .then((response) => {
+            console.log(check, " check:::", response);
+          })
+          .catch((err) => console.log(err));
+      } else {
         return;
       }
     }
-    apis
-      .nicknameAX(signupInfo[check])
-      .then((response) => {
-        console.log(check, " check:::", response);
-      })
-      .catch((err) => console.log(err));
   };
+
   return (
     <React.Fragment>
       <StyleArticle>
         <h1>회원가입</h1>
-        <section>
+        <InputBoxSignup>
           <label>
-            <h3>닉네임</h3>
-            <input name="nickname" onChange={inputValue} />
-            <button name="nickname" onClick={overlapCheck}>
-              닉네임 중복확인
-            </button>
+            <LabelTitle>닉네임</LabelTitle>
+            <WithOverlapBox>
+              <CommonInput
+                name="nickname"
+                onChange={inputValue}
+                placeholder="1~8자, 국문/영문 대소문자/숫자 "
+                border={inputWarn.nickname}
+              />
+              <button name="nickname" onClick={overlapCheck} className="roboto">
+                중복확인
+              </button>
+            </WithOverlapBox>
+            <Warning>{warning.nickname}</Warning>
           </label>
           <label>
-            <h3>아이디 이메일형식</h3>
-            <input name="username" onChange={inputValue} />
-            <button name="username" onClick={overlapCheck}>
-              이메일 중복확인
-            </button>
+            <LabelTitle>아이디 이메일형식</LabelTitle>
+            <WithOverlapBox>
+              <CommonInput
+                name="username"
+                onChange={inputValue}
+                placeholder="이메일 주소"
+                border={inputWarn.username}
+              />
+              <button name="username" onClick={overlapCheck} className="roboto">
+                중복확인
+              </button>
+            </WithOverlapBox>
+            <Warning>{warning.username}</Warning>
           </label>
           <label>
-            <h3>비밀번호</h3>
-            <input name="password" onChange={inputValue} />
+            <LabelTitle>비밀번호</LabelTitle>
+            <CommonInput
+              name="password"
+              onChange={inputValue}
+              placeholder="비밀번호"
+              border={inputWarn.password}
+            />
+            <Warning>{warning.password}</Warning>
           </label>
           <label>
-            <h3>비밀번호 재확인</h3>
-            <input name="passwordCheck" onChange={inputValue} />
+            <LabelTitle>비밀번호 재확인</LabelTitle>
+            <CommonInput
+              name="passwordCheck"
+              onChange={inputValue}
+              placeholder="비밀번호 확인"
+              border={inputWarn.passwordCheck}
+            />
+            <Warning>{warning.passwordCheck}</Warning>
           </label>
-        </section>
-        <button onClick={signup}>회원가입</button>
+        </InputBoxSignup>
+        <SignupButton onClick={signup}>회원가입</SignupButton>
       </StyleArticle>
     </React.Fragment>
   );
 };
 
 const StyleArticle = styled.article`
-  display: flex;
-  flex-direction: column;
-  margin: 0 auto;
-  width: 50%;
+  margin: 56px auto 0;
+  width: 432px;
   height: 100%;
-  max-width: 780px;
-  gap: 10px;
 
-  justify-content: center;
-  align-items: center;
-  section {
-    width: 100%;
-    label {
-      display: block;
-      width: 100%;
-      margin: 20px 0;
-      input {
-        width: 100%;
-      }
-    }
-  }
-  & > button {
-    width: 100%;
-    padding: 10px;
+  h1 {
+    text-align: center;
+    margin: 0;
   }
 `;
 
+const InputBoxSignup = styled(InputBox)`
+  gap: 20px;
+`;
+
+const Warning = styled.p`
+  margin: 12px 0 0 20px;
+  font-weight: normal;
+  font-size: 12px;
+  line-height: 15px;
+
+  color: #ce3030;
+`;
+
+const LabelTitle = styled.h3`
+  height: 18px;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 18px;
+  color: #eeeeee;
+  margin-bottom: 12px;
+`;
+
+const WithOverlapBox = styled.div`
+  display: flex;
+  width: 100%;
+  gap: 12px;
+
+  button {
+    width: 102px;
+    height: 60px;
+    background: #666666;
+    border-radius: 10px;
+    border: none;
+    color: #fff;
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 19px;
+  }
+`;
+
+const SignupButton = styled.button`
+  width: 100%;
+  height: 60px;
+  margin-top: 30px;
+  background: #4688ec;
+  border-radius: 10px;
+  font-weight: bold;
+  font-size: 18px;
+  line-height: 23px;
+  color: white;
+  border: none;
+  cursor: pointer;
+`;
 export default Signup;
