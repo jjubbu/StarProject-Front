@@ -10,6 +10,7 @@ import MainCommunity from "../pages/MainCommunity";
 import Detail from "../pages/Detail";
 import Login from "../pages/Login";
 import Signup from "../pages/Signup";
+import UserInfoEdit from "../pages/UserInfoEdit";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import "./font.css";
@@ -28,6 +29,7 @@ function App() {
         <Route path="/login" exact component={Login} />
         <Route path="/signup" exact component={Signup} />
         <Route path="/detail/:id" exact component={Detail} />
+        <Route path="/user/edit" exact component={UserInfoEdit} />
         <Footer />
       </StyledViewContainer>
     </ConnectedRouter>

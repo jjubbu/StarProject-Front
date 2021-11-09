@@ -51,4 +51,7 @@ export const apis = {
     instance.get(`/board/map/list${cityName ? cityName : ""}`),
   //검색 자동 완성 키워드
   getMapSearchAX: (keyword) => instance.get(`/board/keyword?key=${keyword}`),
+
+  //마이페이지 계정 수정 페이지
+  putUserInfoAX: (userinfo) => instance.put("/my/update", userinfo),
 };
