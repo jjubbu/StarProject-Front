@@ -16,41 +16,47 @@ const Card = (props) => {
 
   return (
     <Wrapper>
-      <Image
-        height="288px"
-        shape={"rectangle"}
-        src={props.img}
-        oject-fit={"cover"}
-      />
-      <InfoDiv>
-        <FontAwesomeIcon
-          icon={faMapMarkerAlt}
-          display="inline-block"
-          size="1x"
+      <div>
+        <Image
+          height="288px"
+          shape={"rectangle"}
+          src={props.img}
+          oject-fit={"cover"}
         />
-        <Location>{props.주소}address</Location>
-      </InfoDiv>
-      <TextDiv>
-        <TitleDiv>{props.title}title</TitleDiv>
-        <ContentDiv>
-          <Text size="15px" lineHeight="30px">
-            {props.contents}contents
-          </Text>
-        </ContentDiv>
-      </TextDiv>
-
-      <BottomDiv>
-        <DateDiv>{props.modifiedAt}작성</DateDiv>
-        <LikeDiv>
+        <InfoDiv>
           <FontAwesomeIcon
-            type="button"
-            icon={emptyHeart}
-            like={like}
-            onClick={toggleLike}
+            icon={faMapMarkerAlt}
+            display="inline-block"
+            size="1x"
           />
-          좋아요 {props.like}개
-        </LikeDiv>
-      </BottomDiv>
+          <Location>{props.주소}</Location>
+        </InfoDiv>
+      </div>
+
+      <div>
+        <TextDiv>
+          <TitleDiv>{props.title}</TitleDiv>
+          <ContentDiv>
+            <Text size="16px" lineHeight="30px" color="white">
+              {props.contents}
+            </Text>
+          </ContentDiv>
+        </TextDiv>
+
+        {/* <BottomDiv> */}
+        <DateDiv>{props.modifiedAt} 작성</DateDiv>
+        {/* <LikeDiv>
+            <FontAwesomeIcon
+              type="button"
+              icon={emptyHeart}
+              like={like}
+              onClick={toggleLike}
+            />
+            좋아요 {props.like}개
+          </LikeDiv> */}
+        {/* </BottomDiv> */}
+        <lineSeperator />
+      </div>
     </Wrapper>
   );
 };
@@ -60,9 +66,9 @@ Card.defaultProps = {};
 const InfoDiv = styled.div`
   padding: 5px;
   float: left;
-  position: relative;
+  position: absolute;
   z-index: 3;
-  top: -275px;
+  top: 20px;
   left: 20px;
   background-color: #000000;
   opacity: 0.8;
@@ -88,10 +94,10 @@ const NicknameDiv = styled.div`
 `;
 
 const TextDiv = styled.div`
-  display: inline-flex;
+  /* display: inline-flex;
   flex-direction: column;
   justify-content: center;
-  align-items: flex-start;
+  align-items: flex-start; */
 `;
 
 const TitleDiv = styled.div`
@@ -102,15 +108,27 @@ const TitleDiv = styled.div`
   font-weight: bold;
   font-size: 18px;
   line-height: 18px;
+  margin-left: 20px;
+  margin-top: 28px;
 `;
 
 const ContentDiv = styled.div`
-  height: 120px;
+  width: 344px;
+  height: 40px;
   resize: none;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: wrap;
   line-clamp: 3;
+  line-height: 20.03px;
+  margin-left: 20px;
+  margin-top: 16px;
+  color: #ffffff;
+`;
+
+const lineSeperator = styled.div`
+  height: 1px;
+  background: #666666;
 `;
 
 const Wrapper = styled.div`
@@ -123,8 +141,11 @@ const Wrapper = styled.div`
   margin: 50px auto 20px auto;
   margin-right: 20px;
   border-radius: 10px;
-  background-color: lightgray;
-
+  background-color: #303136;
+  & > div:first-child {
+    height: fit-content;
+    position: relative;
+  }
   :hover {
     cursor: pointer;
     transform: translateY(-12px);
@@ -132,14 +153,13 @@ const Wrapper = styled.div`
   }
 `;
 
-const BottomDiv = styled.div`
-  margin-top: 5px;
-`;
-
 const DateDiv = styled.div`
   display: inline-block;
-  font-size: 13px;
-  margin-left: 9px;
+  font-size: 12px;
+  margin-left: 20px;
+  margin-top: 18px;
+  line-height: 18px;
+  color: #999999;
 `;
 
 const LikeDiv = styled.div`
