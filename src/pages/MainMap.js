@@ -8,16 +8,21 @@ import ic_map from "../img/map/ic_map.svg";
 import ic_option from "../img/option.svg";
 import ic_search from "../img/map/ic_search.svg";
 import ic_star from "../img/ic_star.svg";
+import { apis } from "../lib/axios";
+
+import { history } from "../redux/configureStore";
+import axios from "axios";
 
 const MainMap = () => {
   const [is_search, setSearch] = React.useState(false);
   const [is_loading, setLoading] = React.useState();
-  const testArray = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-  const testSearchArray = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-  const [mapLocation, setUserLocation] = React.useState({
+  const testArray = [1, 2, 3, 4, 5];
+  const testSearchArray = [1, 2, 3, 4, 5];
+  const [mapLocation, setMapLocation] = React.useState({
     lat: 37.3645764,
     lon: 127.834038,
   });
+  const [resultList, setResultList] = React.useState();
 
   const options = {
     enableHighAccuracy: true,
@@ -29,7 +34,8 @@ const MainMap = () => {
     const position = x.coords;
     const latitude = position.latitude;
     const longitude = position.longitude;
-    setUserLocation({ lat: latitude, lon: longitude });
+    console.log(latitude, longitude);
+    setMapLocation({ lat: latitude, lon: longitude });
     setLoading(false);
   };
 
@@ -48,9 +54,42 @@ const MainMap = () => {
     console.log("set location");
   };
 
+  const searchCity = (e) => {
+    const text = e.target.value;
+    const params = `?cityName=${text}`;
+    if (window.event.keyCode === 13) {
+      console.log("enter", text);
+      apis.getMapListAX(params).then((response) => {
+        console.log(response);
+      });
+    }
+  };
+  const listClick = (id) => {
+    history.push(`detail/${id}`);
+  };
+
   React.useEffect(() => {
     setLoading(true);
-    setLocation();
+    // setLocation();
+    // setMapLocation({
+    //   lat: testList[0].x_location,
+    //   lon: testList[0].y_location,
+    // });
+
+    apis
+      .getMapListAX()
+      .then((response) => {
+        const latitude = response.data.data[0].y_location;
+        const longitude = response.data.data[0].x_location;
+        console.log(latitude, longitude);
+        setResultList(response.data.data);
+      })
+      .then(() => {
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }, []);
   return (
     <React.Fragment>
@@ -68,28 +107,36 @@ const MainMap = () => {
               </div>
             </ResultHeader>
             <ResultListBox>
-              {testArray.map((l, idx) => {
-                return (
-                  <li key={idx}>
-                    <img
-                      src="https://cdn.pixabay.com/photo/2016/11/21/16/03/campfire-1846142_1280.jpg"
-                      alt="camp"
-                    />
-                    <div className="campInfo">
-                      <div className="title">
-                        <h3>어쩌구캠핑장</h3>
-                        <p>서울특별시 어쩌구</p>
+              {resultList ? (
+                resultList.map((l, idx) => {
+                  return (
+                    <li
+                      key={idx}
+                      id={l.id}
+                      onClick={() => {
+                        listClick(l.id);
+                      }}
+                    >
+                      <img src={l.img} alt="camp" />
+                      <div className="campInfo">
+                        <div className="title">
+                          <h3>{l.title}</h3>
+                          <p>{l.address}</p>
+                        </div>
+                        <div className="starView">
+                          <img src={ic_star} alt="star icon" />
+                          <p>
+                            <strong>관측지수</strong>(좋음){" "}
+                            <span>{l.starGazing}</span>
+                          </p>
+                        </div>
                       </div>
-                      <div className="starView">
-                        <img src={ic_star} alt="star icon" />
-                        <p>
-                          <strong>관측지수</strong>(좋음) <span>10</span>
-                        </p>
-                      </div>
-                    </div>
-                  </li>
-                );
-              })}
+                    </li>
+                  );
+                })
+              ) : (
+                <h1>검색 결과가 없습니다.</h1>
+              )}
             </ResultListBox>
           </ResultBox>
           <MapBox>
@@ -99,7 +146,11 @@ const MainMap = () => {
               <div>
                 <label>
                   <img src={ic_search} alt="search icon" />
-                  <input type="text" placeholder="캠핑장명/지역명으로 검색" />
+                  <input
+                    type="text"
+                    placeholder="지역명으로 검색"
+                    onKeyPress={searchCity}
+                  />
                 </label>
                 <button onClick={setLocation}>
                   <img
@@ -141,9 +192,18 @@ const MainMap = () => {
               }}
               style={{ width: "100%", height: "792px" }}
             >
-              <MapMarker position={{ lat: 33.55635, lng: 126.795841 }}>
-                <div style={{ color: "#000" }}>Hello World!</div>
-              </MapMarker>
+              {resultList
+                ? resultList.map((l, idx) => {
+                    return (
+                      <MapMarker
+                        key={idx}
+                        position={{ lat: l.y_location, lng: l.x_location }}
+                      >
+                        <div style={{ color: "#000" }}>{l.title}</div>
+                      </MapMarker>
+                    );
+                  })
+                : null}
             </Map>
           </MapBox>
         </StyledMap>
@@ -334,7 +394,7 @@ const ResultHeader = styled.div`
 
 const ResultListBox = styled.ul`
   margin-top: 4px;
-  overflow: scroll;
+  overflow-y: scroll;
   li:last-child {
     border: none;
   }
