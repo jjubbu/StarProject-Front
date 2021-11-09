@@ -1,27 +1,23 @@
 import React from "react";
-import axios from "axios";
 import styled from "styled-components";
-import dfs_xy_conv from "../transitionXY";
 import { apis } from "../lib/axios";
 
-import Header from "../components/Header";
-
-import ic_sunny from "../img/main-star/weather/ic_sunny.svg";
-import ic_finedust1 from "../img/main-star/weather/ic_finedust_1.svg";
-import ic_finedust2 from "../img/main-star/weather/ic_finedust_2.svg";
-import ic_finedust3 from "../img/main-star/weather/ic_finedust_3.svg";
-import ic_finedust4 from "../img/main-star/weather/ic_finedust_4.svg";
-import ic_umbrella from "../img/main-star/weather/ic_umbrella.svg";
-import ic_humidity from "../img/main-star/weather/ic_humidity.svg";
-import ic_moonrise from "../img/main-star/moon/ic_moonrise.svg";
-import ic_moonset from "../img/main-star/moon/ic_moonset.svg";
-import ic_star from "../img/main-star/ic_star.svg";
-import ic_map from "../img/main-star/ic_map.svg";
-import ic_location_off from "../img/main-star/ic_location_off.svg";
-import ic_location_on from "../img/main-star/ic_location_on.svg";
+import ic_sunny from "../img/weather/ic_sunny.svg";
+import ic_finedust1 from "../img/weather/ic_finedust_1.svg";
+import ic_finedust2 from "../img/weather/ic_finedust_2.svg";
+import ic_finedust3 from "../img/weather/ic_finedust_3.svg";
+import ic_finedust4 from "../img/weather/ic_finedust_4.svg";
+import ic_umbrella from "../img/weather/ic_umbrella.svg";
+import ic_humidity from "../img/weather/ic_humidity.svg";
+import ic_moonrise from "../img/moon/ic_moonrise.svg";
+import ic_moonset from "../img/moon/ic_moonset.svg";
+import ic_star from "../img/ic_star.svg";
+import ic_map from "../img/map/ic_map.svg";
+import ic_location_off from "../img/map/ic_location_off.svg";
+import ic_location_on from "../img/map/ic_location_on.svg";
 
 //임시 이미지
-import image_sample from "../img/main-star/Rectangle 16.png";
+import image_sample from "../img/Rectangle 16.png";
 
 const MainStar = () => {
   const [text, setText] = React.useState("지금 내 위치!");

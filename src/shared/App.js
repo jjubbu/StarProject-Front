@@ -7,8 +7,7 @@ import Main from "../pages/Main";
 import MainStar from "../pages/MainStar";
 import MainMap from "../pages/MainMap";
 import MainCommunity from "../pages/MainCommunity";
-import MainMapDetail from "../pages/MainMapDetail";
-import MainCommunityDetail from "../pages/MainCommunityDetail";
+import Detail from "../pages/Detail";
 import Login from "../pages/Login";
 import Signup from "../pages/Signup";
 import Header from "../components/Header";
@@ -28,8 +27,7 @@ function App() {
         <Route path="/community" exact component={MainCommunity} />
         <Route path="/login" exact component={Login} />
         <Route path="/signup" exact component={Signup} />
-        <Route path="/map/:id" exact component={MainMapDetail} />
-        <Route path="/community/:id" exact component={MainCommunityDetail} />
+        <Route path="/detail/:id" exact component={Detail} />
         <Footer />
       </StyledViewContainer>
     </ConnectedRouter>

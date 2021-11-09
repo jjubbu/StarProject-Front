@@ -1,16 +1,13 @@
 import React from "react";
-import styled from "styled-components";
-import Header from "../components/Header";
+import styled, { keyframes } from "styled-components";
 import { Map, MapMarker } from "react-kakao-maps-sdk";
-// https://github.com/JaeSeoKim/react-kakao-maps-sdk
 
-import ic_location_off from "../img/main-star/ic_location_off.svg";
-import ic_location_on from "../img/main-star/ic_location_on.svg";
-import ic_map from "../img/main-star/ic_map.svg";
+import ic_location_off from "../img/map/ic_location_off.svg";
+import ic_location_on from "../img/map/ic_location_on.svg";
+import ic_map from "../img/map/ic_map.svg";
 import ic_option from "../img/option.svg";
-import ic_search from "../img/ic_search.svg";
-import ic_star from "../img/main-star/ic_star.svg";
-import { keyframes } from "styled-components";
+import ic_search from "../img/map/ic_search.svg";
+import ic_star from "../img/ic_star.svg";
 
 const MainMap = () => {
   const [is_search, setSearch] = React.useState(false);

@@ -1,17 +1,11 @@
 import React from "react";
 import styled from "styled-components";
 import { Text, Image, Grid } from "../elements";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faMapMarkerAlt,
-  faHeart as fullHeart,
-} from "@fortawesome/free-solid-svg-icons";
-import { faHeart as emptyHeart } from "@fortawesome/free-regular-svg-icons";
 
-import { useEffect, useState } from "react";
+import ic_map from "../img/map/ic_map.svg";
 
 const Card = (props) => {
-  const [like, setLike] = useState(false);
+  const [like, setLike] = React.useState(false);
   const toggleLike = () => setLike(!like);
 
   return (
@@ -24,11 +18,7 @@ const Card = (props) => {
           oject-fit={"cover"}
         />
         <InfoDiv>
-          <FontAwesomeIcon
-            icon={faMapMarkerAlt}
-            display="inline-block"
-            size="1x"
-          />
+          <img src={ic_map} alt="address icon" />
           <Location>{props.주소}</Location>
         </InfoDiv>
       </div>
