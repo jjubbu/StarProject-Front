@@ -125,6 +125,22 @@ const Signup = () => {
       });
   };
 
+  const overlapAxios = (code, check) => {
+    if (code === 200) {
+      setWarning((prevState) => ({
+        ...prevState,
+        [check]: "사용가능한 아이디입니다.",
+      }));
+      setInputWarn((prevState) => ({ ...prevState, [check]: "success" }));
+    } else if (code === 501) {
+      setWarning((prevState) => ({
+        ...prevState,
+        [check]: "사용할 수 없는 아이디입니다.",
+      }));
+      setInputWarn((prevState) => ({ ...prevState, [check]: "warn" }));
+    }
+  };
+
   const overlapCheck = (e) => {
     const check = e.target.name;
     if (signupInfo[check] === "") {
@@ -133,28 +149,23 @@ const Signup = () => {
         [check]: "값을 입력하고 중복확인 버튼을 눌러주세요!",
       }));
       setInputWarn((prevState) => ({ ...prevState, [check]: "warn" }));
-    } else if (check === "nickname") {
-      if (email.test(signupInfo.nickname)) {
-        apis
-          .nicknameAX(signupInfo.nickname)
-          .then((response) => {
-            console.log(check, " check:::", response);
-          })
-          .catch((err) => console.log(err));
-      } else {
-        return;
-      }
-    } else if (check === "username") {
-      if (signupInfo.username.length <= 8) {
-        apis
-          .nicknameAX(signupInfo.username)
-          .then((response) => {
-            console.log(check, " check:::", response);
-          })
-          .catch((err) => console.log(err));
-      } else {
-        return;
-      }
+    } else if (check === "nickname" && inputWarn.nickname === "none") {
+      apis
+        .nicknameAX(signupInfo.nickname)
+        .then((response) => {
+          const code = Number(response.data.code);
+          console.log(check, " check:::", response);
+          overlapAxios(code, check);
+        })
+        .catch((err) => console.log(err));
+    } else if (check === "username" && inputWarn.username === "none") {
+      apis
+        .usernameAX(signupInfo.username)
+        .then((response) => {
+          const code = Number(response.data.code);
+          overlapAxios(code, check);
+        })
+        .catch((err) => console.log(err));
     }
   };
 
@@ -176,7 +187,7 @@ const Signup = () => {
                 중복확인
               </button>
             </WithOverlapBox>
-            <Warning>{warning.nickname}</Warning>
+            <Warning useable={inputWarn.nickname}>{warning.nickname}</Warning>
           </label>
           <label>
             <LabelTitle>아이디 이메일형식</LabelTitle>
@@ -191,7 +202,7 @@ const Signup = () => {
                 중복확인
               </button>
             </WithOverlapBox>
-            <Warning>{warning.username}</Warning>
+            <Warning useable={inputWarn.username}>{warning.username}</Warning>
           </label>
           <label>
             <LabelTitle>비밀번호</LabelTitle>
@@ -201,7 +212,7 @@ const Signup = () => {
               placeholder="비밀번호"
               border={inputWarn.password}
             />
-            <Warning>{warning.password}</Warning>
+            <Warning useable={inputWarn.password}>{warning.password}</Warning>
           </label>
           <label>
             <LabelTitle>비밀번호 재확인</LabelTitle>
@@ -211,7 +222,9 @@ const Signup = () => {
               placeholder="비밀번호 확인"
               border={inputWarn.passwordCheck}
             />
-            <Warning>{warning.passwordCheck}</Warning>
+            <Warning useable={inputWarn.passwordCheck}>
+              {warning.passwordCheck}
+            </Warning>
           </label>
         </InputBoxSignup>
         <SignupButton onClick={signup}>회원가입</SignupButton>
@@ -241,7 +254,7 @@ const Warning = styled.p`
   font-size: 12px;
   line-height: 15px;
 
-  color: #ce3030;
+  color: ${(props) => (props.useable === "warn" ? "#ce3030" : "#17AD26")};
 `;
 
 const LabelTitle = styled.h3`
