@@ -1,29 +1,106 @@
 import React from "react";
 import styled from "styled-components";
+
 import video from "../img/video.png";
 import arrow from "../img/arrow.svg";
+import ic_map from "../img/map/ic_map.svg";
+import ic_star from "../img/ic_star.svg";
+import ic_bookmark_off from "../img/ic_bookmark_off.svg";
+import { apis } from "../lib/axios";
 
 const Main = () => {
+  const test_card_list = [
+    {
+      id: 1,
+      writer: "salmon",
+      title: "제목",
+      address: "대구시",
+      img: "https://cdn.pixabay.com/photo/2021/10/19/10/56/cat-6723256_1280.jpg",
+      like: 3,
+      contents: "본문",
+      modifiedAt: "yyyy-MM-dd HH:mm",
+    },
+    {
+      id: 1,
+      writer: "salmon",
+      title: "제목",
+      address: "대구시",
+      img: "https://cdn.pixabay.com/photo/2021/10/19/10/56/cat-6723256_1280.jpg",
+      like: 3,
+      contents: "본문",
+      modifiedAt: "yyyy-MM-dd HH:mm",
+    },
+    {
+      id: 1,
+      writer: "salmon",
+      title: "제목",
+      address: "대구시",
+      img: "https://cdn.pixabay.com/photo/2021/10/19/10/56/cat-6723256_1280.jpg",
+      like: 3,
+      contents: "본문",
+      modifiedAt: "yyyy-MM-dd HH:mm",
+    },
+  ];
+  const [boardList, setBoardList] = React.useState();
+
+  React.useEffect(() => {
+    apis
+      .getMainBoardAX()
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  });
   return (
     <React.Fragment>
       <StyldMain>
         <VisualBox url={video}>
           <span />
-          <h3>
+          <h3 className="visualText">
             밤하늘 야경 명당 캠핑장 <br />
             실시간 별자리 찾기
           </h3>
           <img src={arrow} alt="scroll down" />
         </VisualBox>
         <ContentBox>
-          <section>
-            <h3>별보기 좋은 캠핑장</h3>
-            <ul>
-              <li></li>
-              <li></li>
-              <li></li>
-            </ul>
-          </section>
+          <h3>별보기 좋은 캠핑장</h3>
+          <ul>
+            {test_card_list.map((l, idx) => {
+              return (
+                <Card key={idx}>
+                  <ImageBox>
+                    <Address>
+                      <img src={ic_map} alt="address icon" />
+                      <p>{l.address}</p>
+                    </Address>
+                    <img src={l.img} alt="camp" className="campImage" />
+                  </ImageBox>
+                  <div className="contentBox">
+                    <CardContent>
+                      <h3>{l.title}</h3>
+                      <div>
+                        <p className="addressTitle">주소</p>
+                        <p className="addressInfo">{l.address}</p>
+                      </div>
+                    </CardContent>
+                    <CardEtcBox>
+                      <div className="starGazing">
+                        <img src={ic_star} alt="star gazing icon" />{" "}
+                        <p>관측지수</p>
+                        <span className="openSans">10</span>
+                      </div>
+                      <div className="bookmark">
+                        <img src={ic_bookmark_off} alt="bookmark" />
+                        <p className="openSans">40</p>
+                      </div>
+                    </CardEtcBox>
+                  </div>
+                </Card>
+              );
+            })}
+          </ul>
         </ContentBox>
       </StyldMain>
     </React.Fragment>
@@ -49,7 +126,7 @@ const VisualBox = styled.section`
     background-size: cover;
   }
 
-  h3 {
+  .visualText {
     padding-top: 227px;
     font-weight: bold;
     font-size: 56px;
@@ -67,22 +144,120 @@ const ContentBox = styled.main`
   max-width: 1200px;
   margin: 100px auto 114px;
 
-  section {
-    h3 {
-      font-weight: bold;
-      font-size: 32px;
-      line-height: 40px;
+  & > h3 {
+    font-weight: bold;
+    font-size: 32px;
+    line-height: 40px;
+  }
+  ul {
+    display: flex;
+    width: 100%;
+    gap: 24px;
+    margin-top: 24px;
+  }
+`;
+
+const Card = styled.li`
+  width: 100%;
+  height: 482px;
+  border-radius: 10px;
+  overflow: hidden;
+  background: #303136;
+  display: flex;
+  flex-direction: column;
+  .contentBox {
+    display: flex;
+    height: 100%;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+`;
+const ImageBox = styled.div`
+  position: relative;
+  .campImage {
+    width: 100%;
+    height: 288px;
+    object-fit: cover;
+  }
+`;
+const Address = styled.div`
+  position: absolute;
+  display: flex;
+  align-items: center;
+  height: 28px;
+  display: flex;
+  padding: 5px 12px 5px 8px;
+  background: rgba(0, 0, 0, 0.7);
+  border-radius: 14px;
+  top: 20px;
+  left: 20px;
+  img {
+    width: 16px;
+    height: 16px;
+    margin-right: 4px;
+  }
+  p {
+    font-weight: normal;
+    font-size: 12px;
+    line-height: 18px;
+  }
+`;
+
+const CardContent = styled.section`
+  padding: 28px 20px 0;
+  h3 {
+    font-weight: bold;
+    font-size: 18px;
+    line-height: 18px;
+  }
+  div {
+    display: flex;
+    gap: 28px;
+    margin-top: 10px;
+  }
+  p {
+    font-size: 16px;
+    line-height: 18px;
+    color: #cccccc;
+  }
+  .addressTitle {
+    font-weight: bold;
+  }
+  .addressInfo {
+    font-weight: normal;
+  }
+`;
+
+const CardEtcBox = styled.div`
+  padding: 19px 20px 17px;
+  display: flex;
+  justify-content: space-between;
+  border-top: 1px solid #666666;
+  .starGazing {
+    display: flex;
+    align-items: center;
+
+    p {
+      margin: 0 4px 0 8px;
+      font-size: 16px;
+      line-height: 20px;
     }
-    ul {
-      display: flex;
-      gap: 24px;
-      margin-top: 24px;
-      li {
-        width: 100%;
-        height: 288px;
-        background-color: #303136;
-        border-radius: 10px;
-      }
+    span {
+      font-weight: bold;
+      font-size: 18px;
+      line-height: 25px;
+    }
+  }
+  .bookmark {
+    display: flex;
+    align-items: center;
+    img {
+      margin-right: 4px;
+    }
+    p {
+      font-weight: normal;
+      font-size: 14px;
+      line-height: 18px;
     }
   }
 `;
