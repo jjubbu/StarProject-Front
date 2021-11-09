@@ -28,8 +28,8 @@ function App() {
         <Route path="/community" exact component={MainCommunity} />
         <Route path="/login" exact component={Login} />
         <Route path="/signup" exact component={Signup} />
-        <Route path="/map/detail" exact component={MainMapDetail} />
-        <Route path="/community/detail" exact component={MainCommunityDetail} />
+        <Route path="/map/:id" exact component={MainMapDetail} />
+        <Route path="/community/:id" exact component={MainCommunityDetail} />
         <Footer />
       </StyledViewContainer>
     </ConnectedRouter>

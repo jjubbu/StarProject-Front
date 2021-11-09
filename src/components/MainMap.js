@@ -48,6 +48,7 @@ const MainMap = () => {
   React.useEffect(() => {
     userLocation();
   });
+
   return (
     <React.Fragment>
       <div className="CommonPageStyle">
