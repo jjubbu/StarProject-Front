@@ -4,6 +4,7 @@ import Header from "../components/Header";
 import { Map, MapMarker } from "react-kakao-maps-sdk";
 // https://github.com/JaeSeoKim/react-kakao-maps-sdk
 import ic_star from "../img/ic_star.svg";
+import ic_moonrise from "../img/ic_moonrise.svg";
 import { history } from "../redux/configureStore";
 
 const Detail = () => {
@@ -16,7 +17,43 @@ const Detail = () => {
   return (
     <React.Fragment>
       <div className="CommonPageStyle">
-        <StyledMap>
+        <MapBox>
+          <Map
+            center={{ lat: 33.55635, lng: 126.795841 }}
+            style={{ width: "100%", height: "792px" }}
+          >
+            <MapMarker position={{ lat: 33.55635, lng: 126.795841 }}>
+              <div style={{ color: "#000" }}>Hello World!</div>
+            </MapMarker>
+          </Map>
+        </MapBox>
+
+        <InfoBox>
+          <InfoHeader>
+            <div className="place">
+              <p>서울시 마포구</p>
+            </div>
+
+            <div className="time">
+              <p>2021.10.31 오후 3:58</p>
+            </div>
+
+            <ul className="starInfo">
+              <li>
+                <div>dd</div>
+              </li>
+              <li>
+                <div>dd</div>
+              </li>
+              <li>
+                <div>dd</div>
+              </li>
+            </ul>
+          </InfoHeader>
+        </InfoBox>
+
+        <StyledBox>
+          {/*main*/}
           <ResultBox>
             <ResultHeader>
               <div className="nickname">
@@ -71,25 +108,60 @@ const Detail = () => {
               </div>
             </ResultBody>
           </ResultBox>
-          <MapBox>
-            <Map
-              center={{ lat: 33.55635, lng: 126.795841 }}
-              style={{ width: "100%", height: "792px" }}
-            >
-              <MapMarker position={{ lat: 33.55635, lng: 126.795841 }}>
-                <div style={{ color: "#000" }}>Hello World!</div>
-              </MapMarker>
-            </Map>
-          </MapBox>
-        </StyledMap>
+        </StyledBox>
       </div>
     </React.Fragment>
   );
 };
-const StyledMap = styled.main`
+const MapBox = styled.section`
+  position: relative;
+  width: 30%;
+  height: 38%;
+  overflow: hidden;
+  border-radius: 10px;
+`;
+
+const InfoBox = styled.section`
+  position: relative;
+  width: 30%;
+  height: 59%;
+  margin-top: 25px;
+  flex-direction: column;
   display: flex;
+  border-radius: 10px;
+  background-color: #303136;
+`;
+
+const InfoHeader = styled.div`
+  justify-content: space-between;
+
+  .place {
+    font-size: 15px;
+    background-color: red;
+    width: 30%;
+    margin: 30px;
+  }
+
+  .time {
+    font-size: 15px;
+    background-color: blue;
+    width: 40%;
+    margin: -45px 0 0 200px;
+  }
+
+  .starInfo {
+    width: 40%;
+    background-color: orange;
+    display: flex;
+  }
+  .starInfo > li > div {
+    text-align: center;
+  }
+`;
+
+const StyledBox = styled.main`
   gap: 24px;
-  height: 792px;
+  height: 805px;
 
   & > section {
     border-radius: 10px;
@@ -98,16 +170,11 @@ const StyledMap = styled.main`
   }
 `;
 
-const MapBox = styled.section`
-  position: relative;
-  width: 66%;
-  overflow: hidden;
-`;
-
 const ResultBox = styled.section`
-  width: 32%;
+  width: 68%;
   padding: 36px 28px 0;
   display: flex;
+  margin: -805px 0 0 385px;
   flex-direction: column;
 `;
 
