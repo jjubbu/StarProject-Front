@@ -27,6 +27,10 @@ export const apis = {
   //이메일중복확인
   usernameAX: (email) => instance.get(`/user/username/check?username=${email}`),
 
+  //메인페이지
+  //실시간 별보기 좋은 캠핑장
+  getMainBoardAX: () => instance.get("/main/boardList"),
+
   //별자리 페이지
   //별자리 사진+내용
   getStarPhotoAX: () => instance.get(`/star/photo`),
@@ -40,4 +44,14 @@ export const apis = {
     ),
   //실시간 별보기 좋은 지역
   getStarHotAX: () => instance.get("/star/hot"),
+
+  //지도페이지
+  //게시판 리스트 불러오기 cityName => ?cityName="서울시"
+  getMapListAX: (cityName) =>
+    instance.get(`/board/map/list${cityName ? cityName : ""}`),
+  //검색 자동 완성 키워드
+  getMapSearchAX: (keyword) => instance.get(`/board/keyword?key=${keyword}`),
+
+  //마이페이지 계정 수정 페이지
+  putUserInfoAX: (userinfo) => instance.put("/my/update", userinfo),
 };

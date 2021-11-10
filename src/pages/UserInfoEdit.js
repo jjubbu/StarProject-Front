@@ -1,29 +1,25 @@
 import React from "react";
-import { apis } from "../lib/axios";
 import styled from "styled-components";
+import { InputBox, CommonInput } from "../elements";
 import _ from "lodash";
-
-import { CommonInput, InputBox } from "../elements";
-
+import { apis } from "../lib/axios";
 import { history } from "../redux/configureStore";
+import ic_user from "../img/header/ic_mypage.svg";
 
-const Signup = () => {
-  const [signupInfo, setSignupInfo] = React.useState({
+const UserInfoEdit = () => {
+  const [userInfo, setUserInfo] = React.useState({
     nickname: "",
-    username: "",
     password: "",
     passwordCheck: "",
   });
 
   const [warning, setWarning] = React.useState({
-    username: "",
     password: "",
     passwordCheck: "",
     nickname: "",
   });
 
   const [inputWarn, setInputWarn] = React.useState({
-    username: "none",
     password: "none",
     passwordCheck: "none",
     nickname: "none",
@@ -77,28 +73,23 @@ const Signup = () => {
         name,
         "passwordCheck",
         "비밀번호가 서로 다릅니다.",
-        !(value === signupInfo.password)
+        !(value === userInfo.password)
       );
     }, 500),
-    [signupInfo.password]
+    [userInfo.password]
   );
 
   const inputValue = (e) => {
     const { name, value } = e.target;
-    setSignupInfo((prevState) => ({ ...prevState, [name]: value }));
+    setUserInfo((prevState) => ({ ...prevState, [name]: value }));
     warnCheck(name, value);
     warnCheckPw2(name, value);
   };
 
-  const signup = () => {
-    if (
-      !signupInfo.nickname ||
-      !signupInfo.username ||
-      !signupInfo.password ||
-      !signupInfo.passwordCheck
-    ) {
-      const empty = Object.keys(signupInfo).find(
-        (key) => signupInfo[key].length <= 0
+  const editUserInfo = () => {
+    if (!userInfo.nickname || !userInfo.password || !userInfo.passwordCheck) {
+      const empty = Object.keys(userInfo).find(
+        (key) => userInfo[key].length <= 0
       );
       setWarning((prevState) => ({
         ...prevState,
@@ -112,9 +103,9 @@ const Signup = () => {
     if (warn !== undefined) {
       return;
     }
-    console.log("signupInfo server go!");
+    console.log("userInfo server go!");
     apis
-      .signupAX(signupInfo)
+      .putUserInfoAX(userInfo)
       .then((response) => {
         if (response.status === 200) {
           history.push("/login");
@@ -143,7 +134,7 @@ const Signup = () => {
 
   const overlapCheck = (e) => {
     const check = e.target.name;
-    if (signupInfo[check] === "") {
+    if (userInfo[check] === "") {
       setWarning((prevState) => ({
         ...prevState,
         [check]: "값을 입력하고 중복확인 버튼을 눌러주세요!",
@@ -151,16 +142,7 @@ const Signup = () => {
       setInputWarn((prevState) => ({ ...prevState, [check]: "warn" }));
     } else if (check === "nickname" && inputWarn.nickname === "none") {
       apis
-        .nicknameAX(signupInfo.nickname)
-        .then((response) => {
-          const code = Number(response.data.code);
-          console.log(check, " check:::", response);
-          overlapAxios(code, check);
-        })
-        .catch((err) => console.log(err));
-    } else if (check === "username" && inputWarn.username === "none") {
-      apis
-        .usernameAX(signupInfo.username)
+        .nicknameAX(userInfo.nickname)
         .then((response) => {
           const code = Number(response.data.code);
           overlapAxios(code, check);
@@ -168,12 +150,12 @@ const Signup = () => {
         .catch((err) => console.log(err));
     }
   };
-
   return (
     <React.Fragment>
       <StyleArticle>
-        <h1>회원가입</h1>
-        <InputBoxSignup>
+        <h1>프로필수정</h1>
+        <img src={ic_user} alt="user profile" className="userProfile" />
+        <InputBoxEdit>
           <label>
             <LabelTitle>닉네임</LabelTitle>
             <WithOverlapBox>
@@ -188,21 +170,6 @@ const Signup = () => {
               </button>
             </WithOverlapBox>
             <Warning useable={inputWarn.nickname}>{warning.nickname}</Warning>
-          </label>
-          <label>
-            <LabelTitle>아이디 이메일형식</LabelTitle>
-            <WithOverlapBox>
-              <CommonInput
-                name="username"
-                onChange={inputValue}
-                placeholder="이메일 주소"
-                border={inputWarn.username}
-              />
-              <button name="username" onClick={overlapCheck} className="roboto">
-                중복확인
-              </button>
-            </WithOverlapBox>
-            <Warning useable={inputWarn.username}>{warning.username}</Warning>
           </label>
           <label>
             <LabelTitle>비밀번호</LabelTitle>
@@ -226,8 +193,8 @@ const Signup = () => {
               {warning.passwordCheck}
             </Warning>
           </label>
-        </InputBoxSignup>
-        <SignupButton onClick={signup}>회원가입</SignupButton>
+        </InputBoxEdit>
+        <SignupButton onClick={editUserInfo}>프로필수정</SignupButton>
       </StyleArticle>
     </React.Fragment>
   );
@@ -242,13 +209,18 @@ const StyleArticle = styled.article`
     text-align: center;
     margin: 0;
   }
+  .userProfile {
+    display: block;
+    width: 120px;
+    height: 120px;
+    margin: 48px auto 0;
+  }
 `;
 
-const InputBoxSignup = styled(InputBox)`
-  gap: 20px;
-`;
+const InputBoxEdit = styled(InputBox)``;
 
 const Warning = styled.p`
+  ${(props) => (props.useable === "warn" ? "display:block;" : "display:none;")};
   margin: 12px 0 0 20px;
   font-weight: normal;
   font-size: 12px;
@@ -297,4 +269,5 @@ const SignupButton = styled.button`
   border: none;
   cursor: pointer;
 `;
-export default Signup;
+
+export default UserInfoEdit;
