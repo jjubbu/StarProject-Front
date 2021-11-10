@@ -10,9 +10,11 @@ const initialState = {
   is_login: false,
 };
 
+const IS_LOGIN = "IS_LOGIN";
 const CHECK_LOGIN = "CHECK_LOGIN";
 
 const checkLogin = createAction(CHECK_LOGIN, (boolean) => ({ boolean }));
+const isLogin = createAction(IS_LOGIN, (boolean) => ({ boolean }));
 
 const checkLoginMW = () => {
   return function (dispatch, getState, { history }) {
@@ -39,6 +41,10 @@ export default handleActions(
       produce(state, (draft) => {
         draft.is_login = action.payload.boolean;
       }),
+    [IS_LOGIN]: (state, action) =>
+      produce(state, (draft) => {
+        draft.is_login = action.payload.boolean;
+      }),
   },
   initialState
 );
@@ -46,4 +52,5 @@ export default handleActions(
 export const actionCreators = {
   checkLogin,
   checkLoginMW,
+  isLogin,
 };
