@@ -1,10 +1,11 @@
 import React from "react";
 import styled, { keyframes } from "styled-components";
-import { Map, MapMarker } from "react-kakao-maps-sdk";
+import { CustomOverlayMap, Map, MapMarker } from "react-kakao-maps-sdk";
 
 import ic_location_off from "../img/map/ic_location_off.svg";
 import ic_location_on from "../img/map/ic_location_on.svg";
 import ic_map from "../img/map/ic_map.svg";
+import ic_map_b from "../img/map/ic_map_b.svg";
 import ic_option from "../img/option.svg";
 import ic_search from "../img/map/ic_search.svg";
 import ic_star from "../img/ic_star.svg";
@@ -22,7 +23,7 @@ const MainMap = () => {
     lat: 37.3645764,
     lon: 127.834038,
   });
-  const [resultList, setResultList] = React.useState();
+  const [resultList, setResultList] = React.useState([{}]);
 
   const options = {
     enableHighAccuracy: true,
@@ -209,12 +210,33 @@ const MainMap = () => {
               {resultList
                 ? resultList.map((l, idx) => {
                     return (
-                      <MapMarker
-                        key={idx}
-                        position={{ lat: l.y_location, lng: l.x_location }}
-                      >
-                        <div style={{ color: "#000" }}>{l.title}</div>
-                      </MapMarker>
+                      <React.Fragment>
+                        <MapMarker
+                          key={idx}
+                          position={{ lat: l.y_location, lng: l.x_location }}
+                          image={{
+                            src: `${ic_map_b}`,
+                            size: {
+                              width: 48,
+                              height: 48,
+                            },
+                            options: {
+                              offset: {
+                                x: 27,
+                                y: 69,
+                              },
+                            },
+                          }}
+                        />
+                        <CustomOverlayMap
+                          position={{ lat: l.y_location, lng: l.x_location }}
+                          yAnchor={1}
+                        >
+                          <MapMarkerCustom className="customoverlay">
+                            <span className="title">{l.title}</span>
+                          </MapMarkerCustom>
+                        </CustomOverlayMap>
+                      </React.Fragment>
                     );
                   })
                 : null}
@@ -268,6 +290,24 @@ const MapBox = styled.section`
       border: 5px solid white;
       animation: ${loadingAni} 3s infinite linear;
     }
+  }
+`;
+
+const MapMarkerCustom = styled.div`
+  color: black;
+  background-color: white;
+  width: fit-content;
+  border: 2px solid #000;
+  box-sizing: border-box;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  margin-bottom: 75px;
+  span {
+    display: block;
+    height: 38px;
+    padding: 0 15px;
+    line-height: 38px;
   }
 `;
 
