@@ -155,7 +155,7 @@ const UserInfoEdit = () => {
       <StyleArticle>
         <h1>프로필수정</h1>
         <img src={ic_user} alt="user profile" className="userProfile" />
-        <InputBoxEdit>
+        <InputBox className="userInfoeditBox">
           <label>
             <LabelTitle>닉네임</LabelTitle>
             <WithOverlapBox>
@@ -193,8 +193,8 @@ const UserInfoEdit = () => {
               {warning.passwordCheck}
             </Warning>
           </label>
-        </InputBoxEdit>
-        <SignupButton onClick={editUserInfo}>프로필수정</SignupButton>
+        </InputBox>
+        <EditProfileButton onClick={editUserInfo}>프로필수정</EditProfileButton>
       </StyleArticle>
     </React.Fragment>
   );
@@ -215,9 +215,12 @@ const StyleArticle = styled.article`
     height: 120px;
     margin: 48px auto 0;
   }
-`;
 
-const InputBoxEdit = styled(InputBox)``;
+  .userInfoeditBox {
+    margin-top: 42px;
+    gap: 20px;
+  }
+`;
 
 const Warning = styled.p`
   ${(props) => (props.useable === "warn" ? "display:block;" : "display:none;")};
@@ -256,10 +259,10 @@ const WithOverlapBox = styled.div`
   }
 `;
 
-const SignupButton = styled.button`
+const EditProfileButton = styled.button`
   width: 100%;
   height: 60px;
-  margin-top: 30px;
+  margin-top: 32px;
   background: #4688ec;
   border-radius: 10px;
   font-weight: bold;
