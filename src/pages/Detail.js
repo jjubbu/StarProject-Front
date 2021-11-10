@@ -136,23 +136,38 @@ const InfoHeader = styled.div`
   justify-content: space-between;
 
   .place {
-    font-size: 15px;
-    background-color: red;
-    width: 30%;
+    font-size: 24px;
+    font-weight: bold;
+    text-align: left;
+    vertical-align: top;
+    width: 138px;
+    height: 30px;
     margin: 30px;
+    background-color: red;
   }
 
   .time {
-    font-size: 15px;
+    font-size: 12px;
     background-color: blue;
-    width: 40%;
+    width: 120px;
+    height: 16px;
+    line-height: 16px;
+    text-align: left;
+    color: #dddddd;
     margin: -45px 0 0 200px;
   }
 
   .starInfo {
-    width: 40%;
-    background-color: orange;
+    position: relative;
+    top: 24px;
+    width: 60%;
     display: flex;
+    margin: auto;
+  }
+  .starInfo > li {
+    flex: 1;
+    height: 88px;
+    background-color: skyblue;
   }
   .starInfo > li > div {
     text-align: center;
