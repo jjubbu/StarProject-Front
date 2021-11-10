@@ -3,6 +3,9 @@ import styled from "styled-components";
 import { Text, Image, Grid } from "../elements";
 
 import ic_map from "../img/map/ic_map.svg";
+import ic_profile from "../img/ic_profile.svg";
+
+import { useEffect, useState } from "react";
 
 const Card = (props) => {
   const [like, setLike] = React.useState(false);
@@ -32,10 +35,12 @@ const Card = (props) => {
             </Text>
           </ContentDiv>
         </TextDiv>
-
-        {/* <BottomDiv> */}
         <DateDiv>{props.modifiedAt} 작성</DateDiv>
-        {/* <LikeDiv>
+        <HorizontalLine />
+        <BottomDiv>
+          <Image shape="circle" src={ic_profile} size="24" />
+          <h3>{props.writer}</h3>
+          {/* <LikeDiv>
             <FontAwesomeIcon
               type="button"
               icon={emptyHeart}
@@ -44,8 +49,7 @@ const Card = (props) => {
             />
             좋아요 {props.like}개
           </LikeDiv> */}
-        {/* </BottomDiv> */}
-        <lineSeperator />
+        </BottomDiv>
       </div>
     </Wrapper>
   );
@@ -73,14 +77,6 @@ const Location = styled.div`
   font-size: 12px;
   display: inline-block;
   margin-left: 5px;
-`;
-
-const NicknameDiv = styled.div`
-  font-size: 12px;
-  display: inline-block;
-  float: right;
-  size: 14px;
-  color: gray;
 `;
 
 const TextDiv = styled.div`
@@ -116,7 +112,7 @@ const ContentDiv = styled.div`
   color: #ffffff;
 `;
 
-const lineSeperator = styled.div`
+const HorizontalLine = styled.div`
   height: 1px;
   background: #666666;
 `;
@@ -148,6 +144,7 @@ const DateDiv = styled.div`
   font-size: 12px;
   margin-left: 20px;
   margin-top: 18px;
+  margin-bottom: 20px;
   line-height: 18px;
   color: #999999;
 `;
@@ -158,6 +155,32 @@ const LikeDiv = styled.div`
   margin-right: 15px;
   font-size: 15px;
 `;
+
+const BottomDiv = styled.div`
+  margin-top: 10px;
+  margin-left: 20px;
+  display: flex;
+  /* img {
+    margin-right: 20px;
+  } */
+  h3 {
+    display: flex;
+    align-items: center;
+    font-size: 18px;
+    margin-left: 8px;
+    font-weight: normal;
+    font-style: normal;
+    color: #cccccc;
+  }
+`;
+
+// const NicknameDiv = styled.div`
+//   font-size: 12px;
+//   display: inline-block;
+//   float: left;
+//   size: 14px;
+//   color: gray;
+// `;
 
 // const InfoDiv = styled.div`
 //   height: 35px;
