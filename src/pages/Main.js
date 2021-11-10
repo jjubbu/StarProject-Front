@@ -12,33 +12,30 @@ const Main = () => {
   const test_card_list = [
     {
       id: 1,
-      writer: "salmon",
       title: "제목",
       address: "대구시",
       img: "https://cdn.pixabay.com/photo/2021/10/19/10/56/cat-6723256_1280.jpg",
-      like: 3,
+      bookmark: 3,
       contents: "본문",
-      modifiedAt: "yyyy-MM-dd HH:mm",
+      starGazing: 10,
     },
     {
       id: 1,
-      writer: "salmon",
       title: "제목",
       address: "대구시",
       img: "https://cdn.pixabay.com/photo/2021/10/19/10/56/cat-6723256_1280.jpg",
-      like: 3,
+      bookmark: 3,
       contents: "본문",
-      modifiedAt: "yyyy-MM-dd HH:mm",
+      starGazing: 10,
     },
     {
       id: 1,
-      writer: "salmon",
       title: "제목",
       address: "대구시",
       img: "https://cdn.pixabay.com/photo/2021/10/19/10/56/cat-6723256_1280.jpg",
-      like: 3,
+      bookmark: 3,
       contents: "본문",
-      modifiedAt: "yyyy-MM-dd HH:mm",
+      starGazing: 10,
     },
   ];
   const [boardList, setBoardList] = React.useState();
@@ -80,20 +77,17 @@ const Main = () => {
                   <div className="contentBox">
                     <CardContent>
                       <h3>{l.title}</h3>
-                      <div>
-                        <p className="addressTitle">주소</p>
-                        <p className="addressInfo">{l.address}</p>
-                      </div>
+                      <p>{l.address}</p>
                     </CardContent>
                     <CardEtcBox>
                       <div className="starGazing">
                         <img src={ic_star} alt="star gazing icon" />{" "}
                         <p>관측지수</p>
-                        <span className="openSans">10</span>
+                        <span className="openSans">{l.starGazing}</span>
                       </div>
                       <div className="bookmark">
                         <img src={ic_bookmark_off} alt="bookmark" />
-                        <p className="openSans">40</p>
+                        <p className="openSans">{l.bookmark}</p>
                       </div>
                     </CardEtcBox>
                   </div>
@@ -210,21 +204,12 @@ const CardContent = styled.section`
     font-size: 18px;
     line-height: 18px;
   }
-  div {
-    display: flex;
-    gap: 28px;
-    margin-top: 10px;
-  }
+
   p {
     font-size: 16px;
     line-height: 18px;
     color: #cccccc;
-  }
-  .addressTitle {
-    font-weight: bold;
-  }
-  .addressInfo {
-    font-weight: normal;
+    margin-top: 10px;
   }
 `;
 
