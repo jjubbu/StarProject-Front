@@ -105,7 +105,7 @@ const UserInfoEdit = () => {
     }
     console.log("userInfo server go!");
     apis
-      .signupAX(userInfo)
+      .putUserInfoAX(userInfo)
       .then((response) => {
         if (response.status === 200) {
           history.push("/login");
