@@ -275,7 +275,7 @@ const Detail = () => {
                     history.push("/card/write");
                   }}
                 >
-                  수정
+                  수정test
                 </button>
               </div>
             </ResultBody>
