@@ -77,7 +77,7 @@ const Main = () => {
                   <div className="contentBox">
                     <CardContent>
                       <h3>{l.title}</h3>
-                      <p>{l.address}</p>
+                      <p>{l.contents}</p>
                     </CardContent>
                     <CardEtcBox>
                       <div className="starGazing">
