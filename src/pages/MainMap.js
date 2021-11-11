@@ -1,5 +1,5 @@
 import React from "react";
-import styled, { keyframes } from "styled-components";
+import styled from "styled-components";
 import { CustomOverlayMap, Map, MapMarker } from "react-kakao-maps-sdk";
 
 import ic_location_off from "../img/map/ic_location_off.svg";
@@ -9,15 +9,15 @@ import ic_map_b from "../img/map/ic_map_b.svg";
 import ic_option from "../img/option.svg";
 import ic_search from "../img/map/ic_search.svg";
 import ic_star from "../img/ic_star.svg";
+import ic_loading from "../img/loading.gif";
+
 import { apis } from "../lib/axios";
 
 import { history } from "../redux/configureStore";
-import axios from "axios";
 
 const MainMap = () => {
   const [is_search, setSearch] = React.useState(false);
   const [is_loading, setLoading] = React.useState();
-  const testArray = [1, 2, 3, 4, 5];
   const testSearchArray = [1, 2, 3, 4, 5];
   const [mapLocation, setMapLocation] = React.useState({
     lat: 37.3645764,
@@ -155,7 +155,11 @@ const MainMap = () => {
             </ResultListBox>
           </ResultBox>
           <MapBox>
-            {is_loading ? <span className="loading">로딩중</span> : null}
+            {is_loading ? (
+              <div className="loading">
+                <img src={ic_loading} alt="loading" />
+              </div>
+            ) : null}
 
             <SearchBox is_search={is_search}>
               <div>
@@ -259,11 +263,6 @@ const StyledMap = styled.main`
   }
 `;
 
-const loadingAni = keyframes`
-0%{transform:rotate(0)}
-100%{transform:rotate(360deg)}
-`;
-
 const MapBox = styled.section`
   position: relative;
   width: 66%;
@@ -281,14 +280,9 @@ const MapBox = styled.section`
     justify-content: center;
     align-items: center;
     background-color: rgba(0, 0, 0, 0.5);
-
-    &::after {
-      content: "";
-      display: block;
-      width: 100px;
-      height: 100px;
-      border: 5px solid white;
-      animation: ${loadingAni} 3s infinite linear;
+    img {
+      width: 200px;
+      height: 200px;
     }
   }
 `;
