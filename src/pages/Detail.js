@@ -621,7 +621,7 @@ const ResultBody = styled.ul`
 
   .buttons {
     width: 300px;
-    margin: 98px 0 0 200px;
+    margin: 98px 0 0 300px;
 
     button {
       width: 72px;
