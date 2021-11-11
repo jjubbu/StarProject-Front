@@ -7,10 +7,11 @@ import Main from "../pages/Main";
 import MainStar from "../pages/MainStar";
 import MainMap from "../pages/MainMap";
 import MainCommunity from "../pages/MainCommunity";
-import MainMapDetail from "../pages/MainMapDetail";
-import MainCommunityDetail from "../pages/MainCommunityDetail";
+import Detail from "../pages/Detail";
 import Login from "../pages/Login";
 import Signup from "../pages/Signup";
+// import Write from "../pages/Write";
+import UserInfoEdit from "../pages/UserInfoEdit";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import "./font.css";
@@ -26,10 +27,11 @@ function App() {
         <Route path="/star" exact component={MainStar} />
         <Route path="/map" exact component={MainMap} />
         <Route path="/community" exact component={MainCommunity} />
+        {/* <Route path="/community" exact component={Write} /> */}
         <Route path="/login" exact component={Login} />
         <Route path="/signup" exact component={Signup} />
-        <Route path="/map/detail" exact component={MainMapDetail} />
-        <Route path="/community/detail" exact component={MainCommunityDetail} />
+        <Route path="/detail/:id" exact component={Detail} />
+        <Route path="/user/edit" exact component={UserInfoEdit} />
         <Footer />
       </StyledViewContainer>
     </ConnectedRouter>

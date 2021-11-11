@@ -1,19 +1,12 @@
 import React from "react";
 import styled from "styled-components";
 import { Text, Image, Grid } from "../elements";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faMapMarkerAlt,
-  faHeart as fullHeart,
-} from "@fortawesome/free-solid-svg-icons";
-import { faHeart as emptyHeart } from "@fortawesome/free-regular-svg-icons";
 
+import ic_map from "../img/map/ic_map.svg";
 import ic_profile from "../img/ic_profile.svg";
 
-import { useEffect, useState } from "react";
-
 const Card = (props) => {
-  const [like, setLike] = useState(false);
+  const [like, setLike] = React.useState(false);
   const toggleLike = () => setLike(!like);
 
   return (
@@ -26,12 +19,8 @@ const Card = (props) => {
           oject-fit={"cover"}
         />
         <InfoDiv>
-          <FontAwesomeIcon
-            icon={faMapMarkerAlt}
-            display="inline-block"
-            size="1x"
-          />
-          <Location>{props.주소}</Location>
+          <img src={ic_map} alt="address icon" />
+          <Location>{props.address}</Location>
         </InfoDiv>
       </div>
 
@@ -137,12 +126,10 @@ const Wrapper = styled.div`
   margin-right: 20px;
   border-radius: 10px;
   background-color: #303136;
-
   & > div:first-child {
     height: fit-content;
     position: relative;
   }
-
   :hover {
     cursor: pointer;
     transform: translateY(-12px);

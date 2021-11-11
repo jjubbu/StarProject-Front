@@ -1,24 +1,23 @@
 import React from "react";
-import axios from "axios";
 import styled from "styled-components";
-import dfs_xy_conv from "../transitionXY";
 import { apis } from "../lib/axios";
 
-import Header from "../components/Header";
-
-import ic_sunny from "../img/main-star/weather/ic_sunny.svg";
-import ic_finedust1 from "../img/main-star/weather/ic_finedust_1.svg";
-import ic_umbrella from "../img/main-star/weather/ic_umbrella.svg";
-import ic_humidity from "../img/main-star/weather/ic_humidity.svg";
-import ic_moonrise from "../img/main-star/moon/ic_moonrise.svg";
-import ic_moonset from "../img/main-star/moon/ic_moonset.svg";
-import ic_star from "../img/main-star/ic_star.svg";
-import ic_map from "../img/main-star/ic_map.svg";
-import ic_location_off from "../img/main-star/ic_location_off.svg";
-import ic_location_on from "../img/main-star/ic_location_on.svg";
+import ic_sunny from "../img/weather/ic_sunny.svg";
+import ic_finedust1 from "../img/weather/ic_finedust_1.svg";
+import ic_finedust2 from "../img/weather/ic_finedust_2.svg";
+import ic_finedust3 from "../img/weather/ic_finedust_3.svg";
+import ic_finedust4 from "../img/weather/ic_finedust_4.svg";
+import ic_umbrella from "../img/weather/ic_umbrella.svg";
+import ic_humidity from "../img/weather/ic_humidity.svg";
+import ic_moonrise from "../img/moon/ic_moonrise.svg";
+import ic_moonset from "../img/moon/ic_moonset.svg";
+import ic_star from "../img/ic_star.svg";
+import ic_map from "../img/map/ic_map.svg";
+import ic_location_off from "../img/map/ic_location_off.svg";
+import ic_location_on from "../img/map/ic_location_on.svg";
 
 //임시 이미지
-import image_sample from "../img/main-star/Rectangle 16.png";
+import image_sample from "../img/Rectangle 16.png";
 
 const MainStar = () => {
   const [text, setText] = React.useState("지금 내 위치!");
@@ -46,6 +45,7 @@ const MainStar = () => {
       Temperature: 0,
     },
   ]);
+  const [hotTime, setHotTime] = React.useState();
 
   const image =
     "https://cdn.pixabay.com/photo/2011/12/14/12/21/orion-nebula-11107_1280.jpg";
@@ -99,7 +99,8 @@ const MainStar = () => {
     }
     apis.getStarHotAX().then((response) => {
       console.log("star hot:::", response);
-      setHot(response.data.data);
+      setHot(response.data.data.starList);
+      setHotTime(response.data.data.currentTime);
     });
   }, []);
 
@@ -176,7 +177,18 @@ const MainStar = () => {
               <WeatherETC>
                 <section>
                   <h3>미세먼지</h3>
-                  <img src={ic_finedust1} alt="finedust icon" />
+                  <img
+                    src={
+                      data.dust <= 30
+                        ? ic_finedust1
+                        : (data.dust > 30 && data.dust) <= 80
+                        ? ic_finedust2
+                        : (data.dust > 80 && data.dust) <= 150
+                        ? ic_finedust3
+                        : ic_finedust4
+                    }
+                    alt="finedust icon"
+                  />
                   <p className="openSans">{data.dust}</p>
                 </section>
                 <section>
@@ -254,7 +266,7 @@ const MainStar = () => {
             <RecommendBox className="contentsBox">
               <div>
                 <h3>실시간 별보기 좋은 지역</h3>
-                <p className="openSans">2021.11.1 20:00 기준</p>
+                <p className="openSans">{hotTime} 기준</p>
               </div>
               <span className="line" />
               <ul>

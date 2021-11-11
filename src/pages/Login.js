@@ -3,6 +3,8 @@ import { apis } from "../lib/axios";
 import styled from "styled-components";
 import { Cookies } from "react-cookie";
 
+import { CommonInput, InputBox } from "../elements";
+
 import { history } from "../redux/configureStore";
 import { useDispatch } from "react-redux";
 import { isLogin } from "../redux/modules/user";
@@ -31,7 +33,6 @@ const Login = () => {
   };
 
   const login = () => {
-    console.log(loginInfo);
     if (loginInfo.password === "" || loginInfo.username === "") {
       alert("값을 입력해주세요!");
       return;
@@ -57,8 +58,9 @@ const Login = () => {
     const userIdCookie = cookie.get("starCampID");
     if (userIdCookie !== "") {
       setLoginInfo((prevState) => ({ ...prevState, username: userIdCookie }));
-
       setIsSave(true);
+    } else {
+      setIsSave(false);
     }
   }, []);
 
@@ -69,7 +71,7 @@ const Login = () => {
           <h3>로그인</h3>
           <InputBox>
             <label>
-              <input
+              <CommonInput
                 name="username"
                 onChange={inputValue}
                 placeholder="아이디"
@@ -77,16 +79,16 @@ const Login = () => {
               />
             </label>
             <label>
-              <input
+              <CommonInput
                 name="password"
                 onChange={inputValue}
                 placeholder="비밀번호"
               />
             </label>
-            <label className="checkboxBox">
-              <input type="checkbox" onClick={saveID} checked={is_save} />
+            <CheckBox>
+              <input type="checkbox" onChange={saveID} checked={is_save} />
               <p>아이디 저장</p>
-            </label>
+            </CheckBox>
           </InputBox>
           <LoginButton onClick={login}>로그인</LoginButton>
           <EtcButtonBox>
@@ -118,36 +120,11 @@ const StyleArticle = styled.article`
   }
 `;
 
-const InputBox = styled.div`
-  display: block;
-  width: 100%;
+const CheckBox = styled.label`
   display: flex;
-  flex-direction: column;
-  gap: 16px;
-  margin-top: 48px;
+  gap: 6px;
+  align-items: center;
   input {
-    width: 100%;
-    height: 60px;
-    background: #303136;
-    border-radius: 10px;
-    border: none;
-    padding: 0 24px;
-    font-size: 16px;
-    line-height: 20px;
-    color: #cccccc;
-
-    &::placeholder {
-      font-size: 16px;
-      line-height: 20px;
-      color: #cccccc;
-    }
-  }
-  .checkboxBox {
-    display: flex;
-    gap: 6px;
-    align-items: center;
-  }
-  .checkboxBox input {
     width: 18px;
     height: 18px;
     background: #18191e;
@@ -155,7 +132,7 @@ const InputBox = styled.div`
     box-sizing: border-box;
     border-radius: 4px;
   }
-  .checkboxBox p {
+  p {
     font-weight: normal;
     font-size: 14px;
     line-height: 18px;

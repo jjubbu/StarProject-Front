@@ -1,5 +1,5 @@
 @import url("//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSansNeo.css");
-@import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&family=Roboto&display=swap");
 
 * {
   font-family: "Spoqa Han Sans Neo", "sans-serif";
@@ -7,5 +7,10 @@
 
 .openSans {
   font-family: "Open Sans", sans-serif;
+  font-weight: normal;
+}
+
+.roboto {
+  font-family: "Roboto", sans-serif;
   font-weight: normal;
 }

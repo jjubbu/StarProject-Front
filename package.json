@@ -3,10 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@fortawesome/fontawesome-svg-core": "^1.2.36",
     "@fortawesome/free-regular-svg-icons": "^5.15.4",
-    "@fortawesome/free-solid-svg-icons": "^5.15.4",
-    "@fortawesome/react-fontawesome": "^0.1.16",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
@@ -15,6 +12,7 @@
     "history": "4.10.1",
     "http-proxy-middleware": "^2.0.1",
     "immer": "^9.0.6",
+    "lodash": "^4.17.21",
     "react": "^17.0.2",
     "react-bootstrap": "^2.0.0",
     "react-cookie": "^4.1.1",
