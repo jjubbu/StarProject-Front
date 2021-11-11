@@ -2,8 +2,8 @@ import React from "react";
 import styled from "styled-components";
 
 const InputBox = (props) => {
-  const { children } = props;
-  return <StyledDiv>{children}</StyledDiv>;
+  const { children, className } = props;
+  return <StyledDiv className={className}>{children}</StyledDiv>;
 };
 
 InputBox.defaultProps = {};

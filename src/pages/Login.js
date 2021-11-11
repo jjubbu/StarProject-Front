@@ -7,7 +7,7 @@ import { CommonInput, InputBox } from "../elements";
 
 import { history } from "../redux/configureStore";
 import { useDispatch } from "react-redux";
-import { isLogin } from "../redux/modules/user";
+import { actionCreators as loginAction } from "../redux/modules/login";
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -47,7 +47,7 @@ const Login = () => {
         } else {
           cookie.remove("starCampID");
         }
-        dispatch(isLogin(true));
+        dispatch(loginAction.isLogin(true));
         alert("로그인 성공!");
         history.push("/");
       }

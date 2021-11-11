@@ -15,6 +15,7 @@ const Main = () => {
       title: "제목",
       address: "대구시",
       img: "https://cdn.pixabay.com/photo/2021/10/19/10/56/cat-6723256_1280.jpg",
+      bookmark: 3,
       contents: "본문",
       starGazing: 10,
     },
@@ -23,6 +24,7 @@ const Main = () => {
       title: "제목",
       address: "대구시",
       img: "https://cdn.pixabay.com/photo/2021/10/19/10/56/cat-6723256_1280.jpg",
+      bookmark: 3,
       contents: "본문",
       starGazing: 10,
     },
@@ -31,6 +33,7 @@ const Main = () => {
       title: "제목",
       address: "대구시",
       img: "https://cdn.pixabay.com/photo/2021/10/19/10/56/cat-6723256_1280.jpg",
+      bookmark: 3,
       contents: "본문",
       starGazing: 10,
     },
@@ -74,9 +77,7 @@ const Main = () => {
                   <div className="contentBox">
                     <CardContent>
                       <h3>{l.title}</h3>
-                      <div>
-                        <p className="addressInfo">{l.contents}</p>
-                      </div>
+                      <p>{l.contents}</p>
                     </CardContent>
                     <CardEtcBox>
                       <div className="starGazing">
@@ -86,7 +87,7 @@ const Main = () => {
                       </div>
                       <div className="bookmark">
                         <img src={ic_bookmark_off} alt="bookmark" />
-                        <p className="openSans">40</p>
+                        <p className="openSans">{l.bookmark}</p>
                       </div>
                     </CardEtcBox>
                   </div>
@@ -203,15 +204,12 @@ const CardContent = styled.section`
     font-size: 18px;
     line-height: 18px;
   }
-  div {
-    display: flex;
-    gap: 28px;
-    margin-top: 10px;
-  }
+
   p {
     font-size: 16px;
     line-height: 18px;
     color: #cccccc;
+    margin-top: 10px;
   }
 `;
 

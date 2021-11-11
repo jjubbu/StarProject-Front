@@ -2,18 +2,18 @@ import produce from "immer";
 import { createAction, handleActions } from "redux-actions";
 
 const initialState = {
-  is_login: false,
+  textLogo: true,
 };
 
-const IS_LOGIN = "IS_LOGIN";
+const TEXT_LOGO = "TEXT_LOGO";
 
-export const isLogin = createAction(IS_LOGIN, (boolean) => ({ boolean }));
+export const textLogo = createAction(TEXT_LOGO, (boolean) => ({ boolean }));
 
 export default handleActions(
   {
-    [IS_LOGIN]: (state, action) =>
+    [TEXT_LOGO]: (state, action) =>
       produce(state, (draft) => {
-        draft.is_login = action.payload.boolean;
+        draft.textLogo = action.payload.boolean;
       }),
   },
   initialState
