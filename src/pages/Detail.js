@@ -1,11 +1,7 @@
 import React from "react";
 import styled from "styled-components";
-import Header from "../components/Header";
 import { Map, MapMarker } from "react-kakao-maps-sdk";
-// https://github.com/JaeSeoKim/react-kakao-maps-sdk
-import ic_star from "../img/ic_star.svg";
 import ic_sunny from "../img/ic_sunny.svg";
-import ic_moonrise from "../img/ic_moonrise.svg";
 import { history } from "../redux/configureStore";
 import { FaRegHeart } from "react-icons/fa";
 import { FaRegBookmark } from "react-icons/fa";
@@ -581,14 +577,13 @@ const ResultHeader = styled.div`
       margin-left: 28px;
     }
   }
-    .headerLine2 {
+  .headerLine2 {
     width: 99.9%;
     border-style: solid;
     border-width: 0.5px;
     margin-top: 26px;
     margin-left: -2.5px;
     color: #666666;
-    }
   }
 `;
 

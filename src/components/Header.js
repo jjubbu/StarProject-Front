@@ -2,63 +2,49 @@ import React from "react";
 import styled from "styled-components";
 
 import { history } from "../redux/configureStore";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { textLogo } from "../redux/modules/header";
 
+import ic_logo from "../img/ic_logo.svg";
 import ic_user from "../img/header/ic_mypage.svg";
 
 const Header = () => {
   const is_login = useSelector((state) => state.login.is_login);
+  const is_textLogo = useSelector((state) => state.header.textLogo);
+  const dispatch = useDispatch();
+  const navClick = (e) => {
+    const name = e.target.getAttribute("name");
+    dispatch(textLogo(name === "" || name === "login" ? true : false));
+    history.push(`/${name}`);
+  };
 
   return (
     <React.Fragment>
       <StyledHeader>
         <div>
-          <StyledLogo
-            onClick={() => {
-              history.push("/");
-            }}
-          >
-            별보러가지않을래?
+          <StyledLogo name="" onClick={navClick}>
+            <img src={ic_logo} alt="logo" name="" />
+            {is_textLogo ? <h3 name="">별보러가지않을래?</h3> : null}
           </StyledLogo>
-          <StyledNav>
-            <p
-              onClick={() => {
-                history.push("/star");
-              }}
-            >
+          <StyledNav textlogo={textLogo}>
+            <p name="star" onClick={navClick}>
               별자리
             </p>
-            <p
-              onClick={() => {
-                history.push("/map");
-              }}
-            >
+            <p name="map" onClick={navClick}>
               지도
             </p>
-            <p
-              onClick={() => {
-                history.push("/community");
-              }}
-            >
+            <p name="community" onClick={navClick}>
               커뮤니티
             </p>
           </StyledNav>
         </div>
         <StyledUser>
           {!is_login ? (
-            <p
-              onClick={() => {
-                history.push("/login");
-              }}
-            >
+            <p name="login" onClick={navClick}>
               로그인/회원가입
             </p>
           ) : (
-            <p
-              onClick={() => {
-                history.push("/logout");
-              }}
-            >
+            <p name="" onClick={navClick}>
               로그아웃
             </p>
           )}
@@ -83,16 +69,25 @@ const StyledHeader = styled.header`
   }
 `;
 
-const StyledLogo = styled.h3`
-  font-size: 24px;
+const StyledLogo = styled.div`
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 48px;
+  h3 {
+    font-size: 24px;
+  }
+  img {
+    width: 40px;
+    height: 40px;
+  }
 `;
 
 const StyledNav = styled.nav`
   display: flex;
   align-self: center;
   gap: 84px;
-  margin-left: 108px;
+  margin-left: ${(props) => (props.textLogo ? "108px" : "51px")};
   p {
     font-size: 16px;
     cursor: pointer;
