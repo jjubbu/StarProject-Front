@@ -18,7 +18,7 @@ const MainCommunity = (props) => {
       id: 1,
       writer: "salmon",
       title: "제목",
-      address: "대구시",
+      주소: "대구시",
       img: "https://cdn.pixabay.com/photo/2021/10/19/10/56/cat-6723256_1280.jpg",
       like: 3,
       contents: "본문",

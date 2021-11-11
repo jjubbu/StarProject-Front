@@ -5,8 +5,6 @@ import { Text, Image, Grid } from "../elements";
 import ic_map from "../img/map/ic_map.svg";
 import ic_profile from "../img/ic_profile.svg";
 
-import { useEffect, useState } from "react";
-
 const Card = (props) => {
   const [like, setLike] = React.useState(false);
   const toggleLike = () => setLike(!like);
@@ -22,7 +20,7 @@ const Card = (props) => {
         />
         <InfoDiv>
           <img src={ic_map} alt="address icon" />
-          <Location>{props.주소}</Location>
+          <Location>{props.address}</Location>
         </InfoDiv>
       </div>
 
