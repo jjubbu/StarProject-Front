@@ -609,14 +609,14 @@ const ResultBody = styled.ul`
     width: 99.9%;
     border-style: solid;
     border-width: 0.5px;
-    margin: 60px 0 0 -2.5px;
+    margin: 140px 0 0 -2.5px;
 
     color: #666666;
   }
 
   .buttons {
     width: 300px;
-    margin: 98px 0 0 300px;
+    margin: 19px 0 0 660px;
 
     button {
       width: 72px;
