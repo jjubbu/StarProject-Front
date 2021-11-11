@@ -11,36 +11,11 @@ const initialState = {
 };
 
 const IS_LOGIN = "IS_LOGIN";
-const CHECK_LOGIN = "CHECK_LOGIN";
 
-const checkLogin = createAction(CHECK_LOGIN, (boolean) => ({ boolean }));
-const isLogin = createAction(IS_LOGIN, (boolean) => ({ boolean }));
-
-const checkLoginMW = () => {
-  return function (dispatch, getState, { history }) {
-    const cookies = new Cookies();
-    const token = cookies.get("token");
-
-    if (token !== undefined) {
-      apis.loginCheckAX().then((response) => {
-        if (response.data === "success") {
-          dispatch(checkLogin(true));
-        } else {
-          dispatch(checkLogin(false));
-        }
-      });
-    } else {
-      dispatch(checkLogin(false));
-    }
-  };
-};
+export const isLogin = createAction(IS_LOGIN, (boolean) => ({ boolean }));
 
 export default handleActions(
   {
-    [CHECK_LOGIN]: (state, action) =>
-      produce(state, (draft) => {
-        draft.is_login = action.payload.boolean;
-      }),
     [IS_LOGIN]: (state, action) =>
       produce(state, (draft) => {
         draft.is_login = action.payload.boolean;
@@ -48,9 +23,3 @@ export default handleActions(
   },
   initialState
 );
-
-export const actionCreators = {
-  checkLogin,
-  checkLoginMW,
-  isLogin,
-};

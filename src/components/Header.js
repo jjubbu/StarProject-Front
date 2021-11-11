@@ -1,9 +1,11 @@
 import React from "react";
 import styled from "styled-components";
+import { Cookies } from "react-cookie";
 
 import { history } from "../redux/configureStore";
 import { useSelector, useDispatch } from "react-redux";
 import { textLogo } from "../redux/modules/header";
+import { isLogin } from "../redux/modules/login";
 
 import ic_logo from "../img/ic_logo.svg";
 import ic_user from "../img/header/ic_mypage.svg";
@@ -12,10 +14,16 @@ const Header = () => {
   const is_login = useSelector((state) => state.login.is_login);
   const is_textLogo = useSelector((state) => state.header.textLogo);
   const dispatch = useDispatch();
+  const cookie = new Cookies();
   const navClick = (e) => {
     const name = e.target.getAttribute("name");
     dispatch(textLogo(name === "" || name === "login" ? true : false));
     history.push(`/${name}`);
+  };
+  const logout = () => {
+    cookie.remove("token");
+    dispatch(isLogin(false));
+    history.push("/");
   };
 
   return (
@@ -44,9 +52,14 @@ const Header = () => {
               로그인/회원가입
             </p>
           ) : (
-            <p name="" onClick={navClick}>
-              로그아웃
-            </p>
+            <React.Fragment>
+              <p name="mypage" onClick={navClick}>
+                마이페이지
+              </p>
+              <p name="" onClick={logout}>
+                로그아웃
+              </p>{" "}
+            </React.Fragment>
           )}
           <div className="userIcon">
             <img src={ic_user} alt="user" />
