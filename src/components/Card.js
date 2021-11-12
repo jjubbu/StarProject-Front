@@ -67,40 +67,6 @@ const Card = (props) => {
 
 Card.defaultProps = {};
 
-const CardEtcBox = styled.div`
-  padding: 19px 20px 17px;
-  display: flex;
-  justify-content: space-between;
-  border-top: 1px solid #666666;
-  .starGazing {
-    display: flex;
-    align-items: center;
-
-    p {
-      margin: 0 4px 0 8px;
-      font-size: 16px;
-      line-height: 20px;
-    }
-    span {
-      font-weight: bold;
-      font-size: 18px;
-      line-height: 25px;
-    }
-  }
-  .bookmark {
-    display: flex;
-    align-items: center;
-    img {
-      margin-right: 4px;
-    }
-    p {
-      font-weight: normal;
-      font-size: 14px;
-      line-height: 18px;
-    }
-  }
-`;
-
 const BottomDiv = styled.div`
   padding: 18px 20px 18px 20px;
   display: flex;
