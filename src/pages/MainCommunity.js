@@ -18,9 +18,10 @@ const MainCommunity = (props) => {
       id: 1,
       writer: "salmon",
       title: "제목",
-      주소: "대구시",
+      address: "서울시 강남구 역삼동",
       img: "https://cdn.pixabay.com/photo/2021/10/19/10/56/cat-6723256_1280.jpg",
-      like: 3,
+      like: 120,
+      bookmark: 40,
       contents: "본문",
       modifiedAt: "yyyy-MM-dd HH:mm",
     },
@@ -30,7 +31,8 @@ const MainCommunity = (props) => {
       title: "제목",
       address: "대구시",
       img: "https://cdn.pixabay.com/photo/2021/10/19/10/56/cat-6723256_1280.jpg",
-      like: 3,
+      like: 130,
+      bookmark: 42,
       contents: "본문",
       modifiedAt: "yyyy-MM-dd HH:mm",
     },
@@ -40,7 +42,8 @@ const MainCommunity = (props) => {
       title: "제목",
       address: "대구시",
       img: "https://cdn.pixabay.com/photo/2021/10/19/10/56/cat-6723256_1280.jpg",
-      like: 3,
+      like: 100,
+      bookmark: 45,
       contents: "본문",
       modifiedAt: "yyyy-MM-dd HH:mm",
     },
@@ -50,7 +53,8 @@ const MainCommunity = (props) => {
       title: "제목",
       address: "대구시",
       img: "https://cdn.pixabay.com/photo/2021/10/19/10/56/cat-6723256_1280.jpg",
-      like: 3,
+      like: 110,
+      bookmark: 50,
       contents: "본문",
       modifiedAt: "yyyy-MM-dd HH:mm",
     },
@@ -60,7 +64,44 @@ const MainCommunity = (props) => {
       title: "제목",
       address: "대구시",
       img: "https://cdn.pixabay.com/photo/2021/10/19/10/56/cat-6723256_1280.jpg",
+      like: 110,
+      bookmark: 20,
+      contents: "본문",
+      modifiedAt: "yyyy-MM-dd HH:mm",
+    },
+
+    {
+      id: 1,
+      writer: "salmon",
+      title: "제목",
+      address: "대구시",
+      img: "https://cdn.pixabay.com/photo/2021/10/19/10/56/cat-6723256_1280.jpg",
+      like: 120,
+      bookmark: 50,
+      contents: "본문",
+      modifiedAt: "yyyy-MM-dd HH:mm",
+    },
+
+    {
+      id: 1,
+      writer: "salmon",
+      title: "제목",
+      address: "대구시",
+      img: "https://cdn.pixabay.com/photo/2021/10/19/10/56/cat-6723256_1280.jpg",
+      like: 99,
+      bookmark: 30,
+      contents: "본문",
+      modifiedAt: "yyyy-MM-dd HH:mm",
+    },
+
+    {
+      id: 1,
+      writer: "salmon",
+      title: "제목",
+      address: "대구시",
+      img: "https://cdn.pixabay.com/photo/2021/10/19/10/56/cat-6723256_1280.jpg",
       like: 3,
+      bookmark: 98,
       contents: "본문",
       modifiedAt: "yyyy-MM-dd HH:mm",
     },
@@ -72,24 +113,31 @@ const MainCommunity = (props) => {
 
   return (
     <React.Fragment>
-      <Wrapper>
-        {test_card_list.map((p, i) => {
-          return <Card key={p.id} {...p} />;
-        })}
-      </Wrapper>
+      <div className="CommonPageStyle">
+        <Wrapper>
+          {test_card_list.map((p, i) => {
+            return <Card key={p.id} {...p} />;
+          })}
+        </Wrapper>
+      </div>
     </React.Fragment>
   );
 };
 
-const Wrapper = styled.div`
-  width: 100%;
+const Wrapper = styled.main`
+  gap: 24px;
   display: flex;
-  box-sizing: border-box;
+  /* box-sizing: border-box; */
   flex-wrap: wrap;
   justify-content: center;
-  margin: auto;
-  overflow: scroll;
+  /* margin: auto; */
+  overflow-y: scroll;
+
+  ::-webkit-scrollbar {
+    display: none;
+  }
 `;
+
 const Container = styled.div`
   /* background-color : gray; */
   justify-content: center;
