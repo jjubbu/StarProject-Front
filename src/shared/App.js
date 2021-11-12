@@ -12,6 +12,7 @@ import Detail from "../pages/Detail";
 import Login from "../pages/Login";
 import Signup from "../pages/Signup";
 // import Write from "../pages/Write";
+import AddEditPost from "../pages/AddEditPost";
 import UserInfoEdit from "../pages/UserInfoEdit";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
@@ -40,6 +41,8 @@ function App() {
         <Route path="/star" exact component={MainStar} />
         <Route path="/map" exact component={MainMap} />
         <Route path="/community" exact component={MainCommunity} />
+        <Route path="/post/add" exact component={AddEditPost} />
+        <Route path="/post/edit/:id" exact component={AddEditPost} />
         {/* <Route path="/community" exact component={Write} /> */}
         <Route path="/login" exact component={Login} />
         <Route path="/signup" exact component={Signup} />

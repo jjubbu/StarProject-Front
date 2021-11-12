@@ -2,7 +2,8 @@ import React from "react";
 import styled from "styled-components";
 
 const CommonInput = (props) => {
-  const { onChange, name, placeholder, value, border } = props;
+  const { onChange, name, placeholder, value, border, background, type } =
+    props;
   return (
     <StyledInput
       onChange={onChange}
@@ -10,18 +11,22 @@ const CommonInput = (props) => {
       placeholder={placeholder}
       value={value}
       border={border}
+      background={background}
+      type={type}
     />
   );
 };
 
 CommonInput.defaultProps = {
   border: "none",
+  background: "#303136",
+  type: "text",
 };
 
-const StyledInput = styled.input`
+export const StyledInput = styled.input`
   width: 100%;
   height: 60px;
-  background: #303136;
+  background: ${(props) => props.background};
   border-radius: 10px;
   border: none;
   padding: 0 24px;
