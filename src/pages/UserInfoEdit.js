@@ -3,8 +3,11 @@ import styled from "styled-components";
 import { InputBox, CommonInput } from "../elements";
 import _ from "lodash";
 import { apis } from "../lib/axios";
-import { history } from "../redux/configureStore";
 import ic_user from "../img/header/ic_mypage.svg";
+
+import { history } from "../redux/configureStore";
+import { useDispatch } from "react-redux";
+import { textLogo } from "../redux/modules/header";
 
 const UserInfoEdit = () => {
   const [userInfo, setUserInfo] = React.useState({
@@ -24,6 +27,8 @@ const UserInfoEdit = () => {
     passwordCheck: "none",
     nickname: "none",
   });
+
+  const dispatch = useDispatch();
 
   const pwCheck =
     /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,}$/;
@@ -150,6 +155,10 @@ const UserInfoEdit = () => {
         .catch((err) => console.log(err));
     }
   };
+
+  React.useEffect(() => {
+    dispatch(textLogo(true));
+  }, []);
   return (
     <React.Fragment>
       <StyleArticle>

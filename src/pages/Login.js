@@ -8,6 +8,7 @@ import { CommonInput, InputBox } from "../elements";
 import { history } from "../redux/configureStore";
 import { useDispatch } from "react-redux";
 import { isLogin } from "../redux/modules/login";
+import { textLogo } from "../redux/modules/header";
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -55,6 +56,8 @@ const Login = () => {
   };
 
   React.useEffect(() => {
+    dispatch(textLogo(true));
+
     const userIdCookie = cookie.get("starCampID");
     if (userIdCookie !== "") {
       setLoginInfo((prevState) => ({ ...prevState, username: userIdCookie }));

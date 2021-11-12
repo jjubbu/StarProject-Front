@@ -17,7 +17,6 @@ const Header = () => {
   const cookie = new Cookies();
   const navClick = (e) => {
     const name = e.target.getAttribute("name");
-    dispatch(textLogo(name === "" || name === "login" ? true : false));
     history.push(`/${name}`);
   };
   const logout = () => {

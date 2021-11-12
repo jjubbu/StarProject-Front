@@ -14,6 +14,8 @@ import ic_loading from "../img/loading.gif";
 import { apis } from "../lib/axios";
 
 import { history } from "../redux/configureStore";
+import { useDispatch } from "react-redux";
+import { textLogo } from "../redux/modules/header";
 
 const MainMap = () => {
   const [is_search, setSearch] = React.useState(false);
@@ -24,7 +26,7 @@ const MainMap = () => {
     lon: 127.834038,
   });
   const [resultList, setResultList] = React.useState([{}]);
-
+  const dispatch = useDispatch();
   const options = {
     enableHighAccuracy: true,
     timeout: 5000,
@@ -85,6 +87,8 @@ const MainMap = () => {
   };
 
   React.useEffect(() => {
+    dispatch(textLogo(false));
+
     setLoading(true);
     apis
       .getMapListAX()

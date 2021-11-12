@@ -8,6 +8,7 @@ import { useState } from "react";
 // redux
 import card, { actionCreators as postActions } from "../redux/modules/card";
 import { useSelector, useDispatch } from "react-redux";
+import { textLogo } from "../redux/modules/header";
 
 const MainCommunity = (props) => {
   // const card_list = useSelector((state) => state.card.list);
@@ -68,6 +69,7 @@ const MainCommunity = (props) => {
 
   React.useEffect(() => {
     // dispatch(postActions.getCardDB());
+    dispatch(textLogo(false));
   }, []);
 
   return (

@@ -8,6 +8,9 @@ import ic_star from "../img/ic_star.svg";
 import ic_bookmark_off from "../img/ic_bookmark_off.svg";
 import { apis } from "../lib/axios";
 
+import { useDispatch } from "react-redux";
+import { textLogo } from "../redux/modules/header";
+
 const Main = () => {
   const test_card_list = [
     {
@@ -39,8 +42,9 @@ const Main = () => {
     },
   ];
   const [boardList, setBoardList] = React.useState();
-
+  const dispatch = useDispatch();
   React.useEffect(() => {
+    dispatch(textLogo(true));
     apis
       .getMainBoardAX()
       .then((response) => {

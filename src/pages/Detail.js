@@ -7,9 +7,14 @@ import { FaRegHeart } from "react-icons/fa";
 import { FaRegBookmark } from "react-icons/fa";
 import { FaRegGrin } from "react-icons/fa";
 
+import { useDispatch } from "react-redux";
+import { textLogo } from "../redux/modules/header";
+
 const Detail = () => {
+  const dispatch = useDispatch();
   React.useEffect(() => {
     console.log(window.location.pathname);
+    dispatch(textLogo(false));
   }, []);
 
   const Delete = () => {};

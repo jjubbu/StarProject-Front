@@ -6,6 +6,8 @@ import _ from "lodash";
 import { CommonInput, InputBox } from "../elements";
 
 import { history } from "../redux/configureStore";
+import { useDispatch } from "react-redux";
+import { textLogo } from "../redux/modules/header";
 
 const Signup = () => {
   const [signupInfo, setSignupInfo] = React.useState({
@@ -28,6 +30,8 @@ const Signup = () => {
     passwordCheck: "none",
     nickname: "none",
   });
+
+  const dispatch = useDispatch();
 
   const pwCheck =
     /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,}$/;
@@ -168,6 +172,10 @@ const Signup = () => {
         .catch((err) => console.log(err));
     }
   };
+
+  React.useEffect(() => {
+    dispatch(textLogo(true));
+  }, []);
 
   return (
     <React.Fragment>

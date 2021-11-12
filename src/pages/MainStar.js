@@ -19,6 +19,9 @@ import ic_location_on from "../img/map/ic_location_on.svg";
 //임시 이미지
 import image_sample from "../img/Rectangle 16.png";
 
+import { useDispatch } from "react-redux";
+import { textLogo } from "../redux/modules/header";
+
 const MainStar = () => {
   const [text, setText] = React.useState("지금 내 위치!");
   const [userLocation, setUserLocation] = React.useState({
@@ -46,6 +49,7 @@ const MainStar = () => {
     },
   ]);
   const [hotTime, setHotTime] = React.useState();
+  const dispatch = useDispatch();
 
   const image =
     "https://cdn.pixabay.com/photo/2011/12/14/12/21/orion-nebula-11107_1280.jpg";
@@ -92,6 +96,8 @@ const MainStar = () => {
   };
 
   React.useEffect(() => {
+    dispatch(textLogo(false));
+
     if ("geolocation" in navigator) {
       navigator.geolocation.getCurrentPosition(success, error, options);
     } else {
