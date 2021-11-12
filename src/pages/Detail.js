@@ -2,10 +2,13 @@ import React from "react";
 import styled from "styled-components";
 import { Map, MapMarker } from "react-kakao-maps-sdk";
 import ic_sunny from "../img/ic_sunny.svg";
+import ic_star from "../img/ic_star.svg";
+import ic_moonrise from "../img/ic_moonrise.svg";
+import ic_moonset from "../img/ic_moonset.svg";
+import ic_mypage from "../img/ic_mypage.svg";
 import { history } from "../redux/configureStore";
 import { FaRegHeart } from "react-icons/fa";
 import { FaRegBookmark } from "react-icons/fa";
-import { FaRegGrin } from "react-icons/fa";
 
 import { useDispatch } from "react-redux";
 import { textLogo } from "../redux/modules/header";
@@ -49,20 +52,29 @@ const Detail = () => {
                 <ul className="starInfo">
                   <li>
                     <div>
+                      <div className="starView">
+                        <img src={ic_star} alt="star icon" />
+                      </div>
                       <div>관측지수</div>
-                      <div>10</div>
+                      <div className="number1">10</div>
                     </div>
                   </li>
                   <li>
                     <div>
+                      <div className="moonRise">
+                        <img src={ic_moonrise} alt="moonrise icon" />
+                      </div>
                       <div>월출</div>
-                      <div>16:00</div>
+                      <div className="number2">16:00</div>
                     </div>
                   </li>
                   <li>
                     <div>
+                      <div className="moonSet">
+                        <img src={ic_moonset} alt="moonset icon" />
+                      </div>
                       <div>월몰</div>
-                      <div>6:00</div>
+                      <div className="number3">6:00</div>
                     </div>
                   </li>
                 </ul>
@@ -233,18 +245,17 @@ const Detail = () => {
                   </div>
                 </li>
                 <li>
-                  <div>
+                  <div className="bookmark">
                     <FaRegBookmark />
-                    &nbsp;&nbsp;40
                   </div>
                 </li>
               </ul>
 
               <div className="nickName">
-                <h3>
-                  <FaRegGrin />
-                </h3>
-                <p>서울특별시 어쩌구</p>
+                <div className="profileIcon">
+                  <img src={ic_mypage} alt="profile icon" />
+                </div>
+                <p>홍길동</p>
               </div>
 
               <div className="headerLine2"></div>
@@ -272,8 +283,6 @@ const Detail = () => {
               {/*line*/}
 
               <div class="buttons">
-                <button onClick={Delete}>삭제</button>
-
                 {/*내가 글을 작성 중이던 페이지로*/}
                 <button
                   onClick={() => {
@@ -282,6 +291,8 @@ const Detail = () => {
                 >
                   수정
                 </button>
+
+                <button onClick={Delete}>삭제</button>
               </div>
             </ResultBody>
           </ResultBox>
@@ -312,32 +323,33 @@ const InfoHeader = styled.div`
   justify-content: space-between;
 
   .place {
-    font-size: 15px;
+    font-size: 18px;
     font-weight: bold;
     text-align: left;
     vertical-align: top;
     width: 138px;
-    margin: 20px;
-    background-color: green;
+    margin: 30px;
+    margin-left: 30px;
   }
 
   .time {
-    font-size: 12px;
-    background-color: green;
+    font-size: 10px;
     width: 120px;
     height: 16px;
     line-height: 16px;
     text-align: left;
     color: #dddddd;
-    margin: -38px 0 0 190px;
+    margin: -47px 0 0 187px;
+    Vertical align: Top;
   }
 
   .starInfo {
     position: relative;
     top: 20px;
-    width: 60%;
+    width: 90%;
     display: flex;
     margin: auto;
+    margin-left: 23px;
   }
   .starInfo > li {
     flex: 1;
@@ -345,17 +357,62 @@ const InfoHeader = styled.div`
   }
   .starInfo > li > div {
     text-align: center;
-    background-color: green;
-    margin-top: 10px;
-    height: 40px;
+    
+    margin-top: -3px;
+    height: 50px;
+    font-size: 11px;
+    color: #FFFFFF;
   }
 
+  .starInfo > li > div > .starView > img {
+    width: 13.5px;
+    height: 13px;
+    margin: -15px;
+    margin-left: -73px;
+  }
+
+  .starInfo > li > div > .moonRise > img {
+    width: 13.5px;
+    height: 13px;
+    margin: -15px;
+    margin-left: -50px;
+  }
+
+  .starInfo > li > div > .moonSet > img {
+    width: 13.5px;
+    height: 13px;
+    margin: -15px;
+    margin-left: -50px;
+  }
+  
+  .starInfo > li > div > .number1 {
+    margin: 12px;
+    margin-left: 6px;
+    font-size: 17px;
+    font-weight: bold;
+  }
+
+  .starInfo > li > div > .number2 {
+    margin: 12px;
+    margin-left: 2px;
+    font-size: 17px;
+    font-weight: bold;
+  }
+
+  .starInfo > li > div > .number3 {
+    margin: 12px;
+    margin-left: 1px;
+    font-size: 17px;
+    font-weight: bold;
+  }
+  
+
   .headerLine {
-    width: 240px;
+    width: 272px;
     border-style: solid;
     border-width: 0.5px;
-    margin-top: 13px;
-    margin-left: 35px;
+    margin-top: 11px;
+    margin-left: 20px;
     color: #666666;
   }
 `;
@@ -364,42 +421,44 @@ const InfoBody = styled.div`
   justify-content: space-between;
 
   .hour {
-    font-size: 12px;
+    font-size: 11.5px;
     position: relative;
-    top: 20px;
-    width: 60%;
+    top: 12px;
+    width: 98%;
     display: flex;
     margin: auto;
+    margin-left: 1px;
   }
   .hour > li {
     flex: 1;
   }
   .hour > li > div {
     text-align: center;
-    background-color: red;
     margin-top: 5px;
     height: 19px;
+    color: #cccccc;
   }
   .hour > li > div > p {
     color: #eeeeee;
   }
 
   .weather {
-    font-size: 12px;
+    font-size: 11.5px;
     position: relative;
-    top: 20px;
-    width: 60%;
+    top: 21px;
+    width: 98%;
     display: flex;
     margin: auto;
+    margin-left: 1px;
   }
   .weather > li {
     flex: 1;
   }
   .weather > li > div {
     text-align: center;
-    background-color: Indigo;
     margin-top: 5px;
     height: 19px;
+    color: #cccccc;
   }
   .weather > li > div > img {
     width: 16x;
@@ -407,108 +466,123 @@ const InfoBody = styled.div`
   }
 
   .temp {
-    font-size: 12px;
+    font-size: 11.5px;
     position: relative;
-    top: 20px;
-    width: 60%;
+    top: 29px;
+    width: 98%;
     display: flex;
     margin: auto;
+    margin-left: 1px;
   }
   .temp > li {
     flex: 1;
   }
   .temp > li > div {
     text-align: center;
-    background-color: blue;
     margin-top: 5px;
     height: 19px;
+    color: #cccccc;
+    font-weight: bold;
   }
+
   .temp > li > div > p {
     color: #eeeeee;
+    font-weight: normal;
   }
 
   .rainpro {
-    font-size: 12px;
+    font-size: 11.5px;
     position: relative;
-    top: 20px;
-    width: 75%;
+    top: 36px;
+    width: 98%;
     display: flex;
     margin: auto;
+    margin-left: 1.5px;
   }
   .rainpro > li {
     flex: 1;
   }
   .rainpro > li > div {
     text-align: center;
-    background-color: green;
     margin-top: 5px;
     height: 19px;
+    color: #cccccc;
+    font-weight: bold;
   }
   .rainpro > li > div > p {
     color: #eeeeee;
+    font-weight: normal;
   }
 
   .humidity {
-    font-size: 12px;
+    font-size: 11.5px;
     position: relative;
-    top: 20px;
-    width: 60%;
+    top: 43px;
+    width: 98%;
     display: flex;
     margin: auto;
+    margin-left: 1px;
   }
   .humidity > li {
     flex: 1;
   }
   .humidity > li > div {
     text-align: center;
-    background-color: orange;
     margin-top: 5px;
     height: 19px;
+    color: #cccccc;
+    font-weight: bold;
   }
   .humidity > li > div > p {
     color: #eeeeee;
+    font-weight: normal;
   }
 
   .cloud {
-    font-size: 12px;
+    font-size: 11.5px;
     position: relative;
-    top: 20px;
-    width: 60%;
+    top: 51px;
+    width: 98%;
     display: flex;
     margin: auto;
+    margin-left: 1px;
   }
   .cloud > li {
     flex: 1;
   }
   .cloud > li > div {
     text-align: center;
-    background-color: purple;
     margin-top: 5px;
     height: 19px;
+    color: #cccccc;
   }
   .cloud > li > div > p {
     color: #eeeeee;
+    font-weight: normal;
   }
 
   .dust {
-    font-size: 12px;
+    font-size: 11.5px;
     position: relative;
-    top: 20px;
-    width: 80%;
+    top: 59px;
+    width: 98%;
     display: flex;
     margin: auto;
+    margin-left: 1.5px;
   }
   .dust > li {
     flex: 1;
   }
   .dust > li > div {
     text-align: center;
-    background-color: red;
     margin-top: 5px;
     height: 19px;
+    color: #cccccc;
+    font-weight: bold;
   }
   .dust > li > div > p {
     color: #eeeeee;
+    font-weight: normal;
   }
 `;
 
@@ -543,17 +617,18 @@ const ResultHeader = styled.div`
   }
 
   .date {
-    font-size: 15px;
-    margin: -15px 0 0 285px;
+    font-size: 12px;
+    margin: -12px 0 0 285px;
+    color: #999999;
   }
 
   .likeInfo {
-    font-size: 14px;
+    font-size: 15px;
     position: relative;
     top: 20px;
     width: 13%;
     display: flex;
-    margin: -35px 0 0 700px;
+    margin: -35px 0 0 728px;
   }
   .likeInfo > li {
     flex: 1;
@@ -562,6 +637,9 @@ const ResultHeader = styled.div`
     text-align: right;
     height: 19px;
   }
+  .likeInfo > li > .bookmark {
+    margin: 1px 25px 0 0;
+  }
 
   .nickName {
     display: flex;
@@ -569,8 +647,10 @@ const ResultHeader = styled.div`
     flex-direction: column;
     justify-content: space-between;
 
-    h3 {
-      margin-top: 30px;
+    .profileIcon > img {
+      margin: 30px 0 0 2px;
+      width: 20px;
+      height: 20px;
     }
 
     p {
@@ -578,17 +658,15 @@ const ResultHeader = styled.div`
       font-size: 14px;
       line-height: 20px;
       color: #eeeeee;
-      margin-top: -23px;
-      margin-left: 28px;
+      margin: -22px 0 0 29px;
     }
   }
   .headerLine2 {
     width: 99.9%;
     border-style: solid;
     border-width: 0.5px;
-    margin-top: 26px;
-    margin-left: -2.5px;
     color: #666666;
+    margin: 26px 0 0 -2.5px;
   }
 `;
 
@@ -614,14 +692,14 @@ const ResultBody = styled.ul`
     width: 99.9%;
     border-style: solid;
     border-width: 0.5px;
-    margin: 60px 0 0 -2.5px;
+    margin: 140px 0 0 -2.5px;
 
     color: #666666;
   }
 
   .buttons {
     width: 300px;
-    margin: 98px 0 0 200px;
+    margin: 17px 0 0 652px;
 
     button {
       width: 72px;
@@ -630,7 +708,8 @@ const ResultBody = styled.ul`
       font-size: 14px;
       color: #cccccc;
       border-radius: 4px;
-      margin: 2.5px;
+      border: 0;
+      margin: 4.1px;
     }
   }
 `;
