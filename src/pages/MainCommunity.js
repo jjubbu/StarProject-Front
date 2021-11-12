@@ -128,6 +128,10 @@ const MainCommunity = (props) => {
 
 const CommunityPage = styled.div`
   overflow-y: scroll;
+
+  ::-webkit-scrollbar {
+    display: none;
+  }
 `;
 
 const Wrapper = styled.main`
@@ -137,11 +141,11 @@ const Wrapper = styled.main`
   flex-wrap: wrap;
   justify-content: center;
   /* margin: auto; */
-  overflow-y: scroll;
+  /* overflow-y: scroll; */
 
-  ::-webkit-scrollbar {
-    display: none;
-  }
+  /* ::-webkit-scrollbar {
+    display: none; */
+  /* } */
 `;
 
 const Container = styled.div`

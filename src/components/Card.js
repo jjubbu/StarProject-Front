@@ -203,11 +203,11 @@ const Wrapper = styled.div`
     height: fit-content;
     position: relative;
   }
-  :hover {
+  /* :hover {
     cursor: pointer;
     transform: translateY(-12px);
     box-shadow: 0 3px 40px 0 #ddd;
-  }
+  } */
 `;
 
 const DateDiv = styled.div`
