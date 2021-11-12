@@ -219,19 +219,6 @@ const Detail = () => {
                     <div>11㎍/㎥</div>
                   </li>
                 </ul>
-
-                <div class="headerButton">
-                  {/*날씨 더보기페이지*/}
-                  <button
-                    onClick={() => {
-                      history.push({
-                        /*"/card/write"*/
-                      });
-                    }}
-                  >
-                    날씨 더보기
-                  </button>
-                </div>
               </InfoBody>
             </InfoBox>
           </div>
@@ -336,28 +323,28 @@ const InfoHeader = styled.div`
     text-align: left;
     vertical-align: top;
     width: 138px;
-    margin: 22px;
-    margin-left: 20px;
+    margin: 30px;
+    margin-left: 30px;
   }
 
   .time {
-    font-size: 10.5px;
+    font-size: 10px;
     width: 120px;
     height: 16px;
     line-height: 16px;
     text-align: left;
     color: #dddddd;
-    margin: -44px 0 0 194px;
+    margin: -47px 0 0 187px;
     Vertical align: Top;
   }
 
   .starInfo {
     position: relative;
     top: 20px;
-    width: 100%;
+    width: 90%;
     display: flex;
     margin: auto;
-    margin-left: 8px;
+    margin-left: 23px;
   }
   .starInfo > li {
     flex: 1;
@@ -394,22 +381,22 @@ const InfoHeader = styled.div`
   }
   
   .starInfo > li > div > .number1 {
-    margin: 5px;
-    margin-left: 1px;
+    margin: 12px;
+    margin-left: 6px;
     font-size: 17px;
     font-weight: bold;
   }
 
   .starInfo > li > div > .number2 {
-    margin: 5px;
-    margin-left: -5px;
+    margin: 12px;
+    margin-left: 2px;
     font-size: 17px;
     font-weight: bold;
   }
 
   .starInfo > li > div > .number3 {
-    margin: 5px;
-    margin-left: -8px;
+    margin: 12px;
+    margin-left: 1px;
     font-size: 17px;
     font-weight: bold;
   }
@@ -591,19 +578,6 @@ const InfoBody = styled.div`
   .dust > li > div > p {
     color: #eeeeee;
     font-weight: normal;
-  }
-
-  .headerButton {
-    margin-top: 71px;
-    margin-left: 21.5px;
-    button {
-      width: 270px;
-      height: 30px;
-      background: #18191e;
-      font-size: 12.5px;
-      color: #cccccc;
-      border-radius: 20px;
-    }
   }
 `;
 
