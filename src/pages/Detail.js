@@ -5,10 +5,10 @@ import ic_sunny from "../img/ic_sunny.svg";
 import ic_star from "../img/ic_star.svg";
 import ic_moonrise from "../img/ic_moonrise.svg";
 import ic_moonset from "../img/ic_moonset.svg";
+import ic_mypage from "../img/ic_mypage.svg";
 import { history } from "../redux/configureStore";
 import { FaRegHeart } from "react-icons/fa";
 import { FaRegBookmark } from "react-icons/fa";
-import { FaRegGrin } from "react-icons/fa";
 
 const Detail = () => {
   React.useEffect(() => {
@@ -261,10 +261,10 @@ const Detail = () => {
               </ul>
 
               <div className="nickName">
-                <h3>
-                  <FaRegGrin />
-                </h3>
-                <p>서울특별시 어쩌구</p>
+                <div className="profileIcon">
+                  <img src={ic_mypage} alt="profile icon" />
+                </div>
+                <p>홍길동</p>
               </div>
 
               <div className="headerLine2"></div>
@@ -666,8 +666,10 @@ const ResultHeader = styled.div`
     flex-direction: column;
     justify-content: space-between;
 
-    h3 {
-      margin-top: 30px;
+    .profileIcon > img {
+      margin: 30px 0 0 2px;
+      width: 20px;
+      height: 20px;
     }
 
     p {
@@ -675,17 +677,15 @@ const ResultHeader = styled.div`
       font-size: 14px;
       line-height: 20px;
       color: #eeeeee;
-      margin-top: -23px;
-      margin-left: 28px;
+      margin: -22px 0 0 29px;
     }
   }
   .headerLine2 {
     width: 99.9%;
     border-style: solid;
     border-width: 0.5px;
-    margin-top: 26px;
-    margin-left: -2.5px;
     color: #666666;
+    margin: 26px 0 0 -2.5px;
   }
 `;
 
