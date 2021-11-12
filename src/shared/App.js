@@ -59,7 +59,6 @@ const StyledViewContainer = styled.article`
   flex-direction: column;
   justify-content: space-between;
   height: 100%;
-  gap: 24px;
 `;
 
 export default App;

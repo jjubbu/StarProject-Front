@@ -115,16 +115,20 @@ const MainCommunity = (props) => {
 
   return (
     <React.Fragment>
-      <div className="CommonPageStyle">
+      <CommunityPage className="CommonPageStyle">
         <Wrapper>
           {test_card_list.map((p, i) => {
             return <Card key={p.id} {...p} />;
           })}
         </Wrapper>
-      </div>
+      </CommunityPage>
     </React.Fragment>
   );
 };
+
+const CommunityPage = styled.div`
+  overflow-y: scroll;
+`;
 
 const Wrapper = styled.main`
   gap: 24px;

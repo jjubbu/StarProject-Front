@@ -340,7 +340,7 @@ const InfoHeader = styled.div`
     text-align: left;
     color: #dddddd;
     margin: -47px 0 0 187px;
-    Vertical align: Top;
+    vertical-align: top;
   }
 
   .starInfo {
@@ -357,11 +357,11 @@ const InfoHeader = styled.div`
   }
   .starInfo > li > div {
     text-align: center;
-    
+
     margin-top: -3px;
     height: 50px;
     font-size: 11px;
-    color: #FFFFFF;
+    color: #ffffff;
   }
 
   .starInfo > li > div > .starView > img {
@@ -384,7 +384,7 @@ const InfoHeader = styled.div`
     margin: -15px;
     margin-left: -50px;
   }
-  
+
   .starInfo > li > div > .number1 {
     margin: 12px;
     margin-left: 6px;
@@ -405,7 +405,6 @@ const InfoHeader = styled.div`
     font-size: 17px;
     font-weight: bold;
   }
-  
 
   .headerLine {
     width: 272px;
