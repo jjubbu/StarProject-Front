@@ -291,8 +291,6 @@ const Detail = () => {
               {/*line*/}
 
               <div class="buttons">
-                <button onClick={Delete}>삭제</button>
-
                 {/*내가 글을 작성 중이던 페이지로*/}
                 <button
                   onClick={() => {
@@ -301,6 +299,8 @@ const Detail = () => {
                 >
                   수정
                 </button>
+
+                <button onClick={Delete}>삭제</button>
               </div>
             </ResultBody>
           </ResultBox>
@@ -720,7 +720,7 @@ const ResultBody = styled.ul`
 
   .buttons {
     width: 300px;
-    margin: 19px 0 0 660px;
+    margin: 17px 0 0 652px;
 
     button {
       width: 72px;
@@ -729,7 +729,8 @@ const ResultBody = styled.ul`
       font-size: 14px;
       color: #cccccc;
       border-radius: 4px;
-      margin: 2.5px;
+      border: 0;
+      margin: 4.1px;
     }
   }
 `;
