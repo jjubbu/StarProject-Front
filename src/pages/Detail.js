@@ -253,9 +253,8 @@ const Detail = () => {
                   </div>
                 </li>
                 <li>
-                  <div>
+                  <div className="bookmark">
                     <FaRegBookmark />
-                    &nbsp;&nbsp;40
                   </div>
                 </li>
               </ul>
@@ -645,12 +644,12 @@ const ResultHeader = styled.div`
   }
 
   .likeInfo {
-    font-size: 14px;
+    font-size: 15px;
     position: relative;
     top: 20px;
     width: 13%;
     display: flex;
-    margin: -35px 0 0 700px;
+    margin: -35px 0 0 728px;
   }
   .likeInfo > li {
     flex: 1;
@@ -658,6 +657,9 @@ const ResultHeader = styled.div`
   .likeInfo > li > div {
     text-align: right;
     height: 19px;
+  }
+  .likeInfo > li > .bookmark {
+    margin: 1px 25px 0 0;
   }
 
   .nickName {
