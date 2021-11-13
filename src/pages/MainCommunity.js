@@ -139,7 +139,7 @@ const MainCommunity = (props) => {
         </TopDiv>
         <Wrapper>
           {test_card_list.map((p, i) => {
-            return <Card key={p.id} {...p} />;
+            return <Card key={i} {...p} />;
           })}
         </Wrapper>
       </CommunityPage>
