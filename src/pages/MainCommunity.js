@@ -12,8 +12,6 @@ import { textLogo } from "../redux/modules/header";
 import { api } from "../shared/apis";
 
 const MainCommunity = (props) => {
-  // const card_list = useSelector((state) => state.card.list);
-  // const [dataList, setDataList] = useState([]); //보여줘야 하는 내용이 바뀜.
   const dispatch = useDispatch();
 
   const test_card_list = [
@@ -111,24 +109,8 @@ const MainCommunity = (props) => {
   ];
 
   React.useEffect(() => {
-    // setDataList(MainCommunity);
-    // dispatch(postActions.getCardDB());
-    // getDetail(props.match.params.id);
     dispatch(textLogo(false));
-  }, [props.match.params.id]);
-
-  // const getDetail = async (id) => {
-  //   let response = await api.get(`/detail/${id}`);
-  //   console.log(response);
-  // };
-
-  // const getPostByID = (id) => {
-  //   const array = MainCommunity.filter((x) => x.id == id);
-  //   if (array.length == 1) {
-  //     return array[0];
-  //   }
-  //   return null;
-  // };
+  }, []);
 
   return (
     <React.Fragment>
@@ -136,13 +118,7 @@ const MainCommunity = (props) => {
         <Wrapper>
           {test_card_list.map((p, i) => {
             return (
-              <Card
-                key={p.id}
-                {...p}
-                onclick={() => {
-                  props.history.push("/detail/:id");
-                }}
-              >
+              <Card key={i} cardID={p.id} {...p}>
                 {test_card_list}
               </Card>
             );

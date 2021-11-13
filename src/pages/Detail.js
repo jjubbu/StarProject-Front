@@ -324,7 +324,7 @@ const MapBox = styled.section`
 
 const InfoBox = styled.section`
   width: 26%;
-  height: 401px;
+  height: 380px;
   margin-top: 20px;
   flex-direction: column;
   display: flex;
@@ -433,7 +433,7 @@ const InfoBody = styled.div`
   justify-content: space-between;
 
   .hour {
-    font-size: 10.5px;
+    font-size: 5px;
     position: relative;
     top: 21px;
     width: 87%;
@@ -456,13 +456,13 @@ const InfoBody = styled.div`
   }
 
   .weather {
-    font-size: 10.5px;
+    font-size: 5px;
     position: relative;
     top: 30px;
     width: 87%;
     display: flex;
     margin: auto;
-    margin-left: 16px;
+    margin-left: 18px;
   }
   .weather > li {
     flex: 1;
@@ -484,13 +484,13 @@ const InfoBody = styled.div`
   }
 
   .temp {
-    font-size: 10.5px;
+    font-size: 5px;
     position: relative;
     top: 39px;
     width: 88%;
     display: flex;
     margin: auto;
-    margin-left: 16px;
+    margin-left: 18px;
   }
   .temp > li {
     flex: 1;
@@ -511,13 +511,13 @@ const InfoBody = styled.div`
   }
 
   .rainpro {
-    font-size: 10.5px;
+    font-size: 5px;
     position: relative;
     top: 47px;
     width: 87%;
     display: flex;
     margin: auto;
-    margin-left: 17px;
+    margin-left: 19px;
   }
   .rainpro > li {
     flex: 1;
@@ -536,13 +536,13 @@ const InfoBody = styled.div`
   }
 
   .humidity {
-    font-size: 10.5px;
+    font-size: 5px;
     position: relative;
     top: 54px;
     width: 87%;
     display: flex;
     margin: auto;
-    margin-left: 13px;
+    margin-left: 15px;
   }
   .humidity > li {
     flex: 1;
@@ -562,13 +562,13 @@ const InfoBody = styled.div`
   }
 
   .cloud {
-    font-size: 10.5px;
+    font-size: 5px;
     position: relative;
     top: 63px;
     width: 87%;
     display: flex;
     margin: auto;
-    margin-left: 15px;
+    margin-left: 17px;
   }
   .cloud > li {
     flex: 1;
@@ -586,13 +586,13 @@ const InfoBody = styled.div`
   }
 
   .dust {
-    font-size: 10.5px;
+    font-size: 5px;
     position: relative;
     top: 71px;
     width: 85%;
     display: flex;
     margin: auto;
-    margin-left: 13px;
+    margin-left: 16px;
   }
   .dust > li {
     flex: 1;
@@ -608,6 +608,7 @@ const InfoBody = styled.div`
   .dust > li > div > p {
     color: #eeeeee;
     font-weight: normal;
+    margin-left: 2px;
   }
 `;
 
@@ -617,7 +618,7 @@ const StyledBox = styled.main`
 
   & > section {
     border-radius: 10px;
-    height: 101%;
+    height: 97.8%;
     background-color: #303136;
     display: flex;
   }
@@ -626,7 +627,7 @@ const StyledBox = styled.main`
 const ResultBox = styled.section`
   width: 72.3%;
   padding: 36px 28px 0;
-  margin: -713px 0 0 333px;
+  margin: -692px 0 0 333px;
   flex-direction: column;
 `;
 
@@ -717,7 +718,7 @@ const ResultBody = styled.ul`
     width: 99.9%;
     border-style: solid;
     border-width: 0.5px;
-    margin: 140px 0 0 -2.5px;
+    margin: 118px 0 0 -2.5px;
 
     color: #666666;
   }
