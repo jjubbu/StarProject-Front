@@ -13,6 +13,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { textLogo } from "../redux/modules/header";
 
 import ic_write from "../img/ic_write.svg";
+import ic_search from "../img/ic_search.svg";
 
 const MainCommunity = (props) => {
   // const card_list = useSelector((state) => state.card.list);
@@ -122,11 +123,14 @@ const MainCommunity = (props) => {
     <React.Fragment>
       <CommunityPage className="CommonPageStyle">
         <TopDiv>
-          {/* <div className="tab">
+          <div className="tab">
             <div className="recommend">추천</div>
             <div className="popular">인기순</div>
-          </div> */}
-          <div className="search bar"></div>
+          </div>
+          <div className="searchbar">
+            <img src={ic_search} alt="ic_search" />
+            <input type="text" placeholder="검색어를 입력하세요" />
+          </div>
           <button
             className="btn-write"
             onClick={() => {
@@ -161,7 +165,7 @@ const TopDiv = styled.div`
 
     .recommend {
       width: 85px;
-      height: 40px;
+      /* height: 40px; */
       font-size: 24px;
       color: white;
       text-align: center;
@@ -173,6 +177,37 @@ const TopDiv = styled.div`
       font-size: 24px;
       text-align: center;
       color: white;
+    }
+  }
+
+  .searchbar {
+    width: 861px;
+    height: 40px;
+    background: #303136;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    padding: 8px 0px 8px 15px;
+
+    img {
+      margin-right: 12px;
+    }
+
+    input {
+      background: none;
+      border: none;
+      width: 100%;
+      :focus {
+        outline: none;
+        color: #eeeeee;
+      }
+
+      :ㅅ
+
+      ::placeholder {
+        color: #eeeeee;
+        font-size: 14px;
+      }
     }
   }
 
