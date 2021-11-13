@@ -18,7 +18,7 @@ export const apis = {
   //로그인
   loginAX: (loginInfo) => instance.post(`/user/login`, loginInfo),
   //로그인 체크
-  loginCheckAX: () => instance.get(`/user/logincheck`),
+  loginCheckAX: () => instance.get(`/user/login/check`),
   //회원가입
   signupAX: (signupInfo) => instance.post(`/user/signup`, signupInfo),
   //닉네임 중복 확인

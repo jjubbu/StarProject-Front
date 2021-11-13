@@ -21,6 +21,7 @@ import "./font.css";
 import { useDispatch } from "react-redux";
 import { history } from "../redux/configureStore";
 import { isLogin } from "../redux/modules/login";
+import { apis } from "../lib/axios";
 
 function App() {
   const cookie = new Cookies();
@@ -28,7 +29,22 @@ function App() {
   React.useEffect(() => {
     const token = cookie.get("token");
     if (token) {
-      dispatch(isLogin(true));
+      apis
+        .loginCheckAX()
+        .then((response) => {
+          console.log("login check:::", response.data);
+          const data = response.data;
+          if (data.code === 500) {
+            alert(data.msg);
+            cookie.remove("token");
+            dispatch(isLogin(false));
+          } else if (data.code === 200) {
+            dispatch(isLogin(true));
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     } else {
       dispatch(isLogin(false));
     }
