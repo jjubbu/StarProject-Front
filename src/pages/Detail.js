@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
+import MainCommunity from "../pages/MainCommunity";
 import { Map, MapMarker } from "react-kakao-maps-sdk";
 import ic_sunny from "../img/ic_sunny.svg";
 import ic_star from "../img/ic_star.svg";
@@ -12,10 +13,16 @@ import { FaRegBookmark } from "react-icons/fa";
 
 import { useDispatch } from "react-redux";
 import { textLogo } from "../redux/modules/header";
+import { getPostByID } from "../pages/MainCommunity";
 
-const Detail = () => {
+const Detail = ({ history, location, match }) => {
+  const [data, setData] = useState({});
+  const { id } = match.params;
+
   const dispatch = useDispatch();
   React.useEffect(() => {
+    // setData(getPostByID(id));
+
     console.log(window.location.pathname);
     dispatch(textLogo(false));
   }, []);
@@ -115,13 +122,19 @@ const Detail = () => {
                     </div>
                   </li>
                   <li>
-                    <div>흐림</div>
+                    <div className="sunnyView">
+                      <img src={ic_sunny} alt="sun icon" />
+                    </div>
                   </li>
                   <li>
-                    <div>비옴</div>
+                    <div className="sunnyView">
+                      <img src={ic_sunny} alt="sun icon" />
+                    </div>
                   </li>
                   <li>
-                    <div>맑음</div>
+                    <div className="sunnyView">
+                      <img src={ic_sunny} alt="sun icon" />
+                    </div>
                   </li>
                 </ul>
 
@@ -311,7 +324,7 @@ const MapBox = styled.section`
 
 const InfoBox = styled.section`
   width: 26%;
-  height: 401px;
+  height: 380px;
   margin-top: 20px;
   flex-direction: column;
   display: flex;
@@ -407,11 +420,11 @@ const InfoHeader = styled.div`
   }
 
   .headerLine {
-    width: 272px;
+    width: 248px;
     border-style: solid;
     border-width: 0.5px;
-    margin-top: 11px;
-    margin-left: 20px;
+    margin-top: 28px;
+    margin-left: 31.5px;
     color: #666666;
   }
 `;
@@ -420,13 +433,13 @@ const InfoBody = styled.div`
   justify-content: space-between;
 
   .hour {
-    font-size: 11.5px;
+    font-size: 5px;
     position: relative;
-    top: 12px;
-    width: 98%;
+    top: 21px;
+    width: 87%;
     display: flex;
     margin: auto;
-    margin-left: 1px;
+    margin-left: 18px;
   }
   .hour > li {
     flex: 1;
@@ -439,16 +452,17 @@ const InfoBody = styled.div`
   }
   .hour > li > div > p {
     color: #eeeeee;
+    margin-left: -2px;
   }
 
   .weather {
-    font-size: 11.5px;
+    font-size: 5px;
     position: relative;
-    top: 21px;
-    width: 98%;
+    top: 30px;
+    width: 87%;
     display: flex;
     margin: auto;
-    margin-left: 1px;
+    margin-left: 18px;
   }
   .weather > li {
     flex: 1;
@@ -457,21 +471,26 @@ const InfoBody = styled.div`
     text-align: center;
     margin-top: 5px;
     height: 19px;
-    color: #cccccc;
   }
+  .weather > li > div > p {
+    color: #eeeeee;
+    margin-left: -4px;
+  }
+
   .weather > li > div > img {
     width: 16x;
     height: 16px;
+    margin-left: 3px;
   }
 
   .temp {
-    font-size: 11.5px;
+    font-size: 5px;
     position: relative;
-    top: 29px;
-    width: 98%;
+    top: 39px;
+    width: 88%;
     display: flex;
     margin: auto;
-    margin-left: 1px;
+    margin-left: 18px;
   }
   .temp > li {
     flex: 1;
@@ -479,6 +498,7 @@ const InfoBody = styled.div`
   .temp > li > div {
     text-align: center;
     margin-top: 5px;
+
     height: 19px;
     color: #cccccc;
     font-weight: bold;
@@ -487,16 +507,17 @@ const InfoBody = styled.div`
   .temp > li > div > p {
     color: #eeeeee;
     font-weight: normal;
+    margin-left: -6px;
   }
 
   .rainpro {
-    font-size: 11.5px;
+    font-size: 5px;
     position: relative;
-    top: 36px;
-    width: 98%;
+    top: 47px;
+    width: 87%;
     display: flex;
     margin: auto;
-    margin-left: 1.5px;
+    margin-left: 19px;
   }
   .rainpro > li {
     flex: 1;
@@ -511,16 +532,17 @@ const InfoBody = styled.div`
   .rainpro > li > div > p {
     color: #eeeeee;
     font-weight: normal;
+    margin-left: 10px;
   }
 
   .humidity {
-    font-size: 11.5px;
+    font-size: 5px;
     position: relative;
-    top: 43px;
-    width: 98%;
+    top: 54px;
+    width: 87%;
     display: flex;
     margin: auto;
-    margin-left: 1px;
+    margin-left: 15px;
   }
   .humidity > li {
     flex: 1;
@@ -528,23 +550,25 @@ const InfoBody = styled.div`
   .humidity > li > div {
     text-align: center;
     margin-top: 5px;
+    margin-left: 7px;
     height: 19px;
     color: #cccccc;
     font-weight: bold;
   }
   .humidity > li > div > p {
     color: #eeeeee;
+    margin-left: -8px;
     font-weight: normal;
   }
 
   .cloud {
-    font-size: 11.5px;
+    font-size: 5px;
     position: relative;
-    top: 51px;
-    width: 98%;
+    top: 63px;
+    width: 87%;
     display: flex;
     margin: auto;
-    margin-left: 1px;
+    margin-left: 17px;
   }
   .cloud > li {
     flex: 1;
@@ -557,17 +581,18 @@ const InfoBody = styled.div`
   }
   .cloud > li > div > p {
     color: #eeeeee;
+    margin-left: 2px;
     font-weight: normal;
   }
 
   .dust {
-    font-size: 11.5px;
+    font-size: 5px;
     position: relative;
-    top: 59px;
-    width: 98%;
+    top: 71px;
+    width: 85%;
     display: flex;
     margin: auto;
-    margin-left: 1.5px;
+    margin-left: 16px;
   }
   .dust > li {
     flex: 1;
@@ -575,6 +600,7 @@ const InfoBody = styled.div`
   .dust > li > div {
     text-align: center;
     margin-top: 5px;
+    margin-left: 12px;
     height: 19px;
     color: #cccccc;
     font-weight: bold;
@@ -582,6 +608,7 @@ const InfoBody = styled.div`
   .dust > li > div > p {
     color: #eeeeee;
     font-weight: normal;
+    margin-left: 2px;
   }
 `;
 
@@ -591,7 +618,7 @@ const StyledBox = styled.main`
 
   & > section {
     border-radius: 10px;
-    height: 101%;
+    height: 97.8%;
     background-color: #303136;
     display: flex;
   }
@@ -600,7 +627,7 @@ const StyledBox = styled.main`
 const ResultBox = styled.section`
   width: 72.3%;
   padding: 36px 28px 0;
-  margin: -713px 0 0 333px;
+  margin: -692px 0 0 333px;
   flex-direction: column;
 `;
 
@@ -691,7 +718,7 @@ const ResultBody = styled.ul`
     width: 99.9%;
     border-style: solid;
     border-width: 0.5px;
-    margin: 140px 0 0 -2.5px;
+    margin: 118px 0 0 -2.5px;
 
     color: #666666;
   }

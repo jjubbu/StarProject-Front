@@ -2,16 +2,16 @@ import React from "react";
 import styled from "styled-components";
 import Card from "../components/Card";
 import { Grid } from "../elements";
-
 import { useState } from "react";
+import Detail from "../pages/Detail";
 
 // redux
 import card, { actionCreators as postActions } from "../redux/modules/card";
 import { useSelector, useDispatch } from "react-redux";
 import { textLogo } from "../redux/modules/header";
+import { api } from "../shared/apis";
 
 const MainCommunity = (props) => {
-  // const card_list = useSelector((state) => state.card.list);
   const dispatch = useDispatch();
 
   const test_card_list = [
@@ -109,7 +109,6 @@ const MainCommunity = (props) => {
   ];
 
   React.useEffect(() => {
-    // dispatch(postActions.getCardDB());
     dispatch(textLogo(false));
   }, []);
 
@@ -118,7 +117,11 @@ const MainCommunity = (props) => {
       <CommunityPage className="CommonPageStyle">
         <Wrapper>
           {test_card_list.map((p, i) => {
-            return <Card key={p.id} {...p} />;
+            return (
+              <Card key={i} cardID={p.id} {...p}>
+                {test_card_list}
+              </Card>
+            );
           })}
         </Wrapper>
       </CommunityPage>
