@@ -9,6 +9,8 @@ import ic_bookmark_off from "../img/ic_bookmark_off.svg";
 import { apis } from "../lib/axios";
 
 import { useDispatch } from "react-redux";
+import { history } from "../redux/configureStore";
+
 import { textLogo } from "../redux/modules/header";
 
 const Main = () => {
@@ -30,6 +32,7 @@ const Main = () => {
       .then((response) => {
         console.log("Get main board list:::", response.data.msg);
         if (response.data.msg === "성공") {
+          console.log(response.data.data);
           setBoardList(response.data.data);
         } else {
           alert("알 수 없는 이유로 인하여 캠핑장 목록을 불러오지 못했습니다.");
@@ -55,7 +58,12 @@ const Main = () => {
           <ul>
             {boardList.map((l, idx) => {
               return (
-                <Card key={idx}>
+                <Card
+                  key={idx}
+                  onClick={() => {
+                    history.push(`detail/${l.id}`);
+                  }}
+                >
                   <ImageBox>
                     <Address>
                       <img src={ic_map} alt="address icon" />
