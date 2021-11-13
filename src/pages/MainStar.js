@@ -290,8 +290,7 @@ const MainStar = () => {
                           <span className="openSans">{l.starGazing}</span>
                         </p>
                         <p>
-                          맑음{" "}
-                          <span className="openSans">{l.avgTemperature}°</span>
+                          <span className="openSans">{l.temperature}°</span>
                         </p>
                       </div>
                     </li>
