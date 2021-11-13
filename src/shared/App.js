@@ -14,6 +14,7 @@ import Signup from "../pages/Signup";
 // import Write from "../pages/Write";
 import AddEditPost from "../pages/AddEditPost";
 import UserInfoEdit from "../pages/UserInfoEdit";
+import Mypage from "../pages/Mypage";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import "./font.css";
@@ -64,6 +65,7 @@ function App() {
         <Route path="/signup" exact component={Signup} />
         <Route path="/detail/:id" exact component={Detail} />
         <Route path="/user/edit" exact component={UserInfoEdit} />
+        <Route path="/mypage" exact component={Mypage} />
         <Footer />
       </StyledViewContainer>
     </ConnectedRouter>
