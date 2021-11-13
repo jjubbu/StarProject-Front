@@ -31,7 +31,7 @@ const Detail = ({ history, location, match }) => {
   //지도 구현함수
   return (
     <React.Fragment>
-      <div className="CommonPageStyle">
+      <div className="CommonPageStyle CommonGap">
         <StyledBox>
           {/*main*/}
           <div className="StyledBox2">

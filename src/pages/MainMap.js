@@ -177,7 +177,7 @@ const MainMap = () => {
   }, [resultList]);
   return (
     <React.Fragment>
-      <div className="CommonPageStyle">
+      <div className="CommonPageStyle CommonGap">
         <StyledMap>
           <ResultBox>
             <ResultHeader url={ic_option}>

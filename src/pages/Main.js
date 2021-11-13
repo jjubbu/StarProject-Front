@@ -44,7 +44,7 @@ const Main = () => {
   }, []);
   return (
     <React.Fragment>
-      <StyldMain>
+      <StyldMain className="CommonGap">
         <VisualBox url={video}>
           <span />
           <h3 className="visualText">

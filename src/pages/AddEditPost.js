@@ -9,7 +9,7 @@ const AddEditPost = () => {
 
   return (
     <React.Fragment>
-      <PostWriteBox className="CommonPageStyle">
+      <PostWriteBox className="CommonPageStyle CommonGap">
         <PostInput type="text" placeholder="제목을 입력하세요" />
         <TextEditorBox className="textEditor">
           <ReactQuill

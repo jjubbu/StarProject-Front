@@ -179,7 +179,7 @@ const Signup = () => {
 
   return (
     <React.Fragment>
-      <StyleArticle>
+      <StyleArticle className="CommonGap">
         <h1>회원가입</h1>
         <InputBoxSignup>
           <label>

@@ -141,7 +141,7 @@ const MainStar = () => {
 
   return (
     <React.Fragment>
-      <div className="CommonPageStyle">
+      <div className="CommonPageStyle CommonGap">
         <StyledStar>
           <div>
             <LocationBox className="contentsBox">

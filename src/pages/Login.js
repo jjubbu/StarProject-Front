@@ -69,7 +69,7 @@ const Login = () => {
 
   return (
     <React.Fragment>
-      <div className="CommonPageStyle">
+      <div className="CommonPageStyle CommonGap">
         <StyleArticle>
           <h3>로그인</h3>
           <InputBox>

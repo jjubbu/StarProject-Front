@@ -161,7 +161,7 @@ const UserInfoEdit = () => {
   }, []);
   return (
     <React.Fragment>
-      <StyleArticle>
+      <StyleArticle className="CommonGap">
         <h1>프로필수정</h1>
         <img src={ic_user} alt="user profile" className="userProfile" />
         <InputBox className="userInfoeditBox">

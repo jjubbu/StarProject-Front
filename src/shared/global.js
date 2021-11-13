@@ -43,5 +43,9 @@ html{
     margin: 0 auto;
     width: 100%;
     height: 100%;
-}   
+} 
+
+.CommonGap{
+    margin-bottom: 24px;
+}
 `;
