@@ -86,6 +86,7 @@ const Login = () => {
                 name="password"
                 onChange={inputValue}
                 placeholder="비밀번호"
+                type="password"
               />
             </label>
             <CheckBox>
