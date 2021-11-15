@@ -12,6 +12,7 @@ import { useDispatch } from "react-redux";
 import { history } from "../redux/configureStore";
 
 import { textLogo } from "../redux/modules/header";
+import { loginCheck } from "../redux/modules/login";
 
 const Main = () => {
   const [boardList, setBoardList] = React.useState([
@@ -82,7 +83,12 @@ const Main = () => {
                         <p>관측지수</p>
                         <span className="openSans">{l.starGazing}</span>
                       </div>
-                      <div className="bookmark">
+                      <div
+                        className="bookmark"
+                        onClick={() => {
+                          dispatch(loginCheck(true));
+                        }}
+                      >
                         <img src={ic_bookmark_off} alt="bookmark" />
                         <p className="openSans">{l.bookmark}</p>
                       </div>
