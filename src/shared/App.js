@@ -14,25 +14,45 @@ import Signup from "../pages/Signup";
 // import Write from "../pages/Write";
 import AddEditPost from "../pages/AddEditPost";
 import UserInfoEdit from "../pages/UserInfoEdit";
+import Mypage from "../pages/Mypage";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import "./font.css";
 
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { history } from "../redux/configureStore";
-import { isLogin } from "../redux/modules/login";
+import { isLogin, loginCheck } from "../redux/modules/login";
+import { apis } from "../lib/axios";
 
 function App() {
+  const login_check = useSelector((state) => state.login.login_check);
   const cookie = new Cookies();
   const dispatch = useDispatch();
   React.useEffect(() => {
     const token = cookie.get("token");
     if (token) {
-      dispatch(isLogin(true));
+      apis
+        .loginCheckAX()
+        .then((response) => {
+          console.log("login check:::", response.data);
+          const data = response.data;
+          if (data.code === 500) {
+            alert(data.msg);
+            cookie.remove("token");
+            dispatch(isLogin(false));
+          } else if (data.code === 200) {
+            dispatch(isLogin(true));
+            console.log("로그인 유지!");
+          }
+          dispatch(loginCheck(false));
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     } else {
       dispatch(isLogin(false));
     }
-  }, []);
+  }, [login_check]);
   return (
     <ConnectedRouter history={history}>
       <StyledViewContainer>
@@ -48,6 +68,7 @@ function App() {
         <Route path="/signup" exact component={Signup} />
         <Route path="/detail/:id" exact component={Detail} />
         <Route path="/user/edit" exact component={UserInfoEdit} />
+        <Route path="/mypage" exact component={Mypage} />
         <Footer />
       </StyledViewContainer>
     </ConnectedRouter>

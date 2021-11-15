@@ -9,51 +9,43 @@ import ic_bookmark_off from "../img/ic_bookmark_off.svg";
 import { apis } from "../lib/axios";
 
 import { useDispatch } from "react-redux";
+import { history } from "../redux/configureStore";
+
 import { textLogo } from "../redux/modules/header";
+import { loginCheck } from "../redux/modules/login";
 
 const Main = () => {
-  const test_card_list = [
+  const [boardList, setBoardList] = React.useState([
     {
       id: 1,
-      title: "제목",
-      address: "대구시",
-      img: "https://cdn.pixabay.com/photo/2021/10/19/10/56/cat-6723256_1280.jpg",
-      contents: "본문",
-      starGazing: 10,
+      title: "0",
+      address: "0",
+      img: "0",
+      contents: "0",
+      starGazing: 0,
     },
-    {
-      id: 1,
-      title: "제목",
-      address: "대구시",
-      img: "https://cdn.pixabay.com/photo/2021/10/19/10/56/cat-6723256_1280.jpg",
-      contents: "본문",
-      starGazing: 10,
-    },
-    {
-      id: 1,
-      title: "제목",
-      address: "대구시",
-      img: "https://cdn.pixabay.com/photo/2021/10/19/10/56/cat-6723256_1280.jpg",
-      contents: "본문",
-      starGazing: 10,
-    },
-  ];
-  const [boardList, setBoardList] = React.useState();
+  ]);
   const dispatch = useDispatch();
   React.useEffect(() => {
     dispatch(textLogo(true));
     apis
       .getMainBoardAX()
       .then((response) => {
-        console.log(response);
+        console.log("Get main board list:::", response.data.msg);
+        if (response.data.msg === "성공") {
+          console.log(response.data.data);
+          setBoardList(response.data.data);
+        } else {
+          alert("알 수 없는 이유로 인하여 캠핑장 목록을 불러오지 못했습니다.");
+        }
       })
       .catch((err) => {
         console.log(err);
       });
-  });
+  }, []);
   return (
     <React.Fragment>
-      <StyldMain>
+      <StyldMain className="CommonGap">
         <VisualBox url={video}>
           <span />
           <h3 className="visualText">
@@ -65,9 +57,14 @@ const Main = () => {
         <ContentBox>
           <h3>별보기 좋은 캠핑장</h3>
           <ul>
-            {test_card_list.map((l, idx) => {
+            {boardList.map((l, idx) => {
               return (
-                <Card key={idx}>
+                <Card
+                  key={idx}
+                  onClick={() => {
+                    history.push(`detail/${l.id}`);
+                  }}
+                >
                   <ImageBox>
                     <Address>
                       <img src={ic_map} alt="address icon" />
@@ -86,7 +83,12 @@ const Main = () => {
                         <p>관측지수</p>
                         <span className="openSans">{l.starGazing}</span>
                       </div>
-                      <div className="bookmark">
+                      <div
+                        className="bookmark"
+                        onClick={() => {
+                          dispatch(loginCheck(true));
+                        }}
+                      >
                         <img src={ic_bookmark_off} alt="bookmark" />
                         <p className="openSans">{l.bookmark}</p>
                       </div>

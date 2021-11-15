@@ -61,7 +61,7 @@ const Card = (props) => {
                 src={ic_bookmark_off}
                 alt="ic_bookmark_off"
               />
-              <p className="bookmark">{props.bookmark}</p>
+              {/* <p className="bookmark">{props.bookmark}</p> */}
             </div>
           </div>
         </BottomDiv>
@@ -114,11 +114,11 @@ const BottomDiv = styled.div`
     .ic_bookmark {
       margin-right: 2px;
     }
-    .bookmark {
+    /* .bookmark {
       margin-left: 4px;
       font-size: 14px;
       color: #cccccc;
-    }
+    } */
   }
 `;
 

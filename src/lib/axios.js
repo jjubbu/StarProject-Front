@@ -18,7 +18,7 @@ export const apis = {
   //로그인
   loginAX: (loginInfo) => instance.post(`/user/login`, loginInfo),
   //로그인 체크
-  loginCheckAX: () => instance.get(`/user/logincheck`),
+  loginCheckAX: () => instance.get(`/user/login/check`),
   //회원가입
   signupAX: (signupInfo) => instance.post(`/user/signup`, signupInfo),
   //닉네임 중복 확인
@@ -51,6 +51,14 @@ export const apis = {
     instance.get(`/board/map/list${cityName ? cityName : ""}`),
   //검색 자동 완성 키워드
   getMapSearchAX: (keyword) => instance.get(`/board/keyword?key=${keyword}`),
+
+  //마이페이지
+  //회원탈퇴
+  deleteAccountAX: () => instance.delete("/my/leave"),
+  //내가 쓴 글 리스트
+  getMyListAX: () => instance.get("/my/writeList"),
+  //북마크 리스트
+  getMyBookmarkAX: () => instance.get("/my/bookmark"),
 
   //마이페이지 계정 수정 페이지
   putUserInfoAX: (userinfo) => instance.put("/my/update", userinfo),

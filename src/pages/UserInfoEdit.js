@@ -52,12 +52,6 @@ const UserInfoEdit = () => {
     _.debounce((name, value) => {
       setWarningFunc(
         name,
-        "username",
-        "이메일로 입력해주세요!",
-        !email.test(value)
-      );
-      setWarningFunc(
-        name,
         "password",
         "영문,숫자,특수문자를 모두 이용한 최소 8자의 비밀번호를 입력해주세요!",
         !pwCheck.test(value)
@@ -113,7 +107,10 @@ const UserInfoEdit = () => {
       .putUserInfoAX(userInfo)
       .then((response) => {
         if (response.status === 200) {
-          history.push("/login");
+          alert("저장 성공!");
+          history.push("/mypage");
+        } else {
+          alert("저장 실패!");
         }
       })
       .catch((err) => {
@@ -161,7 +158,7 @@ const UserInfoEdit = () => {
   }, []);
   return (
     <React.Fragment>
-      <StyleArticle>
+      <StyleArticle className="CommonGap">
         <h1>프로필수정</h1>
         <img src={ic_user} alt="user profile" className="userProfile" />
         <InputBox className="userInfoeditBox">
@@ -232,7 +229,8 @@ const StyleArticle = styled.article`
 `;
 
 const Warning = styled.p`
-  ${(props) => (props.useable === "warn" ? "display:block;" : "display:none;")};
+  ${(props) =>
+    props.useable === "warn" && "success" ? "display:block;" : "display:none;"};
   margin: 12px 0 0 20px;
   font-weight: normal;
   font-size: 12px;
