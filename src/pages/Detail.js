@@ -299,7 +299,7 @@ const Detail = ({ history, location, match }) => {
                 {/*내가 글을 작성 중이던 페이지로*/}
                 <button
                   onClick={() => {
-                    history.push("/card/write");
+                    history.push("/post/edit/:id");
                   }}
                 >
                   수정
@@ -314,6 +314,7 @@ const Detail = ({ history, location, match }) => {
     </React.Fragment>
   );
 };
+
 const MapBox = styled.section`
   position: relative;
   width: 26%;
@@ -323,36 +324,38 @@ const MapBox = styled.section`
 `;
 
 const InfoBox = styled.section`
-  width: 26%;
+  width: 312px;
   height: 380px;
   margin-top: 20px;
   flex-direction: column;
   display: flex;
   border-radius: 10px;
   background-color: #303136;
+  overflow: auto;
+  -ms-overflow-style: none;
 `;
 
 const InfoHeader = styled.div`
   justify-content: space-between;
 
   .place {
-    font-size: 18px;
+    font-size: 24px;
     font-weight: bold;
     text-align: left;
     vertical-align: top;
     width: 138px;
-    margin: 30px;
-    margin-left: 30px;
+    margin: 36px 0 0 36px;
   }
 
   .time {
-    font-size: 10px;
-    width: 120px;
+    font-size: 12px;
+    width: 114px;
     height: 16px;
     line-height: 16px;
     text-align: left;
     color: #dddddd;
-    margin: -47px 0 0 187px;
+    margin: 42px 36px 0 234px;
+    padding-left: 36px;
     vertical-align: top;
   }
 
@@ -431,9 +434,9 @@ const InfoHeader = styled.div`
 
 const InfoBody = styled.div`
   justify-content: space-between;
-
+  padding: 5px;
   .hour {
-    font-size: 5px;
+    font-size: 12px;
     position: relative;
     top: 21px;
     width: 87%;
