@@ -20,6 +20,8 @@ const Detail = ({ history, location, match }) => {
   const { id } = match.params;
 
   const dispatch = useDispatch();
+  const user_info = useSelector((state) => state.user.user);
+
   React.useEffect(() => {
     // setData(getPostByID(id));
 
