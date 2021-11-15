@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { CustomOverlayMap, Map, MapMarker } from "react-kakao-maps-sdk";
+import _ from "lodash";
 
 import ic_location_off from "../img/map/ic_location_off.svg";
 import ic_location_on from "../img/map/ic_location_on.svg";
@@ -20,12 +21,14 @@ import { textLogo } from "../redux/modules/header";
 const MainMap = () => {
   const [is_search, setSearch] = React.useState(false);
   const [is_loading, setLoading] = React.useState();
+  const [searchValue, setSearchValue] = React.useState("");
   const testSearchArray = [1, 2, 3, 4, 5];
   const [mapLocation, setMapLocation] = React.useState({
     lat: 37.3645764,
     lon: 127.834038,
   });
   const [resultList, setResultList] = React.useState([{}]);
+  const [searchList, setSearchList] = React.useState([{}]);
   const dispatch = useDispatch();
   const options = {
     enableHighAccuracy: true,
@@ -57,18 +60,75 @@ const MainMap = () => {
     console.log("set location");
   };
 
+  const searchValueChange = (e) => {
+    const text = e.target.value;
+    console.log(e);
+    setSearchValue(text);
+  };
+
+  const getSearchAuto = React.useCallback(
+    _.debounce((e) => {
+      const text = e.target.value;
+      console.log(text);
+      if (text !== "") {
+        setSearch(true);
+        apis
+          .getMapSearchAX(text)
+          .then((response) => {
+            console.log(response.data.data.length);
+            if (response.data.data.length !== 0) {
+              setSearchList(response.data.data);
+            } else {
+              setSearchList([{ address: "검색 결과가 없습니다." }]);
+            }
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      } else {
+        setSearch(false);
+      }
+    }, 500),
+    []
+  );
+
+  const autoSearchClick = (text) => {
+    const params = `?cityName=${text}`;
+
+    if (text !== "검색 결과가 없습니다.") {
+      apis
+        .getMapListAX(params)
+        .then((response) => {
+          if (response.data.data) {
+            setResultList(response.data.data);
+            setSearchValue(text);
+          }
+        })
+        .then(() => {
+          setSearch(false);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } else {
+      return;
+    }
+  };
+
   const searchCity = (e) => {
     const text = e.target.value;
     const params = `?cityName=${text}`;
     if (window.event.keyCode === 13) {
       console.log("enter", text);
       apis.getMapListAX(params).then((response) => {
-        console.log(response);
+        if (response.data.data) {
+          setResultList(response.data.data);
+        }
       });
     }
   };
   const listClick = (id) => {
-    // history.push(`detail/${id}`);
+    history.push(`detail/${id}`);
   };
 
   const optionClick = (e) => {
@@ -108,9 +168,16 @@ const MainMap = () => {
         console.log(err);
       });
   }, []);
+
+  React.useEffect(() => {
+    const dict = resultList[0];
+    const latitude = dict.y_location;
+    const longitude = dict.x_location;
+    setMapLocation({ lat: latitude, lon: longitude });
+  }, [resultList]);
   return (
     <React.Fragment>
-      <div className="CommonPageStyle">
+      <div className="CommonPageStyle CommonGap">
         <StyledMap>
           <ResultBox>
             <ResultHeader url={ic_option}>
@@ -173,6 +240,11 @@ const MainMap = () => {
                     type="text"
                     placeholder="지역명으로 검색"
                     onKeyPress={searchCity}
+                    onChange={(e) => {
+                      getSearchAuto(e);
+                      searchValueChange(e);
+                    }}
+                    value={searchValue}
                   />
                 </label>
                 <button onClick={setLocation}>
@@ -197,11 +269,16 @@ const MainMap = () => {
 
               {is_search ? (
                 <SearchList>
-                  {testSearchArray.map((l, idx) => {
+                  {searchList?.map((l, idx) => {
                     return (
-                      <li key={idx}>
+                      <li
+                        key={idx}
+                        onClick={() => {
+                          autoSearchClick(l.address);
+                        }}
+                      >
                         <img src={ic_map} alt="map icon" />
-                        서울특별시
+                        {l.address}
                       </li>
                     );
                   })}
@@ -447,6 +524,11 @@ const ResultHeader = styled.div`
 const ResultListBox = styled.ul`
   margin-top: 4px;
   overflow-y: scroll;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
   li:last-child {
     border: none;
   }

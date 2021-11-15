@@ -8,15 +8,25 @@ import { apis } from "../../lib/axios";
 
 const initialState = {
   is_login: false,
+  user_info: {
+    nickname: "",
+    id: "",
+  },
 };
 
 const IS_LOGIN = "IS_LOGIN";
+const USER_INFO = "USER_INFO";
 
 export const isLogin = createAction(IS_LOGIN, (boolean) => ({ boolean }));
+export const setUserInfo = createAction(USER_INFO, (list) => ({ list }));
 
 export default handleActions(
   {
     [IS_LOGIN]: (state, action) =>
+      produce(state, (draft) => {
+        draft.is_login = action.payload.boolean;
+      }),
+    [USER_INFO]: (state, action) =>
       produce(state, (draft) => {
         draft.is_login = action.payload.boolean;
       }),

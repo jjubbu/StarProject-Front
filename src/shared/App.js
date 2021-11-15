@@ -14,6 +14,7 @@ import Signup from "../pages/Signup";
 // import Write from "../pages/Write";
 import AddEditPost from "../pages/AddEditPost";
 import UserInfoEdit from "../pages/UserInfoEdit";
+import Mypage from "../pages/Mypage";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import "./font.css";
@@ -21,6 +22,7 @@ import "./font.css";
 import { useDispatch } from "react-redux";
 import { history } from "../redux/configureStore";
 import { isLogin } from "../redux/modules/login";
+import { apis } from "../lib/axios";
 
 function App() {
   const cookie = new Cookies();
@@ -28,7 +30,22 @@ function App() {
   React.useEffect(() => {
     const token = cookie.get("token");
     if (token) {
-      dispatch(isLogin(true));
+      apis
+        .loginCheckAX()
+        .then((response) => {
+          console.log("login check:::", response.data);
+          const data = response.data;
+          if (data.code === 500) {
+            alert(data.msg);
+            cookie.remove("token");
+            dispatch(isLogin(false));
+          } else if (data.code === 200) {
+            dispatch(isLogin(true));
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     } else {
       dispatch(isLogin(false));
     }
@@ -48,6 +65,7 @@ function App() {
         <Route path="/signup" exact component={Signup} />
         <Route path="/detail/:id" exact component={Detail} />
         <Route path="/user/edit" exact component={UserInfoEdit} />
+        <Route path="/mypage" exact component={Mypage} />
         <Footer />
       </StyledViewContainer>
     </ConnectedRouter>

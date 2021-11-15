@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { Text, Image, Grid } from "../elements";
-
+import { history } from "../redux/configureStore";
 import { useState } from "react";
 
 import ic_map from "../img/map/ic_map.svg";
@@ -14,8 +14,13 @@ const Card = (props) => {
   const [like, setLike] = React.useState(false);
   const toggleLike = () => setLike(!like);
 
+  const cardClick = (e) => {
+    console.log(props.cardID);
+    history.push(`detail/${props.cardID}`);
+  };
+
   return (
-    <Wrapper>
+    <Wrapper cardID={props.cardID} onClick={cardClick}>
       <div>
         <Image
           height="288px"
@@ -56,7 +61,7 @@ const Card = (props) => {
                 src={ic_bookmark_off}
                 alt="ic_bookmark_off"
               />
-              <p className="bookmark">{props.bookmark}</p>
+              {/* <p className="bookmark">{props.bookmark}</p> */}
             </div>
           </div>
         </BottomDiv>
@@ -109,11 +114,11 @@ const BottomDiv = styled.div`
     .ic_bookmark {
       margin-right: 2px;
     }
-    .bookmark {
+    /* .bookmark {
       margin-left: 4px;
       font-size: 14px;
       color: #cccccc;
-    }
+    } */
   }
 `;
 
