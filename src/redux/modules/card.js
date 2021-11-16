@@ -25,32 +25,21 @@ const initialCard = {
   title: "제목",
   주소: "대구시",
   img: "https://campimage.s3.ap-northeast-2.amazonaws.com/campimage.jpg",
-  like: 3,
   contents: "본문",
   modifiedAt: "수정일",
 };
 
 // middleware
 
-const getCardDB = (
-  id,
-  writer,
-  title,
-  주소,
-  img,
-  like,
-  contents,
-  modifiedAt
-) => {
+const getCardDB = (id, writer, title, address, img, contents, modifiedAt) => {
   return function (dispatch, getState, { history }) {
     api
       .get("/card", {
         id: id,
         writer: writer,
         title: title,
-        주소: 주소,
+        address: address,
         img: img,
-        like: like,
         contents: contents,
         modifiedAt: modifiedAt,
       })
@@ -75,6 +64,7 @@ export default handleActions(
     [SET_CARD]: (state, action) =>
       produce(state, (draft) => {
         draft.list = action.payload.card_list;
+        console.log(draft.list);
       }),
 
     [ADD_CARD]: (state, action) => produce(state, (draft) => {}),

@@ -5,7 +5,6 @@ import { Grid } from "../elements";
 import { useHistory } from "react-router";
 import { Write } from "./Write";
 
-import { useState } from "react";
 import Detail from "../pages/Detail";
 
 // redux
@@ -20,7 +19,8 @@ import ic_search from "../img/ic_search.svg";
 const MainCommunity = (props) => {
   const dispatch = useDispatch();
   const history = useHistory();
-
+  const card_list = useSelector((state) => state.card.list);
+  console.log(card_list);
   const test_card_list = [
     {
       id: 1,
@@ -118,6 +118,7 @@ const MainCommunity = (props) => {
 
   React.useEffect(() => {
     dispatch(textLogo(false));
+    dispatch(postActions.getCardDB());
   }, []);
 
   return (
@@ -143,10 +144,10 @@ const MainCommunity = (props) => {
           </button>
         </TopDiv>
         <Wrapper>
-          {test_card_list.map((p, i) => {
+          {card_list.map((p, i) => {
             return (
               <Card key={i} cardID={p.id} {...p}>
-                {test_card_list}
+                {/* {test_card_list} */}
               </Card>
             );
           })}
