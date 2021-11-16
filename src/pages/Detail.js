@@ -10,22 +10,22 @@ import ic_mypage from "../img/ic_mypage.svg";
 import { history } from "../redux/configureStore";
 import { FaBorderNone, FaRegHeart } from "react-icons/fa";
 import { FaRegBookmark } from "react-icons/fa";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { textLogo } from "../redux/modules/header";
 import { getPostByID } from "../pages/MainCommunity";
-import { loginCheck } from "../redux/modules/login";
+import { actionCreators as loginCheckAction } from "../redux/modules/login";
 import { setUserInfo } from "../redux/modules/login";
 
 const Detail = ({ history, location, match }) => {
   const [data, setData] = useState({});
+  const is_login = useSelector((state) => state.login.is_login);
   const { id } = match.params;
 
   const dispatch = useDispatch();
-  dispatch(loginCheck(true));
 
   React.useEffect(() => {
     // setData(getPostByID(id));
-
+    dispatch(loginCheckAction.isLoginMW());
     console.log(window.location.pathname);
     dispatch(textLogo(false));
   }, []);
@@ -298,7 +298,7 @@ const Detail = ({ history, location, match }) => {
               <div className="headerLine3"></div>
               {/*line*/}
               <div class="buttons">
-                {loginCheck ? (
+                {is_login ? (
                   ((
                     <button
                       onClick={() => {
