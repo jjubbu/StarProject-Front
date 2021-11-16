@@ -3,78 +3,184 @@ import styled from "styled-components";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { StyledInput } from "../elements/CommonInput";
+import ic_save from "../img/ic_save.svg";
+import CustomToolbar from "../components/QuillCustomToolbar";
 
 const AddEditPost = () => {
   const [quillValue, setQuillValue] = React.useState();
+  const modules = {
+    toolbar: {
+      container: "#toolbar",
+    },
+  };
+
+  const formats = [
+    "header",
+    "font",
+    "size",
+    "bold",
+    "italic",
+    "underline",
+    "strike",
+    "blockquote",
+    "list",
+    "bullet",
+    "indent",
+    "link",
+    "image",
+    "color",
+    "align",
+  ];
 
   return (
     <React.Fragment>
-      <PostWriteBox className="CommonPageStyle CommonGap">
-        <PostInput type="text" placeholder="제목을 입력하세요" />
-        <TextEditorBox className="textEditor">
-          <ReactQuill
-            value={quillValue}
-            onChange={(e) => setQuillValue(e)}
-          ></ReactQuill>
-        </TextEditorBox>
-        <div className="buttonBox">
+      <AddEditStyled className="CommonPageStyle CommonGap">
+        <AddEditHeader>
+          <h3>커뮤니티 게시글 작성</h3>
+          <button>
+            업로드 <img src={ic_save} alt="save" />
+          </button>
+        </AddEditHeader>
+        <PostWriteBox>
           <PostInput
             type="text"
-            name="address"
-            placeholder="캠핑한 장소의 주소를 입력하세요"
+            name="title"
+            placeholder="제목을 입력해주세요"
           />
+          <TextEditorBox className="textEditor">
+            <CustomToolbar />
+            <ReactQuill
+              value={quillValue}
+              onChange={(e) => setQuillValue(e)}
+              modules={modules}
+              formats={formats}
+            />
+            <PostInput
+              type="text"
+              name="address"
+              placeholder="캠핑한 장소의 주소를 입력하세요"
+            />
+          </TextEditorBox>
 
-          <ButtonStyle>저장하기</ButtonStyle>
-        </div>
-      </PostWriteBox>
+          <PostInput
+            type="text"
+            name="tag"
+            placeholder="# 해시태그를 입력해주세요"
+            className="openSans"
+          />
+        </PostWriteBox>
+      </AddEditStyled>
     </React.Fragment>
   );
 };
 
-const PostWriteBox = styled.div`
+const AddEditStyled = styled.div`
+  display: flex;
+  flex-direction: column;
+  height: fit-content;
+  gap: 42px;
+`;
+
+const AddEditHeader = styled.header`
+  margin: 0 auto;
+  width: 100%;
+  position: relative;
+  text-align: center;
+
+  h3 {
+    font-weight: bold;
+    font-size: 32px;
+    line-height: 40px;
+  }
+
+  button {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    right: 0;
+    top: 0;
+    height: 40px;
+    padding: 0 16px 0 21px;
+    background: #4688ec;
+    border-radius: 4px;
+    border: none;
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 20px;
+    color: #fff;
+  }
+`;
+
+const PostWriteBox = styled.main`
   background-color: #303136;
   border-radius: 10px;
   padding: 38px 28px;
+  flex: 1;
   display: flex;
   flex-direction: column;
-
-  .buttonBox {
-    display: flex;
-    justify-content: space-between;
-    align-items: end;
-  }
 `;
 
 const PostInput = styled(StyledInput)`
   background: none;
-  border-bottom: 1px solid #666;
   border-radius: 0;
-  font-weight: bold;
-  font-size: 18px;
-  line-height: 18px;
-  color: white;
+  color: #eee;
+  &::placeholder {
+    color: #eee;
+  }
 
+  &[name="title"] {
+    padding: 0 17px;
+  }
+  &[name="title"],
+  &[name="title"]::placeholder {
+    font-weight: bold;
+    font-size: 28px;
+    line-height: 36px;
+  }
   &[name="address"] {
-    width: 50%;
-    padding: 10px;
-    font-size: 14px;
-    font-weight: normal;
-    color: #ccc;
+    margin-top: 69px;
+    padding: 0 20px;
+    border-radius: 10px;
+    opacity: 0.7;
+    background: #18191e;
+    width: 100%;
     height: 40px;
+  }
+  &[name="address"],
+  &[name="address"]::placeholder {
+    font-size: 14px;
+    line-height: 40px;
+  }
+  &[name="tag"] {
+    width: 100%;
+    height: 45px;
+    margin-top: 10px;
+  }
+  &[name="tag"],
+  &[name="tag"]::placeholder {
+    font-size: 18px;
+    line-height: 44px;
   }
 `;
 
 const TextEditorBox = styled.div`
-  margin-top: 28px;
+  margin-top: 10px;
   flex: 1;
+  display: flex;
+  flex-direction: column;
+  border-bottom: 1px solid #666;
+  padding-bottom: 20px;
+
   .quill {
     height: 100%;
     display: flex;
     flex-direction: column;
   }
   .ql-toolbar {
-    border: none;
-    background: #666;
+    border: 1px solid #666;
+    border-left: none;
+    border-right: none;
   }
   .ql-toolbar * {
     stroke: white;
@@ -91,20 +197,11 @@ const TextEditorBox = styled.div`
   }
   .ql-container {
     flex: 1;
-    border: 1px solid #666;
+    border: none;
   }
-`;
-
-const ButtonStyle = styled.button`
-  padding: 9px 23px;
-  margin-top: 20px;
-  background: #18191e;
-  color: #ccc;
-  border: none;
-  border-radius: 4px;
-
-  font-size: 14px;
-  line-height: 18px;
+  .ql-editor {
+    padding-top: 28px;
+  }
 `;
 
 export default AddEditPost;
