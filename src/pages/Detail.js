@@ -8,19 +8,20 @@ import ic_moonrise from "../img/ic_moonrise.svg";
 import ic_moonset from "../img/ic_moonset.svg";
 import ic_mypage from "../img/ic_mypage.svg";
 import { history } from "../redux/configureStore";
-import { FaRegHeart } from "react-icons/fa";
+import { FaBorderNone, FaRegHeart } from "react-icons/fa";
 import { FaRegBookmark } from "react-icons/fa";
-
 import { useDispatch } from "react-redux";
 import { textLogo } from "../redux/modules/header";
 import { getPostByID } from "../pages/MainCommunity";
+import { loginCheck } from "../redux/modules/login";
+import { setUserInfo } from "../redux/modules/login";
 
 const Detail = ({ history, location, match }) => {
   const [data, setData] = useState({});
   const { id } = match.params;
 
   const dispatch = useDispatch();
-  const user_info = useSelector((state) => state.user.user);
+  dispatch(loginCheck(true));
 
   React.useEffect(() => {
     // setData(getPostByID(id));
@@ -30,6 +31,7 @@ const Detail = ({ history, location, match }) => {
   }, []);
 
   const Delete = () => {};
+
   //지도 구현함수
   return (
     <React.Fragment>
@@ -293,21 +295,23 @@ const Detail = ({ history, location, match }) => {
                   힐링해보세요!
                 </p>
               </div>
-
               <div className="headerLine3"></div>
               {/*line*/}
-
               <div class="buttons">
-                {/*내가 글을 작성 중이던 페이지로*/}
-                <button
-                  onClick={() => {
-                    history.push("/post/edit/:id");
-                  }}
-                >
-                  수정
-                </button>
-
-                <button onClick={Delete}>삭제</button>
+                {loginCheck ? (
+                  ((
+                    <button
+                      onClick={() => {
+                        history.push("/post/edit/:id");
+                      }}
+                    >
+                      수정
+                    </button>
+                  ),
+                  (<button onClick={Delete}>삭제</button>))
+                ) : (
+                  <button />
+                )}
               </div>
             </ResultBody>
           </ResultBox>
