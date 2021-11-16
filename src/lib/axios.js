@@ -27,6 +27,10 @@ export const apis = {
   //이메일중복확인
   usernameAX: (email) => instance.get(`/user/username/check?username=${email}`),
 
+  //공통
+  //북마크
+  postBookmarkAX: (id) => instance.post(`/bookmark?cardId=${id}`),
+
   //메인페이지
   //실시간 별보기 좋은 캠핑장
   getMainBoardAX: () => instance.get("/main/boardList"),
