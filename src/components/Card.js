@@ -53,7 +53,7 @@ const Card = (props) => {
 
           <div className="likeDiv">
             <img className="ic_heart" src={ic_heart} alt="ic_heart" />
-            <p className="like">{props.like}</p>
+            <p className="like">{props.likeCount}</p>
 
             <div className="bookmarkDiv">
               <img
