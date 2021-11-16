@@ -7,13 +7,12 @@ import { CommonInput, InputBox } from "../elements";
 
 import { history } from "../redux/configureStore";
 import { useDispatch } from "react-redux";
-import { isLogin } from "../redux/modules/login";
+import { actionCreators as lodinAction } from "../redux/modules/login";
 import { textLogo } from "../redux/modules/header";
 
 const Login = () => {
   const dispatch = useDispatch();
   const [is_save, setIsSave] = React.useState(false);
-  const [idCookie, setIdCookie] = React.useState();
   const [loginInfo, setLoginInfo] = React.useState({
     username: "",
     password: "",
@@ -48,7 +47,7 @@ const Login = () => {
         } else {
           cookie.remove("starCampID");
         }
-        dispatch(isLogin(true));
+        dispatch(lodinAction.isLogin(true));
         alert("로그인 성공!");
         history.push("/");
       }

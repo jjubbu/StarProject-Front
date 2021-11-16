@@ -10,9 +10,8 @@ import { apis } from "../lib/axios";
 
 import { useDispatch } from "react-redux";
 import { history } from "../redux/configureStore";
-
 import { textLogo } from "../redux/modules/header";
-import { loginCheck } from "../redux/modules/login";
+import { actionCreators as loginCheckAction } from "../redux/modules/login";
 
 const Main = () => {
   const [boardList, setBoardList] = React.useState([
@@ -26,6 +25,22 @@ const Main = () => {
     },
   ]);
   const dispatch = useDispatch();
+
+  const bookmarkCheck = (e) => {
+    const id = e.target.getAttribute("cardid");
+    dispatch(loginCheckAction.isLoginMW());
+    console.log("bookmark click:::", id);
+    apis
+      .postBookmarkAX(id)
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    e.stopPropagation();
+  };
+
   React.useEffect(() => {
     dispatch(textLogo(true));
     apis
@@ -85,9 +100,8 @@ const Main = () => {
                       </div>
                       <div
                         className="bookmark"
-                        onClick={() => {
-                          dispatch(loginCheck(true));
-                        }}
+                        onClick={bookmarkCheck}
+                        cardid={l.id}
                       >
                         <img src={ic_bookmark_off} alt="bookmark" />
                         <p className="openSans">{l.bookmark}</p>

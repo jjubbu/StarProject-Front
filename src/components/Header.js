@@ -5,7 +5,7 @@ import { Cookies } from "react-cookie";
 import { history } from "../redux/configureStore";
 import { useSelector, useDispatch } from "react-redux";
 import { textLogo } from "../redux/modules/header";
-import { isLogin } from "../redux/modules/login";
+import { actionCreators as headerAction } from "../redux/modules/login";
 
 import ic_logo from "../img/ic_logo.svg";
 import ic_user from "../img/header/ic_mypage.svg";
@@ -21,7 +21,7 @@ const Header = () => {
   };
   const logout = () => {
     cookie.remove("token");
-    dispatch(isLogin(false));
+    dispatch(headerAction.isLogin(false));
     history.push("/");
   };
 
