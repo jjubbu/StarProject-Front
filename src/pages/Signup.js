@@ -133,13 +133,21 @@ const Signup = () => {
     if (code === 200) {
       setWarning((prevState) => ({
         ...prevState,
-        [check]: "사용가능한 아이디입니다.",
+        [check]: String(
+          "사용가능한 " +
+            (check === "nickname" ? "닉네임" : "아이디") +
+            "입니다."
+        ),
       }));
       setInputWarn((prevState) => ({ ...prevState, [check]: "success" }));
     } else if (code === 501) {
       setWarning((prevState) => ({
         ...prevState,
-        [check]: "사용할 수 없는 아이디입니다.",
+        [check]: String(
+          "사용할 수 없는 " +
+            (check === "nickname" ? "닉네임" : "아이디") +
+            "입니다."
+        ),
       }));
       setInputWarn((prevState) => ({ ...prevState, [check]: "warn" }));
     }
@@ -158,6 +166,7 @@ const Signup = () => {
         .nicknameAX(signupInfo.nickname)
         .then((response) => {
           const code = Number(response.data.code);
+
           console.log(check, " check:::", response);
           overlapAxios(code, check);
         })
@@ -170,6 +179,12 @@ const Signup = () => {
           overlapAxios(code, check);
         })
         .catch((err) => console.log(err));
+    }
+  };
+
+  const enterKeyEvent = () => {
+    if (window.event.keyCode === 13) {
+      signup();
     }
   };
 
@@ -190,6 +205,7 @@ const Signup = () => {
                 onChange={inputValue}
                 placeholder="1~8자, 국문/영문 대소문자/숫자 "
                 border={inputWarn.nickname}
+                onKeyPress={enterKeyEvent}
               />
               <button name="nickname" onClick={overlapCheck} className="roboto">
                 중복확인
@@ -198,13 +214,14 @@ const Signup = () => {
             <Warning useable={inputWarn.nickname}>{warning.nickname}</Warning>
           </label>
           <label>
-            <LabelTitle>아이디 이메일형식</LabelTitle>
+            <LabelTitle>아이디</LabelTitle>
             <WithOverlapBox>
               <CommonInput
                 name="username"
                 onChange={inputValue}
                 placeholder="이메일 주소"
                 border={inputWarn.username}
+                onKeyPress={enterKeyEvent}
               />
               <button name="username" onClick={overlapCheck} className="roboto">
                 중복확인
@@ -220,6 +237,7 @@ const Signup = () => {
               placeholder="비밀번호"
               border={inputWarn.password}
               type="password"
+              onKeyPress={enterKeyEvent}
             />
             <Warning useable={inputWarn.password}>{warning.password}</Warning>
           </label>
@@ -231,6 +249,7 @@ const Signup = () => {
               placeholder="비밀번호 확인"
               border={inputWarn.passwordCheck}
               type="password"
+              onKeyPress={enterKeyEvent}
             />
             <Warning useable={inputWarn.passwordCheck}>
               {warning.passwordCheck}

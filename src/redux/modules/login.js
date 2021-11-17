@@ -34,7 +34,6 @@ const isLoginMW = () => {
             cookie.remove("token");
             dispatch(isLogin(false));
             alert(data.msg);
-            history.push("/login");
           } else if (data.code === 200) {
             dispatch(isLogin(true));
             dispatch(setUserInfo(data.data));
@@ -47,7 +46,6 @@ const isLoginMW = () => {
     } else {
       alert("로그인을 해주세요!");
       dispatch(isLogin(false));
-      history.push("/login");
     }
   };
 };
