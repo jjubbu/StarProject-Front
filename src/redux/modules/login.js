@@ -31,9 +31,9 @@ const isLoginMW = () => {
           console.log("login check:::", response.data);
           const data = response.data;
           if (data.code === 500) {
-            alert(data.msg);
             cookie.remove("token");
             dispatch(isLogin(false));
+            alert(data.msg);
           } else if (data.code === 200) {
             dispatch(isLogin(true));
             dispatch(setUserInfo(data.data));

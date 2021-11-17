@@ -70,7 +70,7 @@ const Main = () => {
           <img src={arrow} alt="scroll down" />
         </VisualBox>
         <ContentBox>
-          <h3>별보기 좋은 캠핑장</h3>
+          <h3>별보기 좋은 곳</h3>
           <ul>
             {boardList.map((l, idx) => {
               return (
