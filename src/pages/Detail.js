@@ -355,13 +355,13 @@ const InfoHeader = styled.div`
 
   .time {
     font-size: 12px;
-    width: 114px;
+    width: 120px;
     height: 16px;
     line-height: 16px;
     text-align: left;
+    vertical-align: top;
     color: #dddddd;
-    margin: 42px 36px 0 234px;
-    padding-left: 36px;
+    margin: 42px 36px 556px 234px;
     vertical-align: top;
   }
 
