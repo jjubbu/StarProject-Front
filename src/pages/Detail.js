@@ -42,7 +42,7 @@ const Detail = ({ history, location, match }) => {
             <MapBox>
               <Map
                 center={{ lat: 33.55635, lng: 126.795841 }}
-                style={{ width: "100%", height: "290px" }}
+                style={{ width: "100%", height: "360px" }}
               >
                 <MapMarker position={{ lat: 33.55635, lng: 126.795841 }}>
                   <div style={{ color: "#000" }}>Hello World!</div>
@@ -289,10 +289,21 @@ const Detail = ({ history, location, match }) => {
               </div>
               <div className="campInfodes">
                 <p>
-                  어쩌구캠핑장은 쾌적한 자연환경과 더불어 남사당 공연, 별자리
-                  체험 등 다양한 볼거리와 체험거리가 공존해 있는 최상의
-                  공간입니다. 답답한 도시에서 벗어나 다양한 체험을 경험하며
-                  힐링해보세요!
+                  이번 주말 서울 노을캠핑장에 다녀왔습니다. 이번 주말 서울
+                  노을캠핑장에 다녀왔습니다. 이번 주말 서울 노을캠핑장에
+                  다녀왔습니다. 이번 주말 서울 노을캠핑장에 다녀왔습니다. 이번
+                  주말 서울 노을캠핑장에 다녀왔습니다. 이번 주말 서울
+                  노을캠핑장에 다녀왔습니다. 이번 주말 서울 노을캠핑장에
+                  다녀왔습니다. 이번 주말 서울 노을캠핑장에 다녀왔습니다.이번
+                  주말 서울 노을캠핑장에 다녀왔습니다. 이번 주말 서울
+                  노을캠핑장에 다녀왔습니다. 이번 주말 서울 노을캠핑장에
+                  다녀왔습니다. 이번 주말 서울 노을캠핑장에 다녀왔습니다. 이번
+                  주말 서울 노을캠핑장에 다녀왔습니다. 이번 주말 서울
+                  노을캠핑장에 다녀왔습니다. 이번 주말 서울 노을캠핑장에
+                  다녀왔습니다. 이번 주말 서울 노을캠핑장에 다녀왔습니다. 이번
+                  주말 서울 노을캠핑장에 다녀왔습니다. 이번 주말 서울
+                  노을캠핑장에 다녀왔습니다. 이번 주말 서울 노을캠핑장에
+                  다녀왔습니다. 이번 주말 서울 노을캠핑장에 다녀왔습니다.
                 </p>
               </div>
               <div className="headerLine3"></div>
@@ -323,22 +334,22 @@ const Detail = ({ history, location, match }) => {
 
 const MapBox = styled.section`
   position: relative;
-  width: 26%;
+  width: 31%;
   height: 38%;
   overflow: hidden;
   border-radius: 10px;
 `;
 
 const InfoBox = styled.section`
-  width: 312px;
-  height: 380px;
+  position: absolute;
+  width: 24.5%;
+  height: 614px;
   margin-top: 20px;
+  margin-right: 20px;
   flex-direction: column;
   display: flex;
   border-radius: 10px;
   background-color: #303136;
-  overflow: auto;
-  -ms-overflow-style: none;
 `;
 
 const InfoHeader = styled.div`
@@ -361,17 +372,19 @@ const InfoHeader = styled.div`
     text-align: left;
     vertical-align: top;
     color: #dddddd;
-    margin: 42px 36px 556px 234px;
+    margin: -20px 36px 0 auto;
     vertical-align: top;
   }
 
   .starInfo {
     position: relative;
-    top: 20px;
+    top: 24px;
     width: 90%;
+    height: 88px;
     display: flex;
     margin: auto;
     margin-left: 23px;
+    background-color: green;
   }
   .starInfo > li {
     flex: 1;
@@ -380,29 +393,30 @@ const InfoHeader = styled.div`
   .starInfo > li > div {
     text-align: center;
 
-    margin-top: -3px;
+    margin-top: 18px;
+    margin-bottom: 18px;
     height: 50px;
-    font-size: 11px;
+    font-size: 14px;
     color: #ffffff;
   }
 
   .starInfo > li > div > .starView > img {
-    width: 13.5px;
-    height: 13px;
+    width: 16.13px;
+    height: 16px;
     margin: -15px;
     margin-left: -73px;
   }
 
   .starInfo > li > div > .moonRise > img {
-    width: 13.5px;
-    height: 13px;
+    width: 16px;
+    height: 16px;
     margin: -15px;
     margin-left: -50px;
   }
 
   .starInfo > li > div > .moonSet > img {
-    width: 13.5px;
-    height: 13px;
+    width: 16px;
+    height: 16px;
     margin: -15px;
     margin-left: -50px;
   }
@@ -623,21 +637,26 @@ const InfoBody = styled.div`
 
 const StyledBox = styled.main`
   gap: 24px;
-  height: 708px;
+  overflow: hidden;
+  border-radius: 10px;
+  height: 100%;
 
   & > section {
-    border-radius: 10px;
-    height: 97.8%;
     background-color: #303136;
-    display: flex;
   }
 `;
 
 const ResultBox = styled.section`
-  width: 72.3%;
   padding: 36px 28px 0;
-  margin: -692px 0 0 333px;
+  margin: 100px -300px -380px 398px;
   flex-direction: column;
+  border-radius: 10px;
+  position: absolute;
+  bottom: 0;
+  overflow: hidden;
+  width: 792px;
+  height: 995px;
+  z-index: 100;
 `;
 
 const ResultHeader = styled.div`
