@@ -43,7 +43,7 @@ const isLoginMW = () => {
         .catch((err) => {
           console.log(err);
         });
-    } else {
+    } else if (token === "" || token === undefined) {
       alert("로그인을 해주세요!");
       dispatch(isLogin(false));
     }
