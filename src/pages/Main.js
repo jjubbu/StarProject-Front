@@ -6,9 +6,10 @@ import arrow from "../img/arrow.svg";
 import ic_map from "../img/map/ic_map.svg";
 import ic_star from "../img/ic_star.svg";
 import ic_bookmark_off from "../img/ic_bookmark_off.svg";
+import ic_bookmark_on from "../img/ic_bookmark_on.svg";
 import { apis } from "../lib/axios";
 
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { history } from "../redux/configureStore";
 import { textLogo } from "../redux/modules/header";
 import { actionCreators as loginCheckAction } from "../redux/modules/login";
@@ -16,29 +17,37 @@ import { actionCreators as loginCheckAction } from "../redux/modules/login";
 const Main = () => {
   const [boardList, setBoardList] = React.useState([
     {
-      id: 1,
-      title: "0",
-      address: "0",
-      img: "0",
-      contents: "0",
+      address: "",
+      bookmark: false,
+      contents: "",
+      id: 0,
+      img: "",
       starGazing: 0,
+      title: "",
     },
   ]);
+  const is_login = useSelector((state) => state.login.is_login);
   const dispatch = useDispatch();
 
-  const bookmarkCheck = (e) => {
-    const id = e.target.getAttribute("cardid");
+  const bookmarkCheck = (id, idx) => {
     dispatch(loginCheckAction.isLoginMW());
+
+    if (!is_login) {
+      history.push("/login");
+    }
     console.log("bookmark click:::", id);
     apis
       .postBookmarkAX(id)
       .then((response) => {
         console.log(response);
+        const check = response.data.data.bookmarkCheck;
+        let newList = [...boardList];
+        newList[idx].bookmark = check;
+        setBoardList(newList);
       })
       .catch((err) => {
         console.log(err);
       });
-    e.stopPropagation();
   };
 
   React.useEffect(() => {
@@ -46,12 +55,11 @@ const Main = () => {
     apis
       .getMainBoardAX()
       .then((response) => {
-        console.log("Get main board list:::", response.data.msg);
         if (response.data.msg === "성공") {
-          console.log(response.data.data);
+          console.log("get main board data:::", response.data.data);
           setBoardList(response.data.data);
         } else {
-          alert("알 수 없는 이유로 인하여 캠핑장 목록을 불러오지 못했습니다.");
+          alert("main board list", response.data.msg);
         }
       })
       .catch((err) => {
@@ -98,14 +106,16 @@ const Main = () => {
                         <p>관측지수</p>
                         <span className="openSans">{l.starGazing}</span>
                       </div>
-                      <div
+
+                      <img
+                        src={l.bookmark ? ic_bookmark_on : ic_bookmark_off}
+                        alt="bookmark"
                         className="bookmark"
-                        onClick={bookmarkCheck}
-                        cardid={l.id}
-                      >
-                        <img src={ic_bookmark_off} alt="bookmark" />
-                        <p className="openSans">{l.bookmark}</p>
-                      </div>
+                        onClick={(e) => {
+                          bookmarkCheck(l.id, idx);
+                          e.stopPropagation();
+                        }}
+                      />
                     </CardEtcBox>
                   </div>
                 </Card>
