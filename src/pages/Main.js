@@ -59,7 +59,7 @@ const Main = () => {
           console.log("get main board data:::", response.data.data);
           setBoardList(response.data.data);
         } else {
-          alert("main board list", response.data.msg);
+          alert(`main board list ${response.data.msg}`);
         }
       })
       .catch((err) => {
