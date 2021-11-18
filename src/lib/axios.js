@@ -56,6 +56,11 @@ export const apis = {
   //검색 자동 완성 키워드
   getMapSearchAX: (keyword) => instance.get(`/board/keyword?key=${keyword}`),
 
+  //디테일 페이지
+  getPostDetailAX: (id) => instance.get(`/detail?boardId=${id}`),
+  //게시글 삭제
+  getDeletePostAX: (id) => instance.delete(`/detail/delete?boardId=${id}`),
+
   //마이페이지
   //회원탈퇴
   deleteAccountAX: () => instance.delete("/my/leave"),

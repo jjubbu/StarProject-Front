@@ -1,770 +1,442 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import MainCommunity from "../pages/MainCommunity";
 import { Map, MapMarker } from "react-kakao-maps-sdk";
-import ic_sunny from "../img/ic_sunny.svg";
 import ic_star from "../img/ic_star.svg";
 import ic_moonrise from "../img/ic_moonrise.svg";
 import ic_moonset from "../img/ic_moonset.svg";
 import ic_mypage from "../img/ic_mypage.svg";
-import { history } from "../redux/configureStore";
-import { FaBorderNone, FaRegHeart } from "react-icons/fa";
-import { FaRegBookmark } from "react-icons/fa";
+import ic_sunny from "../img/weather/ic_sunny.svg";
+import ic_heart from "../img/ic_heart.svg";
+import ic_bookmark from "../img/ic_bookmark_off.svg";
+import ic_arrow from "../img/ic_slideArrow.svg";
 import { useDispatch, useSelector } from "react-redux";
 import { textLogo } from "../redux/modules/header";
-import { getPostByID } from "../pages/MainCommunity";
 import { actionCreators as loginCheckAction } from "../redux/modules/login";
-import { setUserInfo } from "../redux/modules/login";
+import { apis } from "../lib/axios";
 
 const Detail = ({ history, location, match }) => {
   const [data, setData] = useState({});
   const is_login = useSelector((state) => state.login.is_login);
-  const { id } = match.params;
-
+  const weather = data.weather;
+  const wList = weather.weatherList;
   const dispatch = useDispatch();
 
   React.useEffect(() => {
     // setData(getPostByID(id));
     dispatch(loginCheckAction.isLoginMW());
-    console.log(window.location.pathname);
+    const id = window.location.pathname.split("/")[2];
+    apis.getPostDetailAX(id).then((response) => {
+      console.log("post detail:::", response);
+      if (response.data.code === 200) {
+        setData(response.data.data);
+      } else {
+        alert(response.data.msg);
+      }
+    });
     dispatch(textLogo(false));
   }, []);
-
-  const Delete = () => {};
 
   //지도 구현함수
   return (
     <React.Fragment>
-      <div className="CommonPageStyle CommonGap">
-        <StyledBox>
-          {/*main*/}
-          <div className="StyledBox2">
-            <MapBox>
-              <Map
-                center={{ lat: 33.55635, lng: 126.795841 }}
-                style={{ width: "100%", height: "360px" }}
-              >
-                <MapMarker position={{ lat: 33.55635, lng: 126.795841 }}>
-                  <div style={{ color: "#000" }}>Hello World!</div>
-                </MapMarker>
-              </Map>
-            </MapBox>
-
-            <InfoBox>
-              <InfoHeader>
-                <div className="place">
-                  <p>서울시 마포구</p>
-                </div>
-
-                <div className="time">
-                  <p>2021.10.31 오후 3:58</p>
-                </div>
-
-                <ul className="starInfo">
-                  <li>
-                    <div>
-                      <div className="starView">
-                        <img src={ic_star} alt="star icon" />
-                      </div>
-                      <div>관측지수</div>
-                      <div className="number1">10</div>
-                    </div>
-                  </li>
-                  <li>
-                    <div>
-                      <div className="moonRise">
-                        <img src={ic_moonrise} alt="moonrise icon" />
-                      </div>
-                      <div>월출</div>
-                      <div className="number2">16:00</div>
-                    </div>
-                  </li>
-                  <li>
-                    <div>
-                      <div className="moonSet">
-                        <img src={ic_moonset} alt="moonset icon" />
-                      </div>
-                      <div>월몰</div>
-                      <div className="number3">6:00</div>
-                    </div>
-                  </li>
-                </ul>
-
-                <div className="headerLine"></div>
-                {/*line*/}
-              </InfoHeader>
-              <InfoBody>
-                <ul className="hour">
-                  <li>
-                    <div>
-                      <p>시간</p>
-                    </div>
-                  </li>
-                  <li>
-                    <div>16:00</div>
-                  </li>
-                  <li>
-                    <div>17:00</div>
-                  </li>
-                  <li>
-                    <div>18:00</div>
-                  </li>
-                  <li>
-                    <div>19:00</div>
-                  </li>
-                </ul>
-
-                <ul className="weather">
-                  <li>
-                    <div>
-                      <p>날씨</p>
-                    </div>
-                  </li>
-                  <li>
-                    <div className="sunnyView">
-                      <img src={ic_sunny} alt="sun icon" />
-                    </div>
-                  </li>
-                  <li>
-                    <div className="sunnyView">
-                      <img src={ic_sunny} alt="sun icon" />
-                    </div>
-                  </li>
-                  <li>
-                    <div className="sunnyView">
-                      <img src={ic_sunny} alt="sun icon" />
-                    </div>
-                  </li>
-                  <li>
-                    <div className="sunnyView">
-                      <img src={ic_sunny} alt="sun icon" />
-                    </div>
-                  </li>
-                </ul>
-
-                <ul className="temp">
-                  <li>
-                    <div>
-                      <p>온도</p>
-                    </div>
-                  </li>
-                  <li>
-                    <div>10°</div>
-                  </li>
-                  <li>
-                    <div>10°</div>
-                  </li>
-                  <li>
-                    <div>10°</div>
-                  </li>
-                  <li>
-                    <div>10°</div>
-                  </li>
-                </ul>
-
-                <ul className="rainpro">
-                  <li>
-                    <div>
-                      <p>강수확률</p>
-                    </div>
-                  </li>
-                  <li>
-                    <div>100%</div>
-                  </li>
-                  <li>
-                    <div>100%</div>
-                  </li>
-                  <li>
-                    <div>100%</div>
-                  </li>
-                  <li>
-                    <div>100%</div>
-                  </li>
-                </ul>
-
-                <ul className="humidity">
-                  <li>
-                    <div>
-                      <p>습도</p>
-                    </div>
-                  </li>
-                  <li>
-                    <div>0%</div>
-                  </li>
-                  <li>
-                    <div>0%</div>
-                  </li>
-                  <li>
-                    <div>0%</div>
-                  </li>
-                  <li>
-                    <div>0%</div>
-                  </li>
-                </ul>
-
-                <ul className="cloud">
-                  <li>
-                    <div>
-                      <p>구름양</p>
-                    </div>
-                  </li>
-                  <li>
-                    <div>많음</div>
-                  </li>
-                  <li>
-                    <div>많음</div>
-                  </li>
-                  <li>
-                    <div>많음</div>
-                  </li>
-                  <li>
-                    <div>많음</div>
-                  </li>
-                </ul>
-
-                <ul className="dust">
-                  <li>
-                    <div>
-                      <p>미세먼지</p>
-                    </div>
-                  </li>
-                  <li>
-                    <div>11㎍/㎥</div>
-                  </li>
-                  <li>
-                    <div>11㎍/㎥</div>
-                  </li>
-                  <li>
-                    <div>11㎍/㎥</div>
-                  </li>
-                  <li>
-                    <div>11㎍/㎥</div>
-                  </li>
-                </ul>
-              </InfoBody>
-            </InfoBox>
-          </div>
-          <ResultBox>
-            <ResultHeader>
-              <div className="title">
-                <h3>가깝고 멍때리기 좋은 서울 노을 캠핑장</h3>
-              </div>
-
-              <div className="date">
-                <p>2021.10.31 작성</p>
-              </div>
-
-              <ul className="likeInfo">
-                <li>
-                  <div>
-                    <FaRegHeart />
-                    &nbsp;&nbsp;189
-                  </div>
-                </li>
-                <li>
-                  <div className="bookmark">
-                    <FaRegBookmark />
-                  </div>
-                </li>
-              </ul>
-
-              <div className="nickName">
-                <div className="profileIcon">
-                  <img src={ic_mypage} alt="profile icon" />
-                </div>
-                <p>홍길동</p>
-              </div>
-
-              <div className="headerLine2"></div>
-              {/*line*/}
-            </ResultHeader>
-            <ResultBody>
-              <div className="campInfo">
-                <br />
-                <br />
-                <img
-                  src="https://cdn.pixabay.com/photo/2016/11/21/16/03/campfire-1846142_1280.jpg"
-                  alt="camp"
-                />
-              </div>
-              <div className="campInfodes">
+      <StyledDetail className="CommonPageStyle CommonGap">
+        <div className="detailInfoETC">
+          <MapBox>
+            <Map
+              center={{ lat: 33.55635, lng: 126.795841 }}
+              style={{ width: "100%", height: "360px" }}
+            >
+              <MapMarker position={{ lat: 33.55635, lng: 126.795841 }} />
+            </Map>
+          </MapBox>
+          <WeatherInfoBox>
+            <WeatherHeader>
+              <h3>{weather.cityName}</h3>
+              <p className="openSans">{weather.date}</p>
+            </WeatherHeader>
+            <WeaterInfoImport>
+              <li>
+                <h3>
+                  <img src={ic_star} alt="star gazing icon" />
+                  관측지수
+                </h3>
+                <p>{weather.starGazing}</p>
+              </li>
+              <li>
+                <h3>
+                  <img src={ic_moonrise} alt="star gazing icon" />
+                  월출
+                </h3>
                 <p>
-                  이번 주말 서울 노을캠핑장에 다녀왔습니다. 이번 주말 서울
-                  노을캠핑장에 다녀왔습니다. 이번 주말 서울 노을캠핑장에
-                  다녀왔습니다. 이번 주말 서울 노을캠핑장에 다녀왔습니다. 이번
-                  주말 서울 노을캠핑장에 다녀왔습니다. 이번 주말 서울
-                  노을캠핑장에 다녀왔습니다. 이번 주말 서울 노을캠핑장에
-                  다녀왔습니다. 이번 주말 서울 노을캠핑장에 다녀왔습니다.이번
-                  주말 서울 노을캠핑장에 다녀왔습니다. 이번 주말 서울
-                  노을캠핑장에 다녀왔습니다. 이번 주말 서울 노을캠핑장에
-                  다녀왔습니다. 이번 주말 서울 노을캠핑장에 다녀왔습니다. 이번
-                  주말 서울 노을캠핑장에 다녀왔습니다. 이번 주말 서울
-                  노을캠핑장에 다녀왔습니다. 이번 주말 서울 노을캠핑장에
-                  다녀왔습니다. 이번 주말 서울 노을캠핑장에 다녀왔습니다. 이번
-                  주말 서울 노을캠핑장에 다녀왔습니다. 이번 주말 서울
-                  노을캠핑장에 다녀왔습니다. 이번 주말 서울 노을캠핑장에
-                  다녀왔습니다. 이번 주말 서울 노을캠핑장에 다녀왔습니다.
+                  {weather.moonrise.slice(0, 2) +
+                    ":" +
+                    weather.moonrise.slice(2, 4)}
                 </p>
-              </div>
-              <div className="headerLine3"></div>
-              {/*line*/}
-              <div class="buttons">
-                {is_login ? (
-                  ((
-                    <button
-                      onClick={() => {
-                        history.push("/post/edit/:id");
-                      }}
-                    >
-                      수정
-                    </button>
-                  ),
-                  (<button onClick={Delete}>삭제</button>))
-                ) : (
-                  <button />
-                )}
-              </div>
-            </ResultBody>
-          </ResultBox>
-        </StyledBox>
-      </div>
+              </li>
+              <li>
+                <h3>
+                  <img src={ic_moonset} alt="star gazing icon" />
+                  월몰
+                </h3>
+                <p>
+                  {weather.moonset.slice(0, 2) +
+                    ":" +
+                    weather.moonset.slice(2, 4)}
+                </p>
+              </li>
+            </WeaterInfoImport>
+            <span className="line" />
+
+            <WeatherTable>
+              <button className="slidePrev">
+                <img src={ic_arrow} alt="prev button" />
+              </button>
+              <button className="slideNext">
+                <img src={ic_arrow} alt="next button" />
+              </button>
+
+              <tr className="tableHead">
+                <th>시간</th>
+                <th>날씨</th>
+                <th>온도</th>
+                <th>강수확률</th>
+                <th>습도</th>
+                <th>구름양</th>
+                <th>미세먼지</th>
+              </tr>
+              <tbody>
+                {wList?.map((l, idx) => {
+                  return (
+                    <tr key={idx}>
+                      <td className="openSans thinPlus">
+                        {l.time.slice(0, 2) + ":" + l.time.slice(2, 4)}
+                      </td>
+                      <td>
+                        <img src={ic_sunny} alt="weather" />
+                      </td>
+                      <td className="openSans temperature">{l.temperature}°</td>
+                      <td className="openSans">
+                        {l.rainPercent}
+                        <span className="thinPlus">%</span>
+                      </td>
+                      <td className="openSans">
+                        {l.humidity}
+                        <span className="thinPlus">%</span>
+                      </td>
+                      <td className="thin">{l.weather}</td>
+                      <td className="dust">
+                        <p className="openSans">{l.dust}</p>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </WeatherTable>
+          </WeatherInfoBox>
+        </div>
+        <ContentBox>
+          <ContentHeader>
+            <div className="titleBox">
+              <h3>타이틀</h3>
+              <p className="openSans">2021.00.00 작성</p>
+            </div>
+            <div className="buttonBox">
+              <button className="openSans">
+                <img src={ic_heart} alt="like button" />
+                10
+              </button>
+              <button>
+                <img src={ic_bookmark} alt="bookmark button" />
+              </button>
+            </div>
+          </ContentHeader>
+          <ContentUser>
+            <img src={ic_mypage} alt="user profile" />
+            <h3 className="openSans">닉네임</h3>
+          </ContentUser>
+          <span className="line" />
+          <section className="contents">컨텐츠</section>
+          <span className="line" />
+
+          <ContentFooter>
+            {is_login ? (
+              <React.Fragment>
+                <button>수정</button>
+                <button>삭제</button>
+              </React.Fragment>
+            ) : null}
+          </ContentFooter>
+        </ContentBox>
+      </StyledDetail>
     </React.Fragment>
   );
 };
 
-const MapBox = styled.section`
-  position: relative;
-  width: 31%;
-  height: 38%;
-  overflow: hidden;
-  border-radius: 10px;
-`;
-
-const InfoBox = styled.section`
-  position: absolute;
-  width: 24.5%;
-  height: 614px;
-  margin-top: 20px;
-  margin-right: 20px;
-  flex-direction: column;
+const StyledDetail = styled.main`
   display: flex;
-  border-radius: 10px;
-  background-color: #303136;
-`;
-
-const InfoHeader = styled.div`
-  justify-content: space-between;
-
-  .place {
-    font-size: 24px;
-    font-weight: bold;
-    text-align: left;
-    vertical-align: top;
-    width: 138px;
-    margin: 36px 0 0 36px;
-  }
-
-  .time {
-    font-size: 12px;
-    width: 120px;
-    height: 16px;
-    line-height: 16px;
-    text-align: left;
-    vertical-align: top;
-    color: #dddddd;
-    margin: -20px 36px 0 auto;
-    vertical-align: top;
-  }
-
-  .starInfo {
-    position: relative;
-    top: 24px;
-    width: 90%;
-    height: 88px;
-    display: flex;
-    margin: auto;
-    margin-left: 23px;
-    background-color: green;
-  }
-  .starInfo > li {
-    flex: 1;
-    height: 70px;
-  }
-  .starInfo > li > div {
-    text-align: center;
-
-    margin-top: 18px;
-    margin-bottom: 18px;
-    height: 50px;
-    font-size: 14px;
-    color: #ffffff;
-  }
-
-  .starInfo > li > div > .starView > img {
-    width: 16.13px;
-    height: 16px;
-    margin: -15px;
-    margin-left: -73px;
-  }
-
-  .starInfo > li > div > .moonRise > img {
-    width: 16px;
-    height: 16px;
-    margin: -15px;
-    margin-left: -50px;
-  }
-
-  .starInfo > li > div > .moonSet > img {
-    width: 16px;
-    height: 16px;
-    margin: -15px;
-    margin-left: -50px;
-  }
-
-  .starInfo > li > div > .number1 {
-    margin: 12px;
-    margin-left: 6px;
-    font-size: 17px;
-    font-weight: bold;
-  }
-
-  .starInfo > li > div > .number2 {
-    margin: 12px;
-    margin-left: 2px;
-    font-size: 17px;
-    font-weight: bold;
-  }
-
-  .starInfo > li > div > .number3 {
-    margin: 12px;
-    margin-left: 1px;
-    font-size: 17px;
-    font-weight: bold;
-  }
-
-  .headerLine {
-    width: 248px;
-    border-style: solid;
-    border-width: 0.5px;
-    margin-top: 28px;
-    margin-left: 31.5px;
-    color: #666666;
-  }
-`;
-
-const InfoBody = styled.div`
-  justify-content: space-between;
-  padding: 5px;
-  .hour {
-    font-size: 12px;
-    position: relative;
-    top: 21px;
-    width: 87%;
-    display: flex;
-    margin: auto;
-    margin-left: 18px;
-  }
-  .hour > li {
-    flex: 1;
-  }
-  .hour > li > div {
-    text-align: center;
-    margin-top: 5px;
-    height: 19px;
-    color: #cccccc;
-  }
-  .hour > li > div > p {
-    color: #eeeeee;
-    margin-left: -2px;
-  }
-
-  .weather {
-    font-size: 5px;
-    position: relative;
-    top: 30px;
-    width: 87%;
-    display: flex;
-    margin: auto;
-    margin-left: 18px;
-  }
-  .weather > li {
-    flex: 1;
-  }
-  .weather > li > div {
-    text-align: center;
-    margin-top: 5px;
-    height: 19px;
-  }
-  .weather > li > div > p {
-    color: #eeeeee;
-    margin-left: -4px;
-  }
-
-  .weather > li > div > img {
-    width: 16x;
-    height: 16px;
-    margin-left: 3px;
-  }
-
-  .temp {
-    font-size: 5px;
-    position: relative;
-    top: 39px;
-    width: 88%;
-    display: flex;
-    margin: auto;
-    margin-left: 18px;
-  }
-  .temp > li {
-    flex: 1;
-  }
-  .temp > li > div {
-    text-align: center;
-    margin-top: 5px;
-
-    height: 19px;
-    color: #cccccc;
-    font-weight: bold;
-  }
-
-  .temp > li > div > p {
-    color: #eeeeee;
-    font-weight: normal;
-    margin-left: -6px;
-  }
-
-  .rainpro {
-    font-size: 5px;
-    position: relative;
-    top: 47px;
-    width: 87%;
-    display: flex;
-    margin: auto;
-    margin-left: 19px;
-  }
-  .rainpro > li {
-    flex: 1;
-  }
-  .rainpro > li > div {
-    text-align: center;
-    margin-top: 5px;
-    height: 19px;
-    color: #cccccc;
-    font-weight: bold;
-  }
-  .rainpro > li > div > p {
-    color: #eeeeee;
-    font-weight: normal;
-    margin-left: 10px;
-  }
-
-  .humidity {
-    font-size: 5px;
-    position: relative;
-    top: 54px;
-    width: 87%;
-    display: flex;
-    margin: auto;
-    margin-left: 15px;
-  }
-  .humidity > li {
-    flex: 1;
-  }
-  .humidity > li > div {
-    text-align: center;
-    margin-top: 5px;
-    margin-left: 7px;
-    height: 19px;
-    color: #cccccc;
-    font-weight: bold;
-  }
-  .humidity > li > div > p {
-    color: #eeeeee;
-    margin-left: -8px;
-    font-weight: normal;
-  }
-
-  .cloud {
-    font-size: 5px;
-    position: relative;
-    top: 63px;
-    width: 87%;
-    display: flex;
-    margin: auto;
-    margin-left: 17px;
-  }
-  .cloud > li {
-    flex: 1;
-  }
-  .cloud > li > div {
-    text-align: center;
-    margin-top: 5px;
-    height: 19px;
-    color: #cccccc;
-  }
-  .cloud > li > div > p {
-    color: #eeeeee;
-    margin-left: 2px;
-    font-weight: normal;
-  }
-
-  .dust {
-    font-size: 5px;
-    position: relative;
-    top: 71px;
-    width: 85%;
-    display: flex;
-    margin: auto;
-    margin-left: 16px;
-  }
-  .dust > li {
-    flex: 1;
-  }
-  .dust > li > div {
-    text-align: center;
-    margin-top: 5px;
-    margin-left: 12px;
-    height: 19px;
-    color: #cccccc;
-    font-weight: bold;
-  }
-  .dust > li > div > p {
-    color: #eeeeee;
-    font-weight: normal;
-    margin-left: 2px;
-  }
-`;
-
-const StyledBox = styled.main`
+  width: 100%;
   gap: 24px;
-  overflow: hidden;
-  border-radius: 10px;
-  height: 100%;
-
-  & > section {
-    background-color: #303136;
+  .detailInfoETC {
+    width: 32%;
+    height: fit-content;
+  }
+  .line {
+    display: block;
+    width: 100%;
+    height: 1px;
+    background: #666;
+    margin-top: 20px;
   }
 `;
 
-const ResultBox = styled.section`
-  padding: 36px 28px 0;
-  margin: 100px -300px -380px 398px;
-  flex-direction: column;
+const MapBox = styled.div`
+  width: 100%;
+  height: 360px;
   border-radius: 10px;
-  position: absolute;
-  bottom: 0;
   overflow: hidden;
-  width: 792px;
-  height: 995px;
-  z-index: 100;
 `;
 
-const ResultHeader = styled.div`
+const WeatherInfoBox = styled.section`
+  width: 100%;
+  height: 614px;
+  background: #303136;
+  border-radius: 10px;
+  margin-top: 20px;
+  padding: 36px 36px 56px;
+`;
+
+const WeatherHeader = styled.div`
+  display: flex;
   justify-content: space-between;
-
-  .title {
-    h3 {
-      font-weight: bold;
-      font-size: 16px;
-      line-height: 18px;
-    }
+  align-items: center;
+  h3 {
+    font-weight: bold;
+    font-size: 24px;
+    line-height: 30px;
   }
-
-  .date {
+  p {
+    font-weight: normal;
     font-size: 12px;
-    margin: -12px 0 0 285px;
-    color: #999999;
+    line-height: 16px;
+    color: #dddddd;
   }
+`;
 
-  .likeInfo {
-    font-size: 15px;
-    position: relative;
-    top: 20px;
-    width: 13%;
+const WeaterInfoImport = styled.ul`
+  display: flex;
+  justify-content: space-between;
+  margin-top: 24px;
+  li {
     display: flex;
-    margin: -35px 0 0 728px;
-  }
-  .likeInfo > li {
-    flex: 1;
-  }
-  .likeInfo > li > div {
-    text-align: right;
-    height: 19px;
-  }
-  .likeInfo > li > .bookmark {
-    margin: 1px 25px 0 0;
-  }
-
-  .nickName {
-    display: flex;
-    height: 40px;
     flex-direction: column;
-    justify-content: space-between;
+    width: 33.33%;
+    height: 88px;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
 
-    .profileIcon > img {
-      margin: 30px 0 0 2px;
-      width: 20px;
-      height: 20px;
-    }
-
-    p {
+    h3 {
+      display: flex;
+      align-items: center;
+      gap: 2.02px;
       font-weight: normal;
       font-size: 14px;
-      line-height: 20px;
-      color: #eeeeee;
-      margin: -22px 0 0 29px;
+      line-height: 18px;
     }
-  }
-  .headerLine2 {
-    width: 99.9%;
-    border-style: solid;
-    border-width: 0.5px;
-    color: #666666;
-    margin: 26px 0 0 -2.5px;
+    p {
+      font-weight: bold;
+      font-size: 24px;
+      line-height: 33px;
+    }
   }
 `;
 
-const ResultBody = styled.ul`
-  margin-top: 4px;
-
-  img {
-    width: 450px;
-    height: 260px;
-    object-fit: cover;
-    margin-top: -15px;
+const WeatherTable = styled.table`
+  margin-top: 21px;
+  display: flex;
+  gap: 18px;
+  position: relative;
+  tr {
+    display: block;
+    width: fit-content;
   }
-
-  p {
-    width: 450px;
-    margin-top: 21px;
-    line-height: 24px;
-    text-align: justify;
-    font-size: 15px;
+  tbody {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+    gap: 18px;
   }
-
-  .headerLine3 {
-    width: 99.9%;
-    border-style: solid;
-    border-width: 0.5px;
-    margin: 118px 0 0 -2.5px;
-
-    color: #666666;
-  }
-
-  .buttons {
-    width: 300px;
-    margin: 17px 0 0 652px;
-
-    button {
-      width: 72px;
-      height: 36px;
-      background: #18191e;
-      font-size: 14px;
-      color: #cccccc;
-      border-radius: 4px;
-      border: 0;
-      margin: 4.1px;
+  th,
+  td {
+    display: flex;
+    align-items: center;
+    height: 51px;
+    font-weight: bold;
+    font-size: 18px;
+    line-height: 25px;
+    gap: 2px;
+    &.temperature {
+      font-size: 20px;
+      line-height: 27px;
     }
+    &.dust p {
+      font-weight: bold;
+      font-size: 16px;
+      line-height: 22px;
+      position: relative;
+      &::after {
+        content: "";
+        position: absolute;
+        width: 6px;
+        height: 6px;
+        background: #4688ec;
+        border-radius: 3px;
+        top: 0px;
+        right: -8px;
+      }
+    }
+    &.thin {
+      font-weight: normal;
+      font-size: 14px;
+      line-height: 18px;
+    }
+    &.thinPlus,
+    span.thinPlus {
+      font-weight: normal;
+      font-size: 14px;
+      line-height: 19px;
+      color: #cccccc;
+    }
+    span {
+      margin-top: 2px;
+    }
+  }
+  th {
+    text-align: left;
+    font-weight: normal;
+    font-size: 12px;
+    line-height: 15px;
+    color: #eeeeee;
+  }
+  td {
+    justify-content: center;
+
+    img {
+      width: 48px;
+      height: 48px;
+    }
+  }
+
+  .slidePrev,
+  .slideNext {
+    width: 24px;
+    height: 24px;
+    border: none;
+    background: none;
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    top: 50%;
+    margin-top: -12px;
+  }
+  .slidePrev {
+    left: -34px;
+  }
+  .slideNext {
+    right: -34px;
+    transform: rotate(180deg);
+  }
+`;
+
+const ContentBox = styled.section`
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background: #303136;
+  border-radius: 10px;
+  padding: 28px;
+
+  .line {
+    display: block;
+    width: 100%;
+    height: 1px solid #666;
+    margin-top: 23px;
+  }
+  .contents {
+    margin-top: 32px;
+    flex: 1;
+  }
+`;
+
+const ContentHeader = styled.div`
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  .titleBox {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-top: 10px;
+    h3 {
+      font-weight: bold;
+      font-size: 18px;
+      line-height: 18px;
+    }
+    p {
+      font-size: 12px;
+      line-height: 18px;
+      color: #999999;
+    }
+  }
+  .buttonBox {
+    display: flex;
+    gap: 12px;
+    margin-top: 7px;
+    width: fit-content;
+    height: 24px;
+    button {
+      height: 24px;
+      background: none;
+      border: none;
+      color: white;
+      display: flex;
+      gap: 4px;
+      align-items: center;
+      font-size: 14px;
+      line-height: 18px;
+      color: #cccccc;
+    }
+  }
+`;
+
+const ContentUser = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 16px;
+  h3 {
+    font-size: 14px;
+    line-height: 18px;
+    color: #cccccc;
+  }
+`;
+
+const ContentFooter = styled.div`
+  height: 56px;
+  display: flex;
+  justify-content: right;
+  align-items: flex-end;
+  gap: 8px;
+  button {
+    background: #18191e;
+    border-radius: 4px;
+    border: none;
+    height: 36px;
+    padding: 0 23px;
+    font-size: 14px;
+    line-height: 18px;
+    color: #cccccc;
   }
 `;
 
