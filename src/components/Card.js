@@ -11,8 +11,8 @@ import ic_heart_on from "../img/ic_heart_on.svg";
 import ic_bookmark_off from "../img/ic_bookmark_off.svg";
 
 const Card = (props) => {
-  const [like, setLike] = React.useState(false);
-  const toggleLike = () => setLike(!like);
+  const [is_like, setLikeCheck] = React.useState(false);
+  const toggleLike = () => setLikeCheck(!is_like);
 
   const cardClick = (e) => {
     console.log(props.cardID);
@@ -51,8 +51,21 @@ const Card = (props) => {
             <span>{props.writer}</span>
           </div>
 
-          <div className="likeDiv">
-            <img className="ic_heart" src={ic_heart} alt="ic_heart" />
+          <div
+            className="likeDiv"
+            onClick={() => {
+              toggleLike();
+            }}
+          >
+            {is_like ? (
+              <img
+                className="ic_heart_on"
+                src={ic_heart_on}
+                alt="ic_heart_on"
+              />
+            ) : (
+              <img className="ic_heart" src={ic_heart} alt="ic_heart" />
+            )}
             <p className="like">{props.likeCount}</p>
 
             <div className="bookmarkDiv">
@@ -102,6 +115,10 @@ const BottomDiv = styled.div`
     }
 
     .ic_heart {
+      margin-right: 4px;
+    }
+
+    .ic_heart_on {
       margin-right: 4px;
     }
   }

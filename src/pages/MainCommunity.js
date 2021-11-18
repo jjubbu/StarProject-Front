@@ -9,6 +9,7 @@ import Detail from "../pages/Detail";
 
 // redux
 import card, { actionCreators as postActions } from "../redux/modules/card";
+import { actionCreators as likeActions } from "../redux/modules/like";
 import { useSelector, useDispatch } from "react-redux";
 import { textLogo } from "../redux/modules/header";
 import { api } from "../shared/apis";
@@ -20,7 +21,11 @@ const MainCommunity = (props) => {
   const dispatch = useDispatch();
   const history = useHistory();
   const card_list = useSelector((state) => state.card.list);
+  const like_list = useSelector((state) => state.like_list);
+
+  console.log(like_list);
   console.log(card_list);
+
   const test_card_list = [
     {
       id: 1,
