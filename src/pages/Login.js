@@ -41,6 +41,7 @@ const Login = () => {
       console.log(response);
       if (response.data.code === 200) {
         const token = response.data.data.token;
+        console.log("login token", token);
         cookie.set("token", token);
         if (is_save) {
           cookie.set("starCampID", loginInfo.username);

@@ -29,13 +29,17 @@ const Main = () => {
   const is_login = useSelector((state) => state.login.is_login);
   const dispatch = useDispatch();
 
-  const bookmarkCheck = (id, idx) => {
-    dispatch(loginCheckAction.isLoginMW());
-
+  const bookmarkCheck = (id, idx, e) => {
+    // dispatch(loginCheckAction.isLoginMW());
+    const cardid = e.target.getAttribute("cardid");
     if (!is_login) {
       history.push("/login");
     }
     console.log("bookmark click:::", id);
+    console.log("bookmark click::: e", e);
+    if (id === null) {
+      console.log("no id", cardid);
+    }
     apis
       .postBookmarkAX(id)
       .then((response) => {
@@ -59,7 +63,7 @@ const Main = () => {
           console.log("get main board data:::", response.data.data);
           setBoardList(response.data.data);
         } else {
-          alert("main board list", response.data.msg);
+          alert(`main board list ${response.data.msg}`);
         }
       })
       .catch((err) => {
@@ -111,8 +115,9 @@ const Main = () => {
                         src={l.bookmark ? ic_bookmark_on : ic_bookmark_off}
                         alt="bookmark"
                         className="bookmark"
+                        cardid={l.id}
                         onClick={(e) => {
-                          bookmarkCheck(l.id, idx);
+                          bookmarkCheck(l.id, idx, e);
                           e.stopPropagation();
                         }}
                       />

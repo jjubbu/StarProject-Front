@@ -15,7 +15,45 @@ import { actionCreators as loginCheckAction } from "../redux/modules/login";
 import { apis } from "../lib/axios";
 
 const Detail = ({ history, location, match }) => {
-  const [data, setData] = useState({});
+  const [data, setData] = useState({
+    id: "3",
+    writer: "홍길동",
+    title: "칠성캠핑장",
+    address: "구리시 어디구 야산",
+    img: "/src",
+    content: " 본문 ",
+    x_location: "x 좌표",
+    y_location: "y 좌표",
+    likeCheck: "false",
+    likeCount: "1",
+    bookmarkCheck: "false",
+    weather: {
+      cityName: "경기도 구리시",
+      date: "2021.10.31 14:58",
+      starGazing: "10",
+      moonrise: "06:00",
+      moonset: "16:00",
+      weatherList: [
+        {
+          time: "16:00",
+          rainPercent: "35",
+          weather: "흐림",
+          humidity: "53",
+          temperature: "17",
+          dust: "25",
+        },
+        {
+          time: "17:00",
+          rainPercent: "35",
+          weather: "흐림",
+          humidity: "53",
+          temperature: "17",
+          dust: "25",
+        },
+      ],
+    },
+  });
+
   const is_login = useSelector((state) => state.login.is_login);
   const weather = data.weather;
   const wList = weather.weatherList;

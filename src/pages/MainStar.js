@@ -2,7 +2,9 @@ import React from "react";
 import styled from "styled-components";
 import { apis } from "../lib/axios";
 
-import ic_sunny from "../img/weather/ic_sunny.svg";
+import ic_sunny from "../img/weather/ic_sunny.svg"; //맑음
+import ic_cloudy from "../img/weather/ic_cloudy.svg"; //구름많음
+import ic_overcast from "../img/weather/ic_overcast.svg"; //흐림
 import ic_finedust1 from "../img/weather/ic_finedust_1.svg";
 import ic_finedust2 from "../img/weather/ic_finedust_2.svg";
 import ic_finedust3 from "../img/weather/ic_finedust_3.svg";
@@ -166,7 +168,18 @@ const MainStar = () => {
             <WeatherBox className="contentsBox">
               <WeatherTemperature>
                 <div>
-                  <img src={ic_sunny} alt="weather logo" />
+                  <img
+                    src={
+                      data.weather === "맑음"
+                        ? ic_sunny
+                        : data.weather === "흐림"
+                        ? ic_overcast
+                        : data.weather === "구름많음"
+                        ? ic_cloudy
+                        : null
+                    }
+                    alt="weather logo"
+                  />
                   <div className="temperature">
                     <h3 className="openSans">
                       {data.temperature}

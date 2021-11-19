@@ -23,6 +23,7 @@ const Header = () => {
     cookie.remove("token");
     dispatch(headerAction.isLogin(false));
     history.push("/");
+    window.location.reload();
   };
 
   return (

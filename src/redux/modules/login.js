@@ -20,11 +20,11 @@ const isLogin = createAction(IS_LOGIN, (boolean) => ({ boolean }));
 const setUserInfo = createAction(USER_INFO, (list) => ({ list }));
 
 const isLoginMW = () => {
-  return function (dispatch, getState, { history }) {
+  return async function (dispatch, getState, { history }) {
     const cookie = new Cookies();
-    const token = cookie.get("token");
-    console.log(token);
-    if (token) {
+    const token = await cookie.get("token");
+    console.log("token:::", token);
+    if (token !== undefined) {
       apis
         .loginCheckAX()
         .then((response) => {
@@ -33,7 +33,7 @@ const isLoginMW = () => {
           if (data.code === 500) {
             cookie.remove("token");
             dispatch(isLogin(false));
-            alert("에러 여기서 나는게 맞나?", data.msg);
+            alert(`"login check ax" ${data.msg}`);
           } else if (data.code === 200) {
             dispatch(isLogin(true));
             dispatch(setUserInfo(data.data));
@@ -43,7 +43,7 @@ const isLoginMW = () => {
         .catch((err) => {
           console.log(err);
         });
-    } else if (token === "" || token === undefined) {
+    } else if (token === undefined) {
       alert("로그인을 해주세요!");
       dispatch(isLogin(false));
     }
