@@ -63,7 +63,7 @@ export const apis = {
 
   //마이페이지
   //회원탈퇴
-  deleteAccountAX: () => instance.delete("/my/leave"),
+  deleteAccountAX: () => instance.get("/my/leave"),
   //내가 쓴 글 리스트
   getMyListAX: () => instance.get("/my/writeList"),
   //북마크 리스트
