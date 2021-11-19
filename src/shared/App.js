@@ -24,11 +24,11 @@ import { history } from "../redux/configureStore";
 import { actionCreators as tokenCheckAction } from "../redux/modules/login";
 
 function App() {
-  // const login_check = useSelector((state) => state.login.login_check);
-  // const dispatch = useDispatch();
-  // React.useEffect(() => {
-  //   dispatch(tokenCheckAction.isLoginMW());
-  // }, []);
+  const login_check = useSelector((state) => state.login.login_check);
+  const dispatch = useDispatch();
+  React.useEffect(() => {
+    dispatch(tokenCheckAction.isLoginMW());
+  }, []);
   return (
     <ConnectedRouter history={history}>
       <StyledViewContainer>

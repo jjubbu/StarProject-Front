@@ -10,9 +10,14 @@ import ic_heart from "../img/ic_heart.svg";
 import ic_heart_on from "../img/ic_heart_on.svg";
 import ic_bookmark_off from "../img/ic_bookmark_off.svg";
 
+import { useDispatch } from "react-redux";
+
+import { actionCreators as likeActions } from "../redux/modules/card";
+
 const Card = (props) => {
   const [is_like, setLikeCheck] = React.useState(false);
   const toggleLike = () => setLikeCheck(!is_like);
+  const dispatch = useDispatch();
 
   const cardClick = (e) => {
     console.log(props.cardID);
@@ -20,7 +25,9 @@ const Card = (props) => {
   };
 
   return (
-    <Wrapper cardID={props.cardID} onClick={cardClick}>
+    <Wrapper
+    // cardID={props.cardID} onClick={cardClick}
+    >
       <div>
         <Image
           height="288px"
@@ -53,19 +60,16 @@ const Card = (props) => {
 
           <div
             className="likeDiv"
-            onClick={() => {
-              toggleLike();
-            }}
+            onClick={(e) =>
+              dispatch(likeActions.postLikeDB(props.id, props.idx))
+            }
           >
-            {is_like ? (
-              <img
-                className="ic_heart_on"
-                src={ic_heart_on}
-                alt="ic_heart_on"
-              />
-            ) : (
-              <img className="ic_heart" src={ic_heart} alt="ic_heart" />
-            )}
+            <img
+              className="ic_heart_on"
+              src={props.likeCheck ? ic_heart_on : ic_heart}
+              alt="ic_heart_on"
+            />
+
             <p className="like">{props.likeCount}</p>
 
             <div className="bookmarkDiv">

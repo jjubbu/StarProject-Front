@@ -33,7 +33,7 @@ const isLoginMW = () => {
           if (data.code === 500) {
             cookie.remove("token");
             dispatch(isLogin(false));
-            alert(data.msg);
+            alert("에러 여기서 나는게 맞나?", data.msg);
           } else if (data.code === 200) {
             dispatch(isLogin(true));
             dispatch(setUserInfo(data.data));
