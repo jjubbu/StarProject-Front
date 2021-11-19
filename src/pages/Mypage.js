@@ -1,10 +1,40 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { textLogo } from "../redux/modules/header";
 import styled from "styled-components";
 import { apis } from "../lib/axios";
-
 import ic_profile from "../img/ic_profile.svg";
 
-const Mypage = () => {
+const Mypage = ({ history, match }) => {
+  const is_login = useSelector((state) => state.login.is_login);
+  const dispatch = useDispatch();
+
+  const listClick = (id) => {
+    history.push(`detail/${id}`);
+  };
+
+  const deleteAccount = () => {
+    apis
+      .deleteAccountAX()
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+    console.log();
+  };
+
+  const getMyList = () => {
+    apis.getMyListAX().then((response) => {
+      console.log(response);
+    });
+  };
+
+  React.useEffect(() => {
+    dispatch(textLogo(false));
+  }, []);
+
   return (
     <React.Fragment>
       <MypageStyled className="CommonPageStyle">
@@ -16,7 +46,7 @@ const Mypage = () => {
           </div>
           <div className="buttonBox">
             <button>내 정보 수정</button>
-            <button>회원탈퇴</button>
+            <button onClick={deleteAccount}>회원탈퇴</button>
           </div>
         </UserProfile>
         <div className="list">
@@ -59,7 +89,7 @@ const Mypage = () => {
           </ListBox>
           <ListBox>
             <h3 className="title">내가 쓴 글(4)</h3>
-            <ul>
+            <ul onClick={listClick}>
               <ListStyled>
                 <img
                   src="https://cdn.pixabay.com/photo/2014/04/13/20/49/cat-323262_1280.jpg"
