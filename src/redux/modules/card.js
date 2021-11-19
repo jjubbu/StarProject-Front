@@ -83,12 +83,6 @@ const postLikeDB = (id, likeCheck, likeCount) => {
       })
       .then((res) => {
         getCardDB(res.data.data);
-        // console.log(res);
-        // const likeCheck = res.data.data.likeCheck;
-        // console.log(likeCheck);
-        // // let likeList = [...likeCheck];
-        // // likeList[idx].likeCheck = likeCheck;
-        // // dispatch(setCard(likeList));
       })
       .catch((error) => {
         window.alert("좋아요 정보를 가져올 수 없습니다");
