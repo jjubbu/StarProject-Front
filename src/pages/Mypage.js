@@ -25,7 +25,11 @@ const Mypage = ({ history, match }) => {
     console.log();
   };
 
-  // const getMyList = ()
+  const getMyList = () => {
+    apis.getMyListAX().then((response) => {
+      console.log(response);
+    });
+  };
 
   React.useEffect(() => {
     dispatch(textLogo(false));
