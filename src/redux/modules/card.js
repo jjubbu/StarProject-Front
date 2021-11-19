@@ -75,8 +75,8 @@ const getCardDB = (
 const postLikeDB = (id, likeCheck, likeCount) => {
   return function (dispatch, getState, { history }) {
     dispatch(loginCheckAction.isLoginMW());
-    api
-      .post(`board/like?cardId=${id}`, {
+    apis.
+      .postLikeAX(`board/like?cardId=${id}`, {
         cardId: id,
         likeCheck: likeCheck,
         likeCount: likeCount,

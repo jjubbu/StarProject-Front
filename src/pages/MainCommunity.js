@@ -21,9 +21,9 @@ const MainCommunity = (props) => {
   const dispatch = useDispatch();
   const history = useHistory();
   const card_list = useSelector((state) => state.card.list);
-  const like_list = useSelector((state) => state.like_list);
+  // const like_list = useSelector((state) => state.like_list);
 
-  console.log(like_list);
+  // console.log(like_list);
   console.log(card_list);
 
   React.useEffect(() => {
