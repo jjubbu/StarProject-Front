@@ -68,17 +68,21 @@ const MainStar = () => {
     const latitude = position.latitude;
     const longitude = position.longitude;
     setUserLocation({ lat: latitude, lon: longitude });
+    console.log("user location:::", userLocation);
   };
 
   const error = (x) => {
     setText(x.code + ":::" + x.message);
   };
 
-  const weatherNow = (time) => {
+  const weatherNow = () => {
+    const date = new Date();
+    let hour = Number(String(date.getHours()) + "00");
+    console.log("hour:::", hour);
     apis
-      .getNoticeWeatherAX(37.3645764, 127.834038, 2200)
+      .getNoticeWeatherAX(userLocation.lat, userLocation.lon, hour)
       .then((response) => {
-        console.log("weather now:::", response);
+        console.log("[AX] get notice weather:::", response);
         const resData = response.data.data;
         setData((prev) => ({
           ...prev,
@@ -93,7 +97,7 @@ const MainStar = () => {
         }));
       })
       .catch((err) => {
-        console.log(err);
+        console.log("[AX] get notice weather:::", err);
       });
   };
 
@@ -105,17 +109,20 @@ const MainStar = () => {
     } else {
       setText("확인할 수 없다 ㅠㅠ");
     }
-    apis.getStarHotAX().then((response) => {
-      console.log("star hot:::", response);
-      setHot(response.data.data.starList);
-      setHotTime(response.data.data.currentTime);
-    });
+    apis
+      .getStarHotAX()
+      .then((response) => {
+        console.log("[AX] star hot:::", response);
+        setHot(response.data.data.starList);
+        setHotTime(response.data.data.currentTime);
+      })
+      .catch((err) => console.log("[AX] star hot error:::", err));
   }, []);
 
   React.useEffect(() => {
     weatherNow();
     apis
-      .getNoticeAX(37.3645764, 127.834038)
+      .getNoticeAX(userLocation.lat, userLocation.lon)
       .then((response) => {
         console.log("get notice:::", response);
         const resData = response.data.data;
@@ -138,7 +145,6 @@ const MainStar = () => {
   const locationButton = () => {
     weatherNow();
     console.log("user location :::", userLocation);
-    console.log("notice data:::", data);
   };
 
   return (
