@@ -44,7 +44,6 @@ const isLoginMW = () => {
           console.log(err);
         });
     } else if (token === undefined) {
-      alert("로그인을 해주세요!");
       dispatch(isLogin(false));
     }
   };
