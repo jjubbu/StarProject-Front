@@ -9,10 +9,6 @@ const Mypage = ({ history, match }) => {
   const is_login = useSelector((state) => state.login.is_login);
   const dispatch = useDispatch();
 
-  const listClick = (id) => {
-    history.push(`detail/${id}`);
-  };
-
   const deleteAccount = () => {
     apis
       .deleteAccountAX()
@@ -25,6 +21,13 @@ const Mypage = ({ history, match }) => {
     console.log();
   };
 
+  const getPostDetail = () => {
+    apis.getPostDetailAX().then((response) => {
+      console.log(response);
+    });
+    history.push(`/detail/:id`);
+  };
+
   const getMyList = () => {
     apis.getMyListAX().then((response) => {
       console.log(response);
@@ -35,10 +38,24 @@ const Mypage = ({ history, match }) => {
     apis.putUserInfoAX().then((response) => {
       console.log(response);
     });
+    history.push(`user/edit`);
+  };
+
+  const getMyBookmark = () => {
+    apis
+      .getMyBookmarkAX()
+      .then((response) => {
+        console.log("bookmark", response);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   React.useEffect(() => {
     dispatch(textLogo(false));
+    getMyList();
+    getMyBookmark();
   }, []);
 
   return (
@@ -95,7 +112,7 @@ const Mypage = ({ history, match }) => {
           </ListBox>
           <ListBox>
             <h3 className="title">내가 쓴 글(4)</h3>
-            <ul onClick={listClick}>
+            <ul onClick={getPostDetail}>
               <ListStyled>
                 <img
                   src="https://cdn.pixabay.com/photo/2014/04/13/20/49/cat-323262_1280.jpg"

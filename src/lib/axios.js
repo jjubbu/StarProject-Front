@@ -65,9 +65,9 @@ export const apis = {
   //회원탈퇴
   deleteAccountAX: () => instance.get("/my/leave"),
   //내가 쓴 글 리스트
-  getMyListAX: () => instance.get("/my/writeList"),
+  getMyListAX: () => instance.get("/my/writeList?offset=1"),
   //북마크 리스트
-  getMyBookmarkAX: () => instance.get("/my/bookmark"),
+  getMyBookmarkAX: () => instance.get("/my/bookmark?offset=1"),
 
   //마이페이지 계정 수정 페이지
   putUserInfoAX: (userinfo) => instance.put("/my/update", userinfo),
