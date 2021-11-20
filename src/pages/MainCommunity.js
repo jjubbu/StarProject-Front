@@ -21,14 +21,14 @@ const MainCommunity = (props) => {
   const dispatch = useDispatch();
   const history = useHistory();
   const card_list = useSelector((state) => state.card.list);
-  const like_list = useSelector((state) => state.like_list);
+  // const like_list = useSelector((state) => state.like_list);
 
-  console.log(like_list);
+  // console.log(like_list);
   console.log(card_list);
 
   React.useEffect(() => {
     dispatch(textLogo(false));
-    dispatch(postActions.getCardDB());
+    dispatch(postActions.getCardDB("star"));
   }, []);
 
   return (
@@ -36,8 +36,19 @@ const MainCommunity = (props) => {
       <CommunityPage className="CommonPageStyle">
         <TopDiv>
           <div className="tab">
-            <div className="recommend">추천</div>
-            <div className="popular">인기순</div>
+            <div
+              className="star"
+              onClick={() => dispatch(postActions.getCardDB("star"))}
+            >
+              추천순
+            </div>
+            <div
+              className="like"
+              onClick={(like) => dispatch(postActions.getCardDB("like"))}
+            >
+              인기순
+            </div>
+            <div className="latest">최신순</div>
           </div>
           <div className="searchbar">
             <img src={ic_search} alt="ic_search" />
@@ -76,28 +87,46 @@ const TopDiv = styled.div`
 
   .tab {
     display: flex;
+    justify-content: space-between;
     align-items: center;
     height: 40px;
+    width: 268px;
 
-    .recommend {
-      width: 85px;
+    .star {
+      width: 67px;
       /* height: 40px; */
       font-size: 24px;
       color: white;
       text-align: center;
       /* border-bottom: 2px solid #ffffff; */
+      :hover {
+        cursor: pointer;
+      }
     }
 
-    .popular {
-      width: 85px;
+    .like {
+      width: 67px;
       font-size: 24px;
       text-align: center;
       color: white;
+      :hover {
+        cursor: pointer;
+      }
+    }
+
+    .latest {
+      width: 67px;
+      font-size: 24px;
+      text-align: center;
+      color: white;
+      :hover {
+        cursor: pointer;
+      }
     }
   }
 
   .searchbar {
-    width: 861px;
+    width: 772px;
     height: 40px;
     background: #303136;
     border-radius: 10px;

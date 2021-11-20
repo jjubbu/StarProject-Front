@@ -34,33 +34,13 @@ const initialCard = {
 
 // middleware
 
-const getCardDB = (
-  id,
-  writer,
-  title,
-  address,
-  img,
-  contents,
-  modifiedAt,
-  likeCheck,
-  likeCount
-) => {
+const getCardDB = (sort) => {
   return function (dispatch, getState, { history }) {
-    api
-      .get("/community/list?sort=star", {
-        id: id,
-        writer: writer,
-        title: title,
-        address: address,
-        img: img,
-        contents: contents,
-        modifiedAt: modifiedAt,
-        likeCheck: likeCheck,
-        likeCount: likeCount,
-      })
+    apis
+      .getCardAX(sort)
       .then((res) => {
         console.log(res);
-        const cardList = res.data.data;
+        const cardList = res.data.data.dataList;
         console.log(cardList);
         dispatch(setCard(cardList));
       })
@@ -72,17 +52,51 @@ const getCardDB = (
   };
 };
 
-const postLikeDB = (id, likeCheck, likeCount) => {
+// const getCardDB = (
+//   id,
+//   writer,
+//   title,
+//   address,
+//   img,
+//   contents,
+//   modifiedAt,
+//   likeCheck,
+//   likeCount
+// ) => {
+//   return function (dispatch, getState, { history }) {
+//     api
+//       .get("/community/list?sort=star", {
+//         id: id,
+//         writer: writer,
+//         title: title,
+//         address: address,
+//         img: img,
+//         contents: contents,
+//         modifiedAt: modifiedAt,
+//         likeCheck: likeCheck,
+//         likeCount: likeCount,
+//       })
+//       .then((res) => {
+//         console.log(res);
+//         const cardList = res.data.data.dataList;
+//         console.log(cardList);
+//         dispatch(setCard(cardList));
+//       })
+//       .catch((err) => {
+//         window.alert("포스트 정보를 가져올 수 없습니다 ");
+//         console.log(err);
+//         return err;
+//       });
+//   };
+// };
+
+const postLikeDB = (id) => {
   return function (dispatch, getState, { history }) {
     dispatch(loginCheckAction.isLoginMW());
-    api
-      .post(`board/like?cardId=${id}`, {
-        cardId: id,
-        likeCheck: likeCheck,
-        likeCount: likeCount,
-      })
+    apis
+      .postLikeAX(`board/like?cardId=${id}`)
       .then((res) => {
-        getCardDB(res.data.data);
+        getCardDB(res.data.data.dataList);
       })
       .catch((error) => {
         window.alert("좋아요 정보를 가져올 수 없습니다");
