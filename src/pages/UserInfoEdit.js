@@ -185,9 +185,7 @@ const UserInfoEdit = () => {
                 중복확인
               </button>
             </WithOverlapBox>
-            <Warning useable={inputWarn.nickname}>
-              {warning.nickname} 00
-            </Warning>
+            <Warning useable={inputWarn.nickname}>{warning.nickname}</Warning>
           </label>
           <label>
             <LabelTitle>비밀번호</LabelTitle>
@@ -242,7 +240,9 @@ const StyleArticle = styled.article`
 
 const Warning = styled.p`
   ${(props) =>
-    props.useable === "warn" && "success" ? "display:block;" : "display:none;"};
+    props.useable === "warn" || props.useable === "success"
+      ? "display:block;"
+      : "display:none;"};
   margin: 12px 0 0 20px;
   font-weight: normal;
   font-size: 12px;
