@@ -74,7 +74,6 @@ export const apis = {
 
   //메인커뮤니티 페이지
   //좋아요
-  postLikeAX: (id) => instance.post(`/like?cardId=${id}`),
-
+  postLikeAX: (id) => instance.post(`/board/like?cardId=${id}`),
   getCardAX: (sort) => instance.get(`/community/list?sort=${sort}`),
 };

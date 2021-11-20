@@ -52,6 +52,39 @@ const getCardDB = (sort) => {
   };
 };
 
+const postLikeDB = (id) => {
+  return function (dispatch, getState, { history }) {
+    // dispatch(loginCheckAction.isLoginMW());
+    apis
+      .postLikeAX(id)
+      .then((res) => {
+        console.log(res);
+        const cardList = res.data.data.dataList;
+        console.log(cardList);
+        getCardDB(res.data.data.dataList);
+      })
+      .catch((error) => {
+        window.alert("좋아요 정보를 가져올 수 없습니다");
+        console.log(error);
+        if (error.response) {
+          // 요청이 이루어졌으며 서버가 2xx의 범위를 벗어나는 상태 코드로 응답했습니다.
+          console.log(error.response.data);
+          console.log(error.response.status);
+          console.log(error.response.headers);
+        } else if (error.request) {
+          // 요청이 이루어 졌으나 응답을 받지 못했습니다.
+          // `error.request`는 브라우저의 XMLHttpRequest 인스턴스 또는
+          // Node.js의 http.ClientRequest 인스턴스입니다.
+          console.log(error.request);
+        } else {
+          // 오류를 발생시킨 요청을 설정하는 중에 문제가 발생했습니다.
+          console.log("Error", error.message);
+        }
+        console.log(error.config);
+      });
+  };
+};
+
 // const getCardDB = (
 //   id,
 //   writer,
@@ -89,36 +122,6 @@ const getCardDB = (sort) => {
 //       });
 //   };
 // };
-
-const postLikeDB = (id) => {
-  return function (dispatch, getState, { history }) {
-    dispatch(loginCheckAction.isLoginMW());
-    apis
-      .postLikeAX(`board/like?cardId=${id}`)
-      .then((res) => {
-        getCardDB(res.data.data.dataList);
-      })
-      .catch((error) => {
-        window.alert("좋아요 정보를 가져올 수 없습니다");
-        console.log(error);
-        if (error.response) {
-          // 요청이 이루어졌으며 서버가 2xx의 범위를 벗어나는 상태 코드로 응답했습니다.
-          console.log(error.response.data);
-          console.log(error.response.status);
-          console.log(error.response.headers);
-        } else if (error.request) {
-          // 요청이 이루어 졌으나 응답을 받지 못했습니다.
-          // `error.request`는 브라우저의 XMLHttpRequest 인스턴스 또는
-          // Node.js의 http.ClientRequest 인스턴스입니다.
-          console.log(error.request);
-        } else {
-          // 오류를 발생시킨 요청을 설정하는 중에 문제가 발생했습니다.
-          console.log("Error", error.message);
-        }
-        console.log(error.config);
-      });
-  };
-};
 
 // reducer
 
