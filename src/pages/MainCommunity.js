@@ -21,6 +21,8 @@ const MainCommunity = (props) => {
   const dispatch = useDispatch();
   const history = useHistory();
   const card_list = useSelector((state) => state.card.list);
+  const [activeClass, setActive] = React.useState([false, false, false]);
+
   // const like_list = useSelector((state) => state.like_list);
 
   // console.log(like_list);
@@ -35,21 +37,38 @@ const MainCommunity = (props) => {
     <React.Fragment>
       <CommunityPage className="CommonPageStyle">
         <TopDiv>
-          <div className="tab">
+          <ul className="tab">
             <div
               className="star"
-              onClick={() => dispatch(postActions.getCardDB("star"))}
+              onClick={() => {
+                dispatch(postActions.getCardDB("star"));
+                setActive([true, false, false]);
+              }}
             >
-              추천순
+              <a class="recommend">추천순</a>
+              {activeClass[0] ? <li class="bottom__line1"></li> : false}
             </div>
             <div
               className="like"
-              onClick={(like) => dispatch(postActions.getCardDB("like"))}
+              onClick={(like) => {
+                dispatch(postActions.getCardDB("like"));
+                setActive([false, true, false]);
+              }}
             >
-              인기순
+              <a className="popular">인기순</a>
+              {activeClass[1] ? <li class="bottom__line2"></li> : false}
             </div>
-            <div className="latest">최신순</div>
-          </div>
+            <div
+              className="latest"
+              onClick={(like) => {
+                dispatch(postActions.getCardDB("like"));
+                setActive([false, false, true]);
+              }}
+            >
+              <a className="latest">최신순</a>
+              {activeClass[2] ? <li class="bottom__line3"></li> : false}
+            </div>
+          </ul>
           <div className="searchbar">
             <img src={ic_search} alt="ic_search" />
             <input type="text" placeholder="검색어를 입력하세요" />
@@ -94,13 +113,21 @@ const TopDiv = styled.div`
 
     .star {
       width: 67px;
-      /* height: 40px; */
       font-size: 24px;
       color: white;
       text-align: center;
-      /* border-bottom: 2px solid #ffffff; */
-      :hover {
+      z-index: 2;
+      a {
         cursor: pointer;
+      }
+      .bottom__line1 {
+        position: relative;
+        z-index: 1;
+        top: 10px;
+        /* left: 2px; */
+        width: 67px;
+        height: 2px;
+        background-color: #ffffff;
       }
     }
 
@@ -109,8 +136,15 @@ const TopDiv = styled.div`
       font-size: 24px;
       text-align: center;
       color: white;
-      :hover {
+      a {
         cursor: pointer;
+      }
+      .bottom__line2 {
+        position: relative;
+        top: 10px;
+        width: 67px;
+        height: 2px;
+        background-color: #ffffff;
       }
     }
 
@@ -119,8 +153,15 @@ const TopDiv = styled.div`
       font-size: 24px;
       text-align: center;
       color: white;
-      :hover {
+      a {
         cursor: pointer;
+      }
+      .bottom__line3 {
+        position: relative;
+        top: 10px;
+        width: 65px;
+        height: 2px;
+        background-color: #ffffff;
       }
     }
   }
