@@ -8,8 +8,31 @@ import CustomToolbar from "../components/QuillCustomToolbar";
 
 const AddEditPost = () => {
   const [quillValue, setQuillValue] = React.useState();
+  const [quillImage, setQuillImage] = React.useState();
+  const imageInputREF = React.useRef();
   const QuillREF = React.useRef();
-  const imageHandler = () => {};
+
+  const imageInputClick = (e) => {
+    const reader = new FileReader();
+    const file = imageInputREF.current.files[0];
+
+    //파일을 읽어온다!
+    reader.readAsDataURL(file);
+    //파일 읽은 후 실행할 행동!
+    reader.onloadend = () => {
+      // const range = quill.getSelection();
+      const quill = QuillREF.current.getEditor();
+      const range = quill.getSelection()?.index;
+      console.log(reader.result);
+      console.log("range:::", range);
+      console.log("origin File name :::", file.name);
+
+      quill.insertEmbed(range, "image", reader.result);
+    };
+  };
+  const imageHandler = () => {
+    document.getElementById("imgInput").click();
+  };
 
   const modules = React.useMemo(
     () => ({
@@ -57,12 +80,21 @@ const AddEditPost = () => {
             placeholder="제목을 입력해주세요"
           />
           <TextEditorBox className="textEditor">
+            <input
+              type="file"
+              accept=".png, .jpg, .jpeg"
+              ref={imageInputREF}
+              id="imgInput"
+              onChange={imageInputClick}
+            />
+
             <CustomToolbar />
             <ReactQuill
               value={quillValue}
               onChange={(e) => setQuillValue(e)}
               modules={modules}
               formats={formats}
+              ref={QuillREF}
             />
             <PostInput
               type="text"
