@@ -26,10 +26,7 @@ import { textLogo } from "../redux/modules/header";
 
 const MainStar = () => {
   const [text, setText] = React.useState("지금 내 위치!");
-  const [userLocation, setUserLocation] = React.useState({
-    lat: 37.3645764,
-    lon: 127.834038,
-  });
+  const [userLocation, setUserLocation] = React.useState({});
   const [data, setData] = React.useState({
     moonrise: "...",
     moonset: " ...",
