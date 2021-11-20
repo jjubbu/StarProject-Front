@@ -1,6 +1,7 @@
 import React, { useMemo } from "react";
 import styled from "styled-components";
 import ReactQuill from "react-quill";
+
 import "react-quill/dist/quill.snow.css";
 import { StyledInput } from "../elements/CommonInput";
 import ic_save from "../img/ic_save.svg";
@@ -11,6 +12,13 @@ const AddEditPost = () => {
   const [quillImage, setQuillImage] = React.useState();
   const imageInputREF = React.useRef();
   const QuillREF = React.useRef();
+
+  AWS.config.update({
+    region: "ap-northeast-2", // 버킷이 존재하는 리전을 문자열로 입력합니다. (Ex. "ap-northeast-2")
+    credentials: new AWS.CognitoIdentityCredentials({
+      IdentityPoolId: "ap-northeast-2:9fd6954c-e11d-4e32-977b-f9457383a30a", // cognito 인증 풀에서 받아온 키를 문자열로 입력합니다. (Ex. "ap-northeast-2...")
+    }),
+  });
 
   const imageInputClick = (e) => {
     const reader = new FileReader();
@@ -28,6 +36,7 @@ const AddEditPost = () => {
       console.log("origin File name :::", file.name);
 
       quill.insertEmbed(range, "image", reader.result);
+      setQuillImage((prev) => [...prev, file.name]);
     };
   };
   const imageHandler = () => {
