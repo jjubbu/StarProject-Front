@@ -26,10 +26,7 @@ import { textLogo } from "../redux/modules/header";
 
 const MainStar = () => {
   const [text, setText] = React.useState("지금 내 위치!");
-  const [userLocation, setUserLocation] = React.useState({
-    lat: 37.3645764,
-    lon: 127.834038,
-  });
+  const [userLocation, setUserLocation] = React.useState({ lat: 0, lon: 0 });
   const [data, setData] = React.useState({
     moonrise: "...",
     moonset: " ...",
@@ -121,23 +118,25 @@ const MainStar = () => {
 
   React.useEffect(() => {
     weatherNow();
-    apis
-      .getNoticeAX(userLocation.lat, userLocation.lon)
-      .then((response) => {
-        console.log("get notice:::", response);
-        const resData = response.data.data;
-        setData((prev) => ({
-          ...prev,
-          moonrise:
-            resData.moonrise.slice(0, 2) + ":" + resData.moonrise.slice(2, 4),
-          moonset:
-            resData.moonset.slice(0, 2) + ":" + resData.moonset.slice(2, 4),
-          starGazing: resData.starGazing,
-        }));
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    if (userLocation) {
+      apis
+        .getNoticeAX(userLocation.lat, userLocation.lon)
+        .then((response) => {
+          console.log("get notice:::", response);
+          const resData = response.data.data;
+          setData((prev) => ({
+            ...prev,
+            moonrise:
+              resData.moonrise.slice(0, 2) + ":" + resData.moonrise.slice(2, 4),
+            moonset:
+              resData.moonset.slice(0, 2) + ":" + resData.moonset.slice(2, 4),
+            starGazing: resData.starGazing,
+          }));
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
   }, [userLocation]);
 
   const liArray = Array.from(new Array(11).keys());
@@ -180,7 +179,7 @@ const MainStar = () => {
                         ? ic_sunny
                         : data.weather === "흐림"
                         ? ic_overcast
-                        : data.weather === "구름많음"
+                        : data.weather === "구름 조금 많음"
                         ? ic_cloudy
                         : null
                     }

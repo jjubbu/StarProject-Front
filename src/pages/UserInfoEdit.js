@@ -17,23 +17,21 @@ const UserInfoEdit = () => {
   });
 
   const [warning, setWarning] = React.useState({
+    nickname: "",
     password: "",
     passwordCheck: "",
-    nickname: "",
   });
 
   const [inputWarn, setInputWarn] = React.useState({
+    nickname: "none",
     password: "none",
     passwordCheck: "none",
-    nickname: "none",
   });
 
   const dispatch = useDispatch();
 
   const pwCheck =
     /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,}$/;
-  const email =
-    /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
 
   const setWarningFunc = (name, nameValue, text, test) => {
     if (name === nameValue) {
@@ -50,6 +48,7 @@ const UserInfoEdit = () => {
 
   const warnCheck = React.useCallback(
     _.debounce((name, value) => {
+      console.log("debounce!");
       setWarningFunc(
         name,
         "password",
@@ -80,6 +79,7 @@ const UserInfoEdit = () => {
 
   const inputValue = (e) => {
     const { name, value } = e.target;
+    console.log("input change!");
     setUserInfo((prevState) => ({ ...prevState, [name]: value }));
     warnCheck(name, value);
     warnCheckPw2(name, value);
@@ -119,16 +119,26 @@ const UserInfoEdit = () => {
   };
 
   const overlapAxios = (code, check) => {
+    console.log("code?", code);
     if (code === 200) {
+      console.log("overlap set!");
       setWarning((prevState) => ({
         ...prevState,
-        [check]: "사용가능한 아이디입니다.",
+        [check]: String(
+          "사용가능한 " +
+            (check === "nickname" ? "닉네임" : "아이디") +
+            "입니다."
+        ),
       }));
       setInputWarn((prevState) => ({ ...prevState, [check]: "success" }));
     } else if (code === 501) {
       setWarning((prevState) => ({
         ...prevState,
-        [check]: "사용할 수 없는 아이디입니다.",
+        [check]: String(
+          "사용할 수 없는 " +
+            (check === "nickname" ? "닉네임" : "아이디") +
+            "입니다."
+        ),
       }));
       setInputWarn((prevState) => ({ ...prevState, [check]: "warn" }));
     }
@@ -175,7 +185,9 @@ const UserInfoEdit = () => {
                 중복확인
               </button>
             </WithOverlapBox>
-            <Warning useable={inputWarn.nickname}>{warning.nickname}</Warning>
+            <Warning useable={inputWarn.nickname}>
+              {warning.nickname} 00
+            </Warning>
           </label>
           <label>
             <LabelTitle>비밀번호</LabelTitle>

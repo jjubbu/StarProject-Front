@@ -51,6 +51,9 @@ const Login = () => {
         dispatch(lodinAction.isLogin(true));
         alert("로그인 성공!");
         history.push("/");
+        window.location.reload();
+      } else if (response.data.code === 500) {
+        alert(response.data.msg);
       }
     });
   };
