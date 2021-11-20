@@ -31,6 +31,12 @@ const Mypage = ({ history, match }) => {
     });
   };
 
+  const putUserInfo = () => {
+    apis.putUserInfoAX().then((response) => {
+      console.log(response);
+    });
+  };
+
   React.useEffect(() => {
     dispatch(textLogo(false));
   }, []);
@@ -45,7 +51,7 @@ const Mypage = ({ history, match }) => {
             <p>aaa@gmail.com</p>
           </div>
           <div className="buttonBox">
-            <button>내 정보 수정</button>
+            <button onClick={putUserInfo}>내 정보 수정</button>
             <button onClick={deleteAccount}>회원탈퇴</button>
           </div>
         </UserProfile>
