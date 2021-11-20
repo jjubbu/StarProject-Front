@@ -54,14 +54,14 @@ const getCardDB = (sort) => {
 
 const postLikeDB = (id) => {
   return function (dispatch, getState, { history }) {
-    // dispatch(loginCheckAction.isLoginMW());
+    dispatch(loginCheckAction.isLoginMW());
     apis
       .postLikeAX(id)
       .then((res) => {
         console.log(res);
-        const cardList = res.data.data.dataList;
+        const cardList = res.data.data;
         console.log(cardList);
-        getCardDB(res.data.data.dataList);
+        getCardDB(res.data.data);
       })
       .catch((error) => {
         window.alert("좋아요 정보를 가져올 수 없습니다");

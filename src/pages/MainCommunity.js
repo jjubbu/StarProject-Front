@@ -21,7 +21,7 @@ const MainCommunity = (props) => {
   const dispatch = useDispatch();
   const history = useHistory();
   const card_list = useSelector((state) => state.card.list);
-  const [activeClass, setActive] = React.useState([false, false, false]);
+  const [activeClass, setActive] = React.useState([true, false, false]);
 
   // const like_list = useSelector((state) => state.like_list);
 
