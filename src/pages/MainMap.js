@@ -153,7 +153,8 @@ const MainMap = () => {
     apis
       .getMapListAX()
       .then((response) => {
-        const list = [...response.data.data].sort((x, y) => {
+        console.log("main map list ::", response);
+        const list = [...response.data.data.dataList].sort((x, y) => {
           return x.title > y.title ? -1 : x.title < y.title ? 1 : 0;
         });
         const latitude = list[0].y_location;
