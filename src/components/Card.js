@@ -13,6 +13,7 @@ import ic_bookmark_off from "../img/ic_bookmark_off.svg";
 import { useDispatch } from "react-redux";
 
 import { actionCreators as likeActions } from "../redux/modules/card";
+import { apis } from "../lib/axios";
 
 const Card = (props) => {
   const [is_like, setLikeCheck] = React.useState(false);
