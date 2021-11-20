@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import styled from "styled-components";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
@@ -8,11 +8,20 @@ import CustomToolbar from "../components/QuillCustomToolbar";
 
 const AddEditPost = () => {
   const [quillValue, setQuillValue] = React.useState();
-  const modules = {
-    toolbar: {
-      container: "#toolbar",
-    },
-  };
+  const QuillREF = React.useRef();
+  const imageHandler = () => {};
+
+  const modules = React.useMemo(
+    () => ({
+      toolbar: {
+        container: "#toolbar",
+        handlers: {
+          image: imageHandler,
+        },
+      },
+    }),
+    []
+  );
 
   const formats = [
     "header",
