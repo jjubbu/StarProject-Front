@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import Card from "../components/Card";
 import styled from "styled-components";
 import { Map, MapMarker } from "react-kakao-maps-sdk";
 import ic_star from "../img/ic_star.svg";
@@ -12,7 +13,9 @@ import ic_arrow from "../img/ic_slideArrow.svg";
 import { useDispatch, useSelector } from "react-redux";
 import { textLogo } from "../redux/modules/header";
 import { actionCreators as loginCheckAction } from "../redux/modules/login";
+import card from "../redux/modules/card";
 import { apis } from "../lib/axios";
+import axios from "axios";
 
 const Detail = ({ history, location, match }) => {
   const [data, setData] = useState({
@@ -71,6 +74,7 @@ const Detail = ({ history, location, match }) => {
         alert(response.data.msg);
       }
     });
+
     dispatch(textLogo(false));
   }, []);
 

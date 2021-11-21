@@ -38,7 +38,7 @@ const Mypage = ({ history, match }) => {
     apis.putUserInfoAX().then((response) => {
       console.log(response);
     });
-    history.push(`user/edit`);
+    history.push(`/user/edit`);
   };
 
   const getMyBookmark = () => {

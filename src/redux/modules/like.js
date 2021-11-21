@@ -54,7 +54,7 @@
 //         draft.list = action.payload.like_list;
 //         console.log(draft.list);
 //       }),
-
+//
 //     // [ADD_CARD]: (state, action) => produce(state, (draft) => {}),
 //   },
 //   initialState
