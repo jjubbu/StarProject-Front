@@ -29,7 +29,7 @@ const Card = (props) => {
     <Wrapper
     // cardID={props.cardID} onClick={cardClick}
     >
-      <div>
+      <div onClick={cardClick}>
         <Image
           height="288px"
           shape={"rectangle"}

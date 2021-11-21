@@ -72,8 +72,8 @@ export const apis = {
   //마이페이지 계정 수정 페이지
   putUserInfoAX: (userinfo) => instance.put("/my/update", userinfo),
 
-  //메인커뮤니티 페이지
   //좋아요
+  //메인커뮤니티 페이지
   postLikeAX: (id) => instance.post(`/board/like?cardId=${id}`),
   getCardAX: (sort) => instance.get(`/community/list?sort=${sort}`),
 };
