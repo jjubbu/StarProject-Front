@@ -60,6 +60,12 @@ export const apis = {
   getPostDetailAX: (id) => instance.get(`/detail?boardId=${id}`),
   //게시글 삭제
   getDeletePostAX: (id) => instance.delete(`/detail/delete?boardId=${id}`),
+  //게시글 작성
+  postAddPostAX: (content) => instance.post("/board", content),
+  putEditPostAX: (id, content) =>
+    instance.put(`/board/update?boardId=${id}`, content),
+  getCheckAddressAX: (keyword) =>
+    instance.get(`/address/check?address=${keyword}`),
 
   //마이페이지
   //회원탈퇴

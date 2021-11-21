@@ -1,20 +1,30 @@
-import React, { useMemo } from "react";
+import React from "react";
 import AWS from "aws-sdk";
 import styled from "styled-components";
 import ReactQuill from "react-quill";
+import _ from "lodash";
 
 import "react-quill/dist/quill.snow.css";
 import { StyledInput } from "../elements/CommonInput";
 import ic_save from "../img/ic_save.svg";
 import CustomToolbar from "../components/QuillCustomToolbar";
+import { apis } from "../lib/axios";
 
 const AddEditPost = () => {
   const [quillValue, setQuillValue] = React.useState();
   const [quillImage, setQuillImage] = React.useState([]);
   const [quillImagebase, setQuillImagebase] = React.useState([]);
-  const [quillResult, setQuillResult] = React.useState();
+  const [quillResult, setQuillResult] = React.useState({
+    title: "",
+    content: "",
+    address: "",
+    img: "",
+  });
+  const [warn, setWarn] = React.useState("none");
+  const [canUpload, setCanUpload] = React.useState(true);
   const imageInputREF = React.useRef();
   const QuillREF = React.useRef();
+  const titleREF = React.useRef();
 
   AWS.config.update({
     region: "ap-northeast-2", // 버킷이 존재하는 리전을 문자열로 입력합니다. (Ex. "ap-northeast-2")
@@ -75,7 +85,30 @@ const AddEditPost = () => {
     "align",
   ];
 
-  const uploadPost = () => {
+  const addressCheck = React.useCallback(
+    _.debounce((e) => {
+      const address = e.target.value;
+      const korean = /^[ㄱ-ㅎ|가-힣|0-9|]+$/;
+      console.log(e.target.value);
+      if (korean.test(address)) {
+        apis.getCheckAddressAX(address).then((response) => {
+          console.log("check address AX :::", response);
+          const data = response.data;
+          if (data.code === 200) {
+            setWarn("none");
+            setQuillResult((prev) => ({ ...prev, address: address }));
+          } else {
+            setWarn("warn");
+          }
+        });
+      } else {
+        setWarn("warn");
+      }
+    }, 500),
+    []
+  );
+
+  const uploadPost = async () => {
     if (quillImage.length > 0) {
       quillImage.map((l, idx) => {
         // S3 SDK에 내장된 업로드 함수
@@ -98,13 +131,12 @@ const AddEditPost = () => {
       });
     }
     let List = {};
-
     for (let i = 0; i < quillImage.length; i++) {
       List[quillImagebase[i]] = quillImage[i].name;
       // List = {base:link,base:link, ...}
     }
     let content = quillValue;
-    quillImagebase.forEach((x, idx) => {
+    await quillImagebase.forEach((x, idx) => {
       content = content
         .split(x)
         .join(
@@ -113,6 +145,33 @@ const AddEditPost = () => {
         );
     });
     console.log("content:::", content);
+
+    let uploadResult = {
+      content: content,
+      img: quillImage
+        ? String(
+            "https://star-project-post-storage.s3.ap-northeast-2.amazonaws.com/" +
+              quillImage[0]?.name
+          )
+        : "",
+      title: titleREF,
+    };
+    console.log("quillResult:::", uploadResult);
+
+    if (
+      Object.keys(uploadResult).find(
+        (key) => key !== "img" && uploadResult[key] === ""
+      )
+    ) {
+      alert("제목, 글 내용, 주소를 전부 입력해주세요!");
+      return;
+    } else {
+      if (warn === "warn") {
+        alert("주소를 알맞게 입력해주세요");
+      } else {
+        console.log("확인");
+      }
+    }
   };
 
   return (
@@ -129,6 +188,7 @@ const AddEditPost = () => {
             type="text"
             name="title"
             placeholder="제목을 입력해주세요"
+            ref={titleREF}
           />
           <TextEditorBox className="textEditor">
             <input
@@ -141,7 +201,7 @@ const AddEditPost = () => {
 
             <CustomToolbar />
             <ReactQuill
-              value={quillValue}
+              value={quillValue || ""}
               onChange={(e) => {
                 setQuillValue(e);
               }}
@@ -153,6 +213,8 @@ const AddEditPost = () => {
               type="text"
               name="address"
               placeholder="캠핑한 장소의 주소를 입력하세요"
+              onChange={addressCheck}
+              border={warn}
             />
           </TextEditorBox>
 
@@ -240,6 +302,8 @@ const PostInput = styled(StyledInput)`
     background: #18191e;
     width: 100%;
     height: 40px;
+    border: 1px solid
+      ${(props) => (props.border === "warn" ? "#CE3030" : "none")};
   }
   &[name="address"],
   &[name="address"]::placeholder {
@@ -265,6 +329,11 @@ const TextEditorBox = styled.div`
   flex-direction: column;
   border-bottom: 1px solid #666;
   padding-bottom: 20px;
+
+  #imgInput {
+    position: absolute;
+    z-index: -9990;
+  }
 
   .quill {
     height: 100%;
