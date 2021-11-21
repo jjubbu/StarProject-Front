@@ -50,9 +50,9 @@ export const apis = {
   getStarHotAX: () => instance.get("/star/hot"),
 
   //지도페이지
-  //게시판 리스트 불러오기 cityName => ?cityName="서울시"
-  getMapListAX: (cityName) =>
-    instance.get(`/board/map/list${cityName ? cityName : ""}`),
+  //게시판 리스트 불러오기 cityName => cityName="서울시"/
+  getMapListAX: (cityName, offset) =>
+    instance.get(`/board/map/list?${cityName ? cityName : ""}offset=${offset}`),
   //검색 자동 완성 키워드
   getMapSearchAX: (keyword) => instance.get(`/board/keyword?key=${keyword}`),
 

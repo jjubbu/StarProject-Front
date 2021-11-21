@@ -22,13 +22,14 @@ const MainMap = () => {
   const [is_search, setSearch] = React.useState(false);
   const [is_loading, setLoading] = React.useState();
   const [searchValue, setSearchValue] = React.useState("");
-  const testSearchArray = [1, 2, 3, 4, 5];
   const [mapLocation, setMapLocation] = React.useState({
     lat: 37.3645764,
     lon: 127.834038,
   });
   const [resultList, setResultList] = React.useState([{}]);
   const [searchList, setSearchList] = React.useState([{}]);
+  const [pageNum, setPageNum] = React.useState({ page: 1, max: 1 });
+  const [dataSize, setDataSize] = React.useState(0);
   const dispatch = useDispatch();
   const options = {
     enableHighAccuracy: true,
@@ -93,7 +94,7 @@ const MainMap = () => {
   );
 
   const autoSearchClick = (text) => {
-    const params = `?cityName=${text}`;
+    const params = `cityName=${text}`;
 
     if (text !== "검색 결과가 없습니다.") {
       apis
@@ -117,7 +118,7 @@ const MainMap = () => {
 
   const searchCity = (e) => {
     const text = e.target.value;
-    const params = `?cityName=${text}`;
+    const params = `cityName=${text}`;
     if (window.event.keyCode === 13) {
       console.log("enter", text);
       apis.getMapListAX(params).then((response) => {
@@ -146,21 +147,52 @@ const MainMap = () => {
     setMapLocation({ lat: latitude, lon: longitude });
   };
 
+  // 무한스크롤
+  const scrollEvent = async (e) => {
+    let scrollHeight = document.getElementById("container").scrollHeight;
+    let scrollTop = document.getElementById("container").scrollTop;
+    let clientHeight = document.getElementById("container").clientHeight;
+    if (scrollTop + clientHeight >= scrollHeight) {
+      console.log("scrollTop::::", e.target.scrollTop);
+      if (pageNum.page > pageNum.max) {
+        console.log("더 이상 페이지 없음");
+      } else {
+        setPageNum((prev) => ({ ...prev, page: pageNum.page + 1 }));
+        console.log("now page", pageNum.page);
+        await apis
+          .getMapListAX("", Number(pageNum.page))
+          .then(async (response) => {
+            const data = response.data.data;
+            const mergeData = resultList.concat(...data.dataList);
+            setResultList(mergeData);
+            setDataSize(data.dataSize);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }
+    }
+  };
+
   React.useEffect(() => {
     dispatch(textLogo(false));
 
     setLoading(true);
     apis
-      .getMapListAX()
+      .getMapListAX("", 1)
       .then((response) => {
+        const data = response.data.data;
+
         console.log("main map list ::", response);
-        const list = [...response.data.data.dataList].sort((x, y) => {
+        const list = [...data.dataList].sort((x, y) => {
           return x.title > y.title ? -1 : x.title < y.title ? 1 : 0;
         });
         const latitude = list[0].y_location;
         const longitude = list[0].x_location;
         setResultList(list);
         setMapLocation({ lat: latitude, lon: longitude });
+        setPageNum({ page: data.currentPage, max: data.maxPage });
+        setDataSize(data.dataSize);
       })
       .then(() => {
         setLoading(false);
@@ -182,7 +214,7 @@ const MainMap = () => {
         <StyledMap>
           <ResultBox>
             <ResultHeader url={ic_option}>
-              <h3>전체({resultList.length})</h3>
+              <h3>전체({dataSize})</h3>
               <div>
                 <select onChange={optionClick}>
                   <option value="descending">내림차순</option>
@@ -191,7 +223,7 @@ const MainMap = () => {
                 <span className="styledSelect" />
               </div>
             </ResultHeader>
-            <ResultListBox>
+            <ResultListBox id="container" onScroll={scrollEvent}>
               {resultList ? (
                 resultList.map((l, idx) => {
                   return (
