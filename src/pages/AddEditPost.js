@@ -1,4 +1,5 @@
 import React, { useMemo } from "react";
+import AWS from "aws-sdk";
 import styled from "styled-components";
 import ReactQuill from "react-quill";
 
@@ -9,7 +10,9 @@ import CustomToolbar from "../components/QuillCustomToolbar";
 
 const AddEditPost = () => {
   const [quillValue, setQuillValue] = React.useState();
-  const [quillImage, setQuillImage] = React.useState();
+  const [quillImage, setQuillImage] = React.useState([]);
+  const [quillImagebase, setQuillImagebase] = React.useState([]);
+  const [quillResult, setQuillResult] = React.useState();
   const imageInputREF = React.useRef();
   const QuillREF = React.useRef();
 
@@ -23,21 +26,20 @@ const AddEditPost = () => {
   const imageInputClick = (e) => {
     const reader = new FileReader();
     const file = imageInputREF.current.files[0];
-
-    //파일을 읽어온다!
-    reader.readAsDataURL(file);
-    //파일 읽은 후 실행할 행동!
-    reader.onloadend = () => {
-      // const range = quill.getSelection();
-      const quill = QuillREF.current.getEditor();
-      const range = quill.getSelection()?.index;
-      console.log(reader.result);
-      console.log("range:::", range);
-      console.log("origin File name :::", file.name);
-
-      quill.insertEmbed(range, "image", reader.result);
-      setQuillImage((prev) => [...prev, file.name]);
-    };
+    console.log("file:::", file);
+    if (file) {
+      //파일을 읽어온다!
+      reader.readAsDataURL(file);
+      //파일 읽은 후 실행할 행동!
+      reader.onloadend = () => {
+        // const range = quill.getSelection();
+        const quill = QuillREF.current.getEditor();
+        const range = quill.getSelection()?.index;
+        quill.insertEmbed(range, "image", reader.result);
+        setQuillImagebase((prev) => [...prev, reader.result]);
+        setQuillImage((prev) => [...prev, file]);
+      };
+    }
   };
   const imageHandler = () => {
     document.getElementById("imgInput").click();
@@ -73,12 +75,52 @@ const AddEditPost = () => {
     "align",
   ];
 
+  const uploadPost = () => {
+    if (quillImage.length > 0) {
+      quillImage.map((l, idx) => {
+        // S3 SDK에 내장된 업로드 함수
+        const upload = new AWS.S3.ManagedUpload({
+          params: {
+            Bucket: "star-project-post-storage", // 업로드할 대상 버킷명
+            Key: l.name, // 업로드할 파일명 (* 확장자를 추가해야 합니다!)
+            Body: l, // 업로드할 파일 객체
+          },
+        });
+        const promise = upload.promise();
+        promise.then(
+          function (data) {
+            console.log("이미지 업로드에 성공했습니다.");
+          },
+          function (err) {
+            return console.log("오류가 발생했습니다: ", err.message);
+          }
+        );
+      });
+    }
+    let List = {};
+
+    for (let i = 0; i < quillImage.length; i++) {
+      List[quillImagebase[i]] = quillImage[i].name;
+      // List = {base:link,base:link, ...}
+    }
+    let content = quillValue;
+    quillImagebase.forEach((x, idx) => {
+      content = content
+        .split(x)
+        .join(
+          "https://star-project-post-storage.s3.ap-northeast-2.amazonaws.com/" +
+            String(quillImage[idx].name)
+        );
+    });
+    console.log("content:::", content);
+  };
+
   return (
     <React.Fragment>
       <AddEditStyled className="CommonPageStyle CommonGap">
         <AddEditHeader>
           <h3>커뮤니티 게시글 작성</h3>
-          <button>
+          <button onClick={uploadPost}>
             업로드 <img src={ic_save} alt="save" />
           </button>
         </AddEditHeader>
@@ -100,7 +142,9 @@ const AddEditPost = () => {
             <CustomToolbar />
             <ReactQuill
               value={quillValue}
-              onChange={(e) => setQuillValue(e)}
+              onChange={(e) => {
+                setQuillValue(e);
+              }}
               modules={modules}
               formats={formats}
               ref={QuillREF}
