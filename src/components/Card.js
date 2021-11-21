@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { Text, Image, Grid } from "../elements";
 import { history } from "../redux/configureStore";
-import { useState } from "react";
+import { useState, useSelector } from "react-redux";
 
 import ic_map from "../img/map/ic_map.svg";
 import ic_profile from "../img/ic_profile.svg";
@@ -12,18 +12,66 @@ import ic_bookmark_off from "../img/ic_bookmark_off.svg";
 
 import { useDispatch } from "react-redux";
 
+import { actionCreators as loginCheckAction } from "../redux/modules/login";
 import { actionCreators as likeActions } from "../redux/modules/card";
 import { apis } from "../lib/axios";
+import { api } from "../shared/apis";
 
 const Card = (props) => {
-  const [is_like, setLikeCheck] = React.useState(false);
-  const toggleLike = () => setLikeCheck(!is_like);
+  // const [is_like, setLikeCheck] = React.useState(false);
+  // const toggleLike = () => setLikeCheck(!is_like);
   const dispatch = useDispatch();
 
   const cardClick = (e) => {
     console.log(props.cardID);
     history.push(`detail/${props.cardID}`);
   };
+
+  const is_login = useSelector((state) => state.login.is_login);
+
+  const [cardList, setCardList] = React.useState([
+    {
+      id: 1,
+      writer: "salmon",
+      title: "제목",
+      address: "대구시",
+      img: "/src",
+      contents: "본문",
+      modifiedAt: "yyyy-MM-dd HH:mm",
+      likeCheck: false,
+      likeCount: 0,
+    },
+  ]);
+  // const likeCheck = (id, idx, e) => {
+  //   dispatch(loginCheckAction.isLoginMW());
+  //   const cardid = e.target.getAttribute("cardid");
+  //   if (!is_login) {
+  //     history.push("/login");
+  //   }
+  //   console.log("like click:::", id);
+  //   console.log("like click::: e", e);
+  //   if (id === null) {
+  //     console.log("no id", cardid);
+  //   }
+  //   apis
+  //     .postLikeAX(id)
+  //     .then((response) => {
+  //       console.log(response);
+  //       const likeCheck = response.data.data.likeCheck;
+  //       const likeCount = response.data.data.likeCount;
+  //       console.log(likeCheck);
+  //       console.log(likeCount);
+
+  //       // let newList = [...cardList];
+  //       // console.log(newList);
+
+  //       // newList[idx].likeCheck = likeInfo;
+  //       // setCardList(newList);
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //     });
+  // };
 
   return (
     <Wrapper
@@ -59,18 +107,15 @@ const Card = (props) => {
             <span>{props.writer}</span>
           </div>
 
-          <div
-            className="likeDiv"
-            onClick={(e) =>
-              dispatch(likeActions.postLikeDB(props.id, props.idx))
-            }
-          >
+          <div className="likeDiv">
             <img
               className="ic_heart_on"
               src={props.likeCheck ? ic_heart_on : ic_heart}
+              onClick={(cardId, likeCheck, likeCount) =>
+                dispatch(likeActions.postLikeDB(cardId, likeCheck, likeCount))
+              }
               alt="ic_heart_on"
             />
-
             <p className="like">{props.likeCount}</p>
 
             <div className="bookmarkDiv">
