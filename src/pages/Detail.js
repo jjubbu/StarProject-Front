@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import Card from "../components/Card";
 import styled from "styled-components";
 import { Map, MapMarker } from "react-kakao-maps-sdk";
 import ic_star from "../img/ic_star.svg";
@@ -85,10 +84,12 @@ const Detail = ({ history, location, match }) => {
         <div className="detailInfoETC">
           <MapBox>
             <Map
-              center={{ lat: 33.55635, lng: 126.795841 }}
+              center={{ lat: data.y_location, lng: data.x_location }}
               style={{ width: "100%", height: "360px" }}
             >
-              <MapMarker position={{ lat: 33.55635, lng: 126.795841 }} />
+              <MapMarker
+                position={{ lat: data.y_location, lng: data.x_location }}
+              />
             </Map>
           </MapBox>
           <WeatherInfoBox>
@@ -179,7 +180,7 @@ const Detail = ({ history, location, match }) => {
         <ContentBox>
           <ContentHeader>
             <div className="titleBox">
-              <h3>타이틀</h3>
+              <h3>{data.title}</h3>
               <p className="openSans">2021.00.00 작성</p>
             </div>
             <div className="buttonBox">
@@ -194,10 +195,10 @@ const Detail = ({ history, location, match }) => {
           </ContentHeader>
           <ContentUser>
             <img src={ic_mypage} alt="user profile" />
-            <h3 className="openSans">닉네임</h3>
+            <h3 className="openSans">{data.writer}</h3>
           </ContentUser>
           <span className="line" />
-          <section className="contents">컨텐츠</section>
+          <section className="contents">{data.content}</section>
           <span className="line" />
 
           <ContentFooter>
