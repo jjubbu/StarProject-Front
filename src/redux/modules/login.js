@@ -23,6 +23,7 @@ const isLoginMW = () => {
   return async function (dispatch, getState, { history }) {
     const cookie = new Cookies();
     const token = await cookie.get("token");
+    const state = getState().login.is_login;
     console.log("token:::", token);
     if (token !== undefined) {
       apis
@@ -32,8 +33,10 @@ const isLoginMW = () => {
           const data = response.data;
           if (data.code === 500) {
             cookie.remove("token");
-            dispatch(isLogin(false));
-            alert(`"login check ax" ${data.msg}`);
+            if (state) {
+              dispatch(isLogin(false));
+              alert(`"login check ax" ${data.msg}`);
+            }
           } else if (data.code === 200) {
             dispatch(isLogin(true));
             dispatch(setUserInfo(data.data));
