@@ -45,7 +45,9 @@ const Main = () => {
       .then((response) => {
         console.log(response);
         const check = response.data.data.bookmarkCheck;
+        console.log(check);
         let newList = [...boardList];
+        console.log(newList);
         newList[idx].bookmark = check;
         setBoardList(newList);
       })

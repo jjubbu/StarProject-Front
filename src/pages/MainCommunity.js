@@ -4,7 +4,6 @@ import Card from "../components/Card";
 import { Grid } from "../elements";
 import { useHistory } from "react-router";
 import { Write } from "./Write";
-
 import Detail from "../pages/Detail";
 
 // redux
@@ -13,6 +12,9 @@ import { actionCreators as likeActions } from "../redux/modules/like";
 import { useSelector, useDispatch } from "react-redux";
 import { textLogo } from "../redux/modules/header";
 import { api } from "../shared/apis";
+import { actionCreators as loginCheckAction } from "../redux/modules/login";
+
+import { apis } from "../lib/axios";
 
 import ic_write from "../img/ic_write.svg";
 import ic_search from "../img/ic_search.svg";
@@ -21,12 +23,11 @@ const MainCommunity = (props) => {
   const dispatch = useDispatch();
   const history = useHistory();
   const card_list = useSelector((state) => state.card.list);
-  const [activeClass, setActive] = React.useState([false, false, false]);
+  const [activeClass, setActive] = React.useState([true, false, false]);
 
-  // const like_list = useSelector((state) => state.like_list);
-
-  // console.log(like_list);
   console.log(card_list);
+
+  const is_login = useSelector((state) => state.login.is_login);
 
   React.useEffect(() => {
     dispatch(textLogo(false));
@@ -61,7 +62,7 @@ const MainCommunity = (props) => {
             <div
               className="latest"
               onClick={(like) => {
-                dispatch(postActions.getCardDB("like"));
+                dispatch(postActions.getCardDB("latest"));
                 setActive([false, false, true]);
               }}
             >
