@@ -2,29 +2,26 @@ import React from "react";
 import AWS from "aws-sdk";
 import styled from "styled-components";
 import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
 import _ from "lodash";
 
-import "react-quill/dist/quill.snow.css";
-import { StyledInput } from "../elements/CommonInput";
-import ic_save from "../img/ic_save.svg";
-import CustomToolbar from "../components/QuillCustomToolbar";
 import { apis } from "../lib/axios";
+import { StyledInput } from "../elements/CommonInput";
+import CustomToolbar from "../components/QuillCustomToolbar";
+import ic_save from "../img/ic_save.svg";
+
+import { history } from "../redux/configureStore";
 
 const AddEditPost = () => {
   const [quillValue, setQuillValue] = React.useState();
   const [quillImage, setQuillImage] = React.useState([]);
   const [quillImagebase, setQuillImagebase] = React.useState([]);
-  const [quillResult, setQuillResult] = React.useState({
-    title: "",
-    content: "",
-    address: "",
-    img: "",
-  });
   const [warn, setWarn] = React.useState("none");
   const [canUpload, setCanUpload] = React.useState(true);
   const imageInputREF = React.useRef();
   const QuillREF = React.useRef();
   const titleREF = React.useRef();
+  const addressREF = React.useRef();
 
   AWS.config.update({
     region: "ap-northeast-2", // 버킷이 존재하는 리전을 문자열로 입력합니다. (Ex. "ap-northeast-2")
@@ -81,6 +78,7 @@ const AddEditPost = () => {
     "indent",
     "link",
     "image",
+    "video",
     "color",
     "align",
   ];
@@ -96,7 +94,6 @@ const AddEditPost = () => {
           const data = response.data;
           if (data.code === 200) {
             setWarn("none");
-            setQuillResult((prev) => ({ ...prev, address: address }));
           } else {
             setWarn("warn");
           }
@@ -109,27 +106,6 @@ const AddEditPost = () => {
   );
 
   const uploadPost = async () => {
-    if (quillImage.length > 0) {
-      quillImage.map((l, idx) => {
-        // S3 SDK에 내장된 업로드 함수
-        const upload = new AWS.S3.ManagedUpload({
-          params: {
-            Bucket: "star-project-post-storage", // 업로드할 대상 버킷명
-            Key: l.name, // 업로드할 파일명 (* 확장자를 추가해야 합니다!)
-            Body: l, // 업로드할 파일 객체
-          },
-        });
-        const promise = upload.promise();
-        promise.then(
-          function (data) {
-            console.log("이미지 업로드에 성공했습니다.");
-          },
-          function (err) {
-            return console.log("오류가 발생했습니다: ", err.message);
-          }
-        );
-      });
-    }
     let List = {};
     for (let i = 0; i < quillImage.length; i++) {
       List[quillImagebase[i]] = quillImage[i].name;
@@ -144,17 +120,18 @@ const AddEditPost = () => {
             String(quillImage[idx].name)
         );
     });
-    console.log("content:::", content);
 
     let uploadResult = {
       content: content,
-      img: quillImage
-        ? String(
-            "https://star-project-post-storage.s3.ap-northeast-2.amazonaws.com/" +
-              quillImage[0]?.name
-          )
-        : "",
-      title: titleREF,
+      img:
+        quillImage.length > 0
+          ? String(
+              "https://star-project-post-storage.s3.ap-northeast-2.amazonaws.com/" +
+                quillImage[0]?.name
+            )
+          : "",
+      title: titleREF.current.value,
+      address: addressREF.current.value,
     };
     console.log("quillResult:::", uploadResult);
 
@@ -169,7 +146,33 @@ const AddEditPost = () => {
       if (warn === "warn") {
         alert("주소를 알맞게 입력해주세요");
       } else {
-        console.log("확인");
+        if (quillImage.length > 0) {
+          quillImage.map((l, idx) => {
+            // S3 SDK에 내장된 업로드 함수
+            const upload = new AWS.S3.ManagedUpload({
+              params: {
+                Bucket: "star-project-post-storage", // 업로드할 대상 버킷명
+                Key: l.name, // 업로드할 파일명 (* 확장자를 추가해야 합니다!)
+                Body: l, // 업로드할 파일 객체
+              },
+            });
+            const promise = upload.promise();
+            promise.then(
+              function (data) {
+                console.log("이미지 업로드에 성공했습니다.");
+              },
+              function (err) {
+                return console.log("오류가 발생했습니다: ", err.message);
+              }
+            );
+          });
+        }
+        apis.postAddPostAX(uploadResult).then((response) => {
+          console.log("post add:::", response);
+          if (response.data.code === 200) {
+            history.push("/community");
+          }
+        });
       }
     }
   };
@@ -215,15 +218,16 @@ const AddEditPost = () => {
               placeholder="캠핑한 장소의 주소를 입력하세요"
               onChange={addressCheck}
               border={warn}
+              ref={addressREF}
             />
           </TextEditorBox>
 
-          <PostInput
+          {/* <PostInput
             type="text"
             name="tag"
             placeholder="# 해시태그를 입력해주세요"
             className="openSans"
-          />
+          /> */}
         </PostWriteBox>
       </AddEditStyled>
     </React.Fragment>

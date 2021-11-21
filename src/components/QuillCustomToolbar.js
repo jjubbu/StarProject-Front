@@ -31,7 +31,7 @@ const CustomToolbar = () => {
       <ButtonBox className="">
         <button className="ql-image" />
         <button className="ql-video" />
-        <button className="aaa">
+        {/* <button className="aaa">
           <img src={ic_file} alt="icon" />
         </button>
         <button className="aaa">
@@ -39,7 +39,7 @@ const CustomToolbar = () => {
         </button>
         <button className="aaa">
           <img src={ic_emoticon} alt="icon" />
-        </button>
+        </button> */}
       </ButtonBox>
       <ButtonBox className="">
         <button className="ql-bold" />
