@@ -10,11 +10,17 @@ import { actionCreators as loginCheckAction } from "./login";
 
 const ADD_CARD = "ADD_CARD";
 const SET_CARD = "SET_CARD";
+const SET_LIKE = "SET_LIKE";
 
 // Action creators
 
 const setCard = createAction(SET_CARD, (card_list) => ({ card_list }));
 const addCard = createAction(ADD_CARD, (card) => ({ card }));
+const setLike = createAction(SET_LIKE, (cardId, likeCount, likeCheck) => ({
+  cardId,
+  likeCount,
+  likeCheck,
+}));
 
 // initial state
 
@@ -30,6 +36,8 @@ const initialCard = {
   img: "https://campimage.s3.ap-northeast-2.amazonaws.com/campimage.jpg",
   contents: "본문",
   modifiedAt: "수정일",
+  likeCheck: "false",
+  likeCount: "0",
 };
 
 // middleware
@@ -52,16 +60,18 @@ const getCardDB = (sort) => {
   };
 };
 
-const postLikeDB = (id) => {
+const postLikeDB = (cardId, likeCheck, likeCount) => {
   return function (dispatch, getState, { history }) {
     dispatch(loginCheckAction.isLoginMW());
     apis
-      .postLikeAX(id)
+      .postLikeAX(cardId)
       .then((res) => {
         console.log(res);
-        const cardList = res.data.data;
-        console.log(cardList);
-        getCardDB(res.data.data);
+        const newLikeCheck = res.data.data.likeCheck;
+        const newLikeCount = res.data.data.likeCount;
+        console.log(likeCheck);
+        console.log(likeCount);
+        dispatch(setLike(cardId, newLikeCheck, newLikeCount));
       })
       .catch((error) => {
         window.alert("좋아요 정보를 가져올 수 없습니다");
@@ -133,8 +143,19 @@ export default handleActions(
         console.log(draft.list);
       }),
 
-    [ADD_CARD]: (state, action) => produce(state, (draft) => {}),
+    [SET_LIKE]: (state, action) =>
+      // 배열에서 몇 번째에 있는 지 찾은 다음, setLike action에서 가져온 값으로 바꾸기
+      produce(state, (draft) => {
+        let idx = draft.list.findIndex(
+          (p) => p.cardId === action.payload.cardId
+        );
+        draft.list[idx].data.likeCheck = action.payload.data.likeCheck;
+        draft.list[idx].data.likeCount = action.payload.data.likeCheck;
+      }),
+
+    // [ADD_CARD]: (state, action) => produce(state, (draft) => {}),
   },
+
   initialState
 );
 
