@@ -1,14 +1,12 @@
 import React from "react";
 import styled from "styled-components";
 
-import video from "../img/video.png";
 import arrow from "../img/arrow.svg";
 import ic_map from "../img/map/ic_map.svg";
 import ic_star from "../img/ic_star.svg";
 import ic_bookmark_off from "../img/ic_bookmark_off.svg";
 import ic_bookmark_on from "../img/ic_bookmark_on.svg";
 import ic_logo from "../img/ic_logo.svg";
-import mainV from "../img/mainV.mp4";
 import mainVT from "../img/Night Sky.mp4";
 import { apis } from "../lib/axios";
 
@@ -16,7 +14,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { history } from "../redux/configureStore";
 import { textLogo } from "../redux/modules/header";
 import { actionCreators as loginCheckAction } from "../redux/modules/login";
-import { width } from "dom-helpers";
 
 const Main = () => {
   const [boardList, setBoardList] = React.useState([
@@ -62,6 +59,7 @@ const Main = () => {
 
   React.useEffect(() => {
     dispatch(textLogo(true));
+    dispatch(loginCheckAction.isLoginMW());
     apis
       .getMainBoardAX()
       .then((response) => {
