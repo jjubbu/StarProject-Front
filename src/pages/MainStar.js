@@ -40,6 +40,11 @@ const MainStar = () => {
     minTemperature: 0,
     dust: 0,
   });
+  const [star, setStar] = React.useState({
+    starImg: "",
+    starName: "",
+    comment: "",
+  });
   const [hot, setHot] = React.useState([
     {
       cityName: "loading...",
@@ -118,6 +123,13 @@ const MainStar = () => {
         setHotTime(response.data.data.currentTime);
       })
       .catch((err) => console.log("[AX] star hot error:::", err));
+    apis
+      .getStarPhotoAX()
+      .then((response) => {
+        console.log("getStarPhotoAX::: ", response);
+        setStar(response.data.data);
+      })
+      .catch((err) => console.log(err));
   }, []);
 
   React.useEffect(() => {
@@ -281,16 +293,12 @@ const MainStar = () => {
               <button>
                 <span className="buttonHover">별자리 설명</span>
                 <section className="buttonActive">
-                  <h3>사수자리</h3>
-                  <p>
-                    궁수자리는 황도 12궁의 하나이며, 전갈자리의 동쪽, 염소자리의
-                    서쪽에 있는 별자리이다. 흔히 활을 당기는 켄타우로스로
-                    묘사된다.
-                  </p>
+                  <h3>{star.starName}</h3>
+                  <p>{star.comment}</p>
                 </section>
                 ?
               </button>
-              <img src={image_sample} alt="star" />
+              <img src={star.starImg} alt="star" />
             </ImageBox>
             <RecommendBox className="contentsBox">
               <div>
