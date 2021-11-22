@@ -194,6 +194,7 @@ const UserInfoEdit = () => {
               onChange={inputValue}
               placeholder="비밀번호"
               border={inputWarn.password}
+              type="password"
             />
             <Warning useable={inputWarn.password}>{warning.password}</Warning>
           </label>
@@ -204,6 +205,7 @@ const UserInfoEdit = () => {
               onChange={inputValue}
               placeholder="비밀번호 확인"
               border={inputWarn.passwordCheck}
+              type="password"
             />
             <Warning useable={inputWarn.passwordCheck}>
               {warning.passwordCheck}
