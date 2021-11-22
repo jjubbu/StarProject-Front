@@ -26,7 +26,7 @@ import { textLogo } from "../redux/modules/header";
 
 const MainStar = () => {
   const [text, setText] = React.useState("지금 내 위치!");
-  const [userLocation, setUserLocation] = React.useState({ lat: 0, lon: 0 });
+  const [userLocation, setUserLocation] = React.useState();
   const [data, setData] = React.useState({
     moonrise: "...",
     moonset: " ...",
@@ -64,6 +64,7 @@ const MainStar = () => {
     const position = x.coords;
     const latitude = position.latitude;
     const longitude = position.longitude;
+    setTimeout(500);
     setUserLocation({ lat: latitude, lon: longitude });
     console.log("user location:::", userLocation);
   };
@@ -74,10 +75,13 @@ const MainStar = () => {
 
   const weatherNow = () => {
     const date = new Date();
-    let hour = Number(String(date.getHours()) + "00");
+    const hour = date.getHours();
+    let hourText = String(
+      (Number(hour) < 10 ? "0" + String(hour) : String(hour)) + "00"
+    );
     console.log("hour:::", hour);
     apis
-      .getNoticeWeatherAX(userLocation.lat, userLocation.lon, hour)
+      .getNoticeWeatherAX(userLocation.lat, userLocation.lon, hourText)
       .then((response) => {
         console.log("[AX] get notice weather:::", response);
         const resData = response.data.data;
@@ -117,8 +121,9 @@ const MainStar = () => {
   }, []);
 
   React.useEffect(() => {
-    weatherNow();
     if (userLocation) {
+      weatherNow();
+
       apis
         .getNoticeAX(userLocation.lat, userLocation.lon)
         .then((response) => {
