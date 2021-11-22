@@ -30,11 +30,29 @@ const MainMap = () => {
   const [searchList, setSearchList] = React.useState([{}]);
   const [pageNum, setPageNum] = React.useState({ page: 1, max: 1 });
   const [dataSize, setDataSize] = React.useState(0);
+  const [params, setParams] = React.useState("");
   const dispatch = useDispatch();
   const options = {
     enableHighAccuracy: true,
     timeout: 5000,
     maximumAge: 0,
+  };
+
+  const getMapList = (num) => {
+    apis.getMapListAX(params, num).then((response) => {
+      console.log("searchCity:::", response);
+      const data = response.data.data;
+
+      if (data) {
+        const list = [...data.dataList].sort((x, y) => {
+          return x.title > y.title ? -1 : x.title < y.title ? 1 : 0;
+        });
+
+        setResultList(list);
+        setPageNum({ page: data.currentPage, max: data.maxPage });
+        setDataSize(data.dataSize);
+      }
+    });
   };
 
   const success = (x) => {
@@ -43,6 +61,8 @@ const MainMap = () => {
     const longitude = position.longitude;
     console.log(latitude, longitude);
     setMapLocation({ lat: latitude, lon: longitude });
+    setParams(`x_location=${longitude}&y_location=${latitude}&`);
+    getMapList(1);
     setLoading(false);
   };
 
@@ -76,7 +96,7 @@ const MainMap = () => {
         apis
           .getMapSearchAX(text)
           .then((response) => {
-            console.log(response.data.data.length);
+            console.log(response.data.data);
             if (response.data.data.length !== 0) {
               setSearchList(response.data.data);
             } else {
@@ -94,15 +114,24 @@ const MainMap = () => {
   );
 
   const autoSearchClick = (text) => {
-    const params = `cityName=${text}`;
-
+    setParams(`cityName=${text}&`);
+    console.log("text::::", params);
     if (text !== "검색 결과가 없습니다.") {
       apis
-        .getMapListAX(params)
+        .getMapListAX(`cityName=${text}&`, 1)
         .then((response) => {
-          if (response.data.data) {
-            setResultList(response.data.data);
-            setSearchValue(text);
+          const data = response.data.data;
+
+          if (data) {
+            const list = [...data.dataList].sort((x, y) => {
+              return x.title > y.title ? -1 : x.title < y.title ? 1 : 0;
+            });
+            const latitude = list[0].y_location;
+            const longitude = list[0].x_location;
+            setResultList(list);
+            setMapLocation({ lat: latitude, lon: longitude });
+            setPageNum({ page: data.currentPage, max: data.maxPage });
+            setDataSize(data.dataSize);
           }
         })
         .then(() => {
@@ -118,12 +147,24 @@ const MainMap = () => {
 
   const searchCity = (e) => {
     const text = e.target.value;
-    const params = `cityName=${text}`;
+    setParams(`cityName=${text}&`);
+
     if (window.event.keyCode === 13) {
       console.log("enter", text);
-      apis.getMapListAX(params).then((response) => {
-        if (response.data.data) {
-          setResultList(response.data.data);
+      apis.getMapListAX(params, 1).then((response) => {
+        console.log("searchCity:::", response);
+        const data = response.data.data;
+
+        if (data) {
+          const list = [...data.dataList].sort((x, y) => {
+            return x.title > y.title ? -1 : x.title < y.title ? 1 : 0;
+          });
+          const latitude = list[0].y_location;
+          const longitude = list[0].x_location;
+          setResultList(list);
+          setMapLocation({ lat: latitude, lon: longitude });
+          setPageNum({ page: data.currentPage, max: data.maxPage });
+          setDataSize(data.dataSize);
         }
       });
     }
@@ -148,7 +189,7 @@ const MainMap = () => {
   };
 
   // 무한스크롤
-  const scrollEvent = async (e) => {
+  const scrollEvent = (e) => {
     let scrollHeight = document.getElementById("container").scrollHeight;
     let scrollTop = document.getElementById("container").scrollTop;
     let clientHeight = document.getElementById("container").clientHeight;
@@ -159,8 +200,8 @@ const MainMap = () => {
       } else {
         setPageNum((prev) => ({ ...prev, page: pageNum.page + 1 }));
         console.log("now page", pageNum.page);
-        await apis
-          .getMapListAX("", Number(pageNum.page))
+        apis
+          .getMapListAX(params, Number(pageNum.page + 1))
           .then(async (response) => {
             const data = response.data.data;
             const mergeData = resultList.concat(...data.dataList);
@@ -202,12 +243,6 @@ const MainMap = () => {
       });
   }, []);
 
-  React.useEffect(() => {
-    const dict = resultList[0];
-    const latitude = dict.y_location;
-    const longitude = dict.x_location;
-    setMapLocation({ lat: latitude, lon: longitude });
-  }, [resultList]);
   return (
     <React.Fragment>
       <div className="CommonPageStyle CommonGap">
@@ -224,8 +259,8 @@ const MainMap = () => {
               </div>
             </ResultHeader>
             <ResultListBox id="container" onScroll={scrollEvent}>
-              {resultList ? (
-                resultList.map((l, idx) => {
+              {resultList.length > 0 ? (
+                resultList?.map((l, idx) => {
                   return (
                     <li
                       key={idx}
@@ -307,11 +342,11 @@ const MainMap = () => {
                       <li
                         key={idx}
                         onClick={() => {
-                          autoSearchClick(l.address);
+                          autoSearchClick(l.cityName);
                         }}
                       >
                         <img src={ic_map} alt="map icon" />
-                        {l.address}
+                        {l.cityName}
                       </li>
                     );
                   })}
@@ -325,8 +360,8 @@ const MainMap = () => {
               }}
               style={{ width: "100%", height: "792px" }}
             >
-              {resultList
-                ? resultList.map((l, idx) => {
+              {resultList.length > 0
+                ? resultList?.map((l, idx) => {
                     return (
                       <React.Fragment>
                         <MapMarker

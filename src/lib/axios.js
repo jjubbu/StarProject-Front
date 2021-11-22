@@ -54,7 +54,8 @@ export const apis = {
   getMapListAX: (cityName, offset) =>
     instance.get(`/board/map/list?${cityName ? cityName : ""}offset=${offset}`),
   //검색 자동 완성 키워드
-  getMapSearchAX: (keyword) => instance.get(`/board/keyword?key=${keyword}`),
+  getMapSearchAX: (keyword) =>
+    instance.get(`/board/keyword?cityName=${keyword}`),
 
   //디테일 페이지
   getPostDetailAX: (id) => instance.get(`/detail?boardId=${id}`),
