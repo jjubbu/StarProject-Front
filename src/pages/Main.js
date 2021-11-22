@@ -7,12 +7,16 @@ import ic_map from "../img/map/ic_map.svg";
 import ic_star from "../img/ic_star.svg";
 import ic_bookmark_off from "../img/ic_bookmark_off.svg";
 import ic_bookmark_on from "../img/ic_bookmark_on.svg";
+import ic_logo from "../img/ic_logo.svg";
+import mainV from "../img/mainV.mp4";
+import mainVT from "../img/Night Sky.mp4";
 import { apis } from "../lib/axios";
 
 import { useDispatch, useSelector } from "react-redux";
 import { history } from "../redux/configureStore";
 import { textLogo } from "../redux/modules/header";
 import { actionCreators as loginCheckAction } from "../redux/modules/login";
+import { width } from "dom-helpers";
 
 const Main = () => {
   const [boardList, setBoardList] = React.useState([
@@ -75,8 +79,10 @@ const Main = () => {
   return (
     <React.Fragment>
       <StyldMain className="CommonGap">
-        <VisualBox url={video}>
-          <span />
+        <VisualBox>
+          <video loop autoPlay muted>
+            <source src={mainVT} type="video/mp4" />
+          </video>
           <h3 className="visualText">
             밤하늘 야경 명당 캠핑장 <br />
             실시간 별자리 찾기
@@ -94,17 +100,21 @@ const Main = () => {
                     history.push(`detail/${l.id}`);
                   }}
                 >
-                  <ImageBox>
+                  <ImageBox img={l.img}>
                     <Address>
                       <img src={ic_map} alt="address icon" />
                       <p>{l.address}</p>
                     </Address>
-                    <img src={l.img} alt="camp" className="campImage" />
+                    <img
+                      src={l.img ? l.img : ic_logo}
+                      alt="camp"
+                      className="campImage"
+                    />
                   </ImageBox>
                   <div className="contentBox">
                     <CardContent>
                       <h3>{l.title}</h3>
-                      <p>{l.contents}</p>
+                      <p dangerouslySetInnerHTML={{ __html: l.contents }}></p>
                     </CardContent>
                     <CardEtcBox>
                       <div className="starGazing">
@@ -143,13 +153,15 @@ const VisualBox = styled.section`
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  span {
+  video {
     position: absolute;
-    width: 100vw;
+    /* max-width: 100vw;
+    min-height: 890px; */
+    width: 100%;
     height: 890px;
+    object-fit: cover;
     top: 0;
     z-index: -10;
-    background-image: url(${(props) => props.url});
     background-position: center;
     background-size: cover;
   }
@@ -195,16 +207,24 @@ const Card = styled.li`
   flex-direction: column;
   .contentBox {
     display: flex;
-    height: 100%;
+    flex: 1;
     flex-direction: column;
     justify-content: space-between;
   }
 `;
 const ImageBox = styled.div`
   position: relative;
+  width: 100%;
+  height: 288px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   .campImage {
-    width: 100%;
-    height: 288px;
+    ${(props) =>
+      props.img !== ""
+        ? "width: 100%; height: 288px;"
+        : "width:128px; height:128px; margin-top:2px;"}
+
     object-fit: cover;
   }
 `;
