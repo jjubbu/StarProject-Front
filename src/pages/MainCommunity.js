@@ -51,7 +51,7 @@ const MainCommunity = (props) => {
             </div>
             <div
               className="like"
-              onClick={(like) => {
+              onClick={() => {
                 dispatch(postActions.getCardDB("like"));
                 setActive([false, true, false]);
               }}
@@ -61,7 +61,7 @@ const MainCommunity = (props) => {
             </div>
             <div
               className="latest"
-              onClick={(like) => {
+              onClick={() => {
                 dispatch(postActions.getCardDB("latest"));
                 setActive([false, false, true]);
               }}
