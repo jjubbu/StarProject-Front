@@ -24,8 +24,8 @@ const Detail = ({ history, location, match }) => {
     address: "구리시 어디구 야산",
     img: "/src",
     content: " 본문 ",
-    x_location: "x 좌표",
-    y_location: "y 좌표",
+    x_location: "128.7175212",
+    y_location: "38.0277534",
     likeCheck: "false",
     likeCount: "1",
     bookmarkCheck: "false",
@@ -198,7 +198,9 @@ const Detail = ({ history, location, match }) => {
             <h3 className="openSans">{data.writer}</h3>
           </ContentUser>
           <span className="line" />
-          <section className="contents">{data.content}</section>
+          <section className="contents">
+            <div dangerouslySetInnerHTML={{ __html: data.content }}></div>
+          </section>
           <span className="line" />
 
           <ContentFooter>
