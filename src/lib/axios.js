@@ -4,7 +4,7 @@ import { Cookies } from "react-cookie";
 const cookies = new Cookies();
 
 const instance = axios.create({
-  baseURL: "http://52.78.32.216/",
+  baseURL: "https://starback.shop/",
   headers: {
     "content-type": "application/json;charset=UTF-8",
     accept: "application/json",
@@ -72,9 +72,9 @@ export const apis = {
   //회원탈퇴
   deleteAccountAX: () => instance.get("/my/leave"),
   //내가 쓴 글 리스트
-  getMyListAX: () => instance.get("/my/writeList?offset=1"),
+  getMyListAX: (offset) => instance.get(`/my/writeList?offset=${offset}`),
   //북마크 리스트
-  getMyBookmarkAX: () => instance.get("/my/bookmark?offset=1"),
+  getMyBookmarkAX: (offset) => instance.get(`/my/bookmark?offset=${offset}`),
 
   //마이페이지 계정 수정 페이지
   putUserInfoAX: (userinfo) => instance.put("/my/update", userinfo),

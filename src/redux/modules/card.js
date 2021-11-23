@@ -16,29 +16,25 @@ const SET_LIKE = "SET_LIKE";
 
 const setCard = createAction(SET_CARD, (card_list) => ({ card_list }));
 const addCard = createAction(ADD_CARD, (card) => ({ card }));
-const setLike = createAction(SET_LIKE, (cardId, likeCount, likeCheck) => ({
-  cardId,
-  likeCount,
-  likeCheck,
-}));
-
+const setLike = createAction(SET_LIKE, (likeInfo) => ({ likeInfo }));
 // initial state
 
 const initialState = {
   list: [],
+  likeInfo: [],
 };
 // 카드 하나당 들어가 있어야 하는 정보
-const initialCard = {
-  id: 1,
-  writer: "salmon",
-  title: "제목",
-  주소: "대구시",
-  img: "https://campimage.s3.ap-northeast-2.amazonaws.com/campimage.jpg",
-  contents: "본문",
-  modifiedAt: "수정일",
-  likeCheck: "false",
-  likeCount: "0",
-};
+// const initialCard = {
+//   id: 1,
+//   writer: "salmon",
+//   title: "제목",
+//   주소: "대구시",
+//   img: "https://campimage.s3.ap-northeast-2.amazonaws.com/campimage.jpg",
+//   contents: "본문",
+//   modifiedAt: "수정일",
+//   likeCheck: "false",
+//   likeCount: "0",
+// };
 
 // middleware
 
@@ -60,18 +56,21 @@ const getCardDB = (sort) => {
   };
 };
 
-const postLikeDB = (cardId, likeCheck, likeCount) => {
+const postLikeDB = (id) => {
   return function (dispatch, getState, { history }) {
     dispatch(loginCheckAction.isLoginMW());
+
+    // card를 찾기 위해, 배열의 몇 번째에 있나 확인
+    // const _card_idx = getState().card.list.findIndex((p) => p.cardId === id);
+    // const _card = getState().card.list[_card_idx];
+
     apis
-      .postLikeAX(cardId)
+      .postLikeAX(id)
       .then((res) => {
-        console.log(res);
-        const newLikeCheck = res.data.data.likeCheck;
-        const newLikeCount = res.data.data.likeCount;
-        console.log(likeCheck);
-        console.log(likeCount);
-        dispatch(setLike(cardId, newLikeCheck, newLikeCount));
+        console.log(res.data.data);
+        const newLikeInfo = res.data.data;
+        console.log(newLikeInfo);
+        dispatch(setLike(newLikeInfo));
       })
       .catch((error) => {
         window.alert("좋아요 정보를 가져올 수 없습니다");
@@ -139,23 +138,27 @@ export default handleActions(
   {
     [SET_CARD]: (state, action) =>
       produce(state, (draft) => {
+        console.log(draft.list);
+        console.log(action.payload.card_list);
         draft.list = action.payload.card_list;
+        console.log(draft.list);
         console.log(draft.list);
       }),
 
     [SET_LIKE]: (state, action) =>
       // 배열에서 몇 번째에 있는 지 찾은 다음, setLike action에서 가져온 값으로 바꾸기
       produce(state, (draft) => {
+        draft.likeInfo = action.payload.likeInfo;
+        console.log(draft.likeInfo);
         let idx = draft.list.findIndex(
-          (p) => p.cardId === action.payload.cardId
+          (p) => p.id === action.payload.likeInfo.cardId
         );
-        draft.list[idx].data.likeCheck = action.payload.data.likeCheck;
-        draft.list[idx].data.likeCount = action.payload.data.likeCheck;
+        draft.list[idx].likeCheck = action.payload.likeInfo.likeCheck;
+        draft.list[idx].likeCount = action.payload.likeInfo.likeCount;
       }),
 
     // [ADD_CARD]: (state, action) => produce(state, (draft) => {}),
   },
-
   initialState
 );
 

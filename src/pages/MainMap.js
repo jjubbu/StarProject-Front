@@ -11,6 +11,7 @@ import ic_option from "../img/option.svg";
 import ic_search from "../img/map/ic_search.svg";
 import ic_star from "../img/ic_star.svg";
 import ic_loading from "../img/loading.gif";
+import ic_logo from "../img/ic_logo.svg";
 
 import { apis } from "../lib/axios";
 
@@ -207,6 +208,7 @@ const MainMap = () => {
             const mergeData = resultList.concat(...data.dataList);
             setResultList(mergeData);
             setDataSize(data.dataSize);
+            setTimeout(500);
           })
           .catch((err) => {
             console.log(err);
@@ -271,7 +273,7 @@ const MainMap = () => {
                         console.log("lon:::", l.x_location);
                       }}
                     >
-                      <img src={l.img} alt="camp" />
+                      <img src={l.img !== "" ? l.img : ic_logo} alt="camp" />
                       <div className="campInfo">
                         <div className="title">
                           <h3>{l.title}</h3>

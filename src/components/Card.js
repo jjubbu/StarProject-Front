@@ -28,6 +28,7 @@ const Card = (props) => {
   };
 
   const is_login = useSelector((state) => state.login.is_login);
+  const card_list = useSelector((state) => state.card.list);
 
   const [cardList, setCardList] = React.useState([
     {
@@ -111,9 +112,11 @@ const Card = (props) => {
             <img
               className="ic_heart_on"
               src={props.likeCheck ? ic_heart_on : ic_heart}
-              onClick={(cardId, likeCheck, likeCount) =>
-                dispatch(likeActions.postLikeDB(cardId, likeCheck, likeCount))
-              }
+              onClick={() => {
+                dispatch(likeActions.postLikeDB(props.id));
+                console.log(props);
+                console.log(card_list);
+              }}
               alt="ic_heart_on"
             />
             <p className="like">{props.likeCount}</p>

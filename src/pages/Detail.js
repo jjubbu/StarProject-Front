@@ -7,7 +7,9 @@ import ic_moonset from "../img/ic_moonset.svg";
 import ic_mypage from "../img/ic_mypage.svg";
 import ic_sunny from "../img/weather/ic_sunny.svg";
 import ic_heart from "../img/ic_heart.svg";
+import ic_heart_on from "../img/ic_heart_on.svg";
 import ic_bookmark from "../img/ic_bookmark_off.svg";
+import ic_bookmark_on from "../img/ic_bookmark_on.svg";
 import ic_arrow from "../img/ic_slideArrow.svg";
 import SimpleSlider from "../components/SimpleSlider";
 import { useDispatch, useSelector } from "react-redux";
@@ -57,10 +59,63 @@ const Detail = ({ history, location, match }) => {
     },
   });
 
+  const [markButton, setMarkButton] = React.useState({
+    like: false,
+    bookmark: false,
+  });
+
+  const [likeCount, setLikeCount] = React.useState(0);
+
   const is_login = useSelector((state) => state.login.is_login);
   const weather = data.weather;
   const wList = weather.weatherList;
   const dispatch = useDispatch();
+
+  const markFunc = (data, name) => {
+    if (name === "like") {
+      setLikeCount(data.data.likeCount);
+    }
+    if (data.code === 200) {
+      setMarkButton((prev) => ({
+        ...prev,
+        [name]: true,
+      }));
+      console.log("mark ::: ", data);
+    } else if (data.code === 201) {
+      setMarkButton((prev) => ({
+        ...prev,
+        [name]: false,
+      }));
+      console.log("mark ::: ", data);
+    } else {
+      console.log("mark fail ::: ", data);
+    }
+  };
+  const bookmarkAxios = () => {
+    apis
+      .postBookmarkAX(data.id)
+      .then((response) => {
+        markFunc(response.data, "bookmark");
+      })
+      .catch((err) => console.log(err));
+  };
+  const likeAxios = () => {
+    apis
+      .postLikeAX(data.id)
+      .then((response) => {
+        markFunc(response.data, "like");
+      })
+      .catch((err) => console.log(err));
+  };
+  const markClick = (e) => {
+    const name = e.target.name;
+    if (is_login) {
+      name === "bookmark" ? bookmarkAxios() : likeAxios();
+    } else {
+      alert("로그인을 해주세요!");
+      history.push("/login");
+    }
+  };
 
   React.useEffect(() => {
     // setData(getPostByID(id));
@@ -70,6 +125,11 @@ const Detail = ({ history, location, match }) => {
       console.log("post detail:::", response);
       if (response.data.code === 200) {
         setData(response.data.data);
+        setMarkButton({
+          like: response.data.data.likeCheck,
+          bookmark: response.data.data.bookmarkCheck,
+        });
+        setLikeCount(response.data.data.likeCount);
       } else {
         alert(response.data.msg);
       }
@@ -185,12 +245,20 @@ const Detail = ({ history, location, match }) => {
               <p className="openSans">2021.00.00 작성</p>
             </div>
             <div className="buttonBox">
-              <button className="openSans">
-                <img src={ic_heart} alt="like button" />
-                10
+              <button className="openSans" name="like" onClick={markClick}>
+                <img
+                  src={markButton.like ? ic_heart_on : ic_heart}
+                  alt="like button"
+                  name="like"
+                />
+                {likeCount}
               </button>
-              <button>
-                <img src={ic_bookmark} alt="bookmark button" />
+              <button name="bookmark" onClick={markClick}>
+                <img
+                  src={markButton.bookmark ? ic_bookmark_on : ic_bookmark}
+                  alt="bookmark button"
+                  name="bookmark"
+                />
               </button>
             </div>
           </ContentHeader>

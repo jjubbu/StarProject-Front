@@ -31,6 +31,11 @@ const Signup = () => {
     nickname: "none",
   });
 
+  const [overlapClick, setOvelapClick] = React.useState({
+    nickname: false,
+    username: false,
+  });
+
   const dispatch = useDispatch();
 
   const pwCheck =
@@ -40,13 +45,16 @@ const Signup = () => {
 
   const setWarningFunc = (name, nameValue, text, test) => {
     if (name === nameValue) {
-      setWarning((prevState) => ({
-        ...prevState,
-        [nameValue]: test ? text : "",
-      }));
+      if (name === "nickname" || name === "username") {
+        setOvelapClick((prev) => ({ ...prev, [name]: false }));
+      }
       setInputWarn((prevState) => ({
         ...prevState,
         [nameValue]: test ? "warn" : "none",
+      }));
+      setWarning((prevState) => ({
+        ...prevState,
+        [nameValue]: test ? text : "",
       }));
     }
   };
@@ -95,6 +103,9 @@ const Signup = () => {
   };
 
   const signup = () => {
+    const warn = Object.keys(inputWarn).find(
+      (key) => inputWarn[key] === "warn"
+    );
     if (
       !signupInfo.nickname ||
       !signupInfo.username ||
@@ -104,29 +115,40 @@ const Signup = () => {
       const empty = Object.keys(signupInfo).find(
         (key) => signupInfo[key].length <= 0
       );
+      setInputWarn((prevState) => ({
+        ...prevState,
+        [empty]: "warn",
+      }));
       setWarning((prevState) => ({
         ...prevState,
         [empty]: "값을 입력해주세요!",
       }));
-      return;
+    } else if (!overlapClick.nickname || !overlapClick.username) {
+      const needCheck = Object.keys(overlapClick).find(
+        (key) => overlapClick[key] === false
+      );
+      setInputWarn((prevState) => ({
+        ...prevState,
+        [needCheck]: "warn",
+      }));
+      setWarning((prevState) => ({
+        ...prevState,
+        [needCheck]: "중복확인을 해주세요!",
+      }));
+    } else if (warn !== undefined) {
+    } else {
+      console.log("signupInfo server go!");
+      apis
+        .signupAX(signupInfo)
+        .then((response) => {
+          if (response.status === 200) {
+            history.push("/login");
+          }
+        })
+        .catch((err) => {
+          alert(err);
+        });
     }
-    const warn = Object.keys(inputWarn).find(
-      (key) => inputWarn[key] === "warn"
-    );
-    if (warn !== undefined) {
-      return;
-    }
-    console.log("signupInfo server go!");
-    apis
-      .signupAX(signupInfo)
-      .then((response) => {
-        if (response.status === 200) {
-          history.push("/login");
-        }
-      })
-      .catch((err) => {
-        alert(err);
-      });
   };
 
   const overlapAxios = (code, check) => {
@@ -155,13 +177,14 @@ const Signup = () => {
 
   const overlapCheck = (e) => {
     const check = e.target.name;
+    console.log("overlap check Click!:::", signupInfo[check]);
     if (signupInfo[check] === "") {
       setWarning((prevState) => ({
         ...prevState,
         [check]: "값을 입력하고 중복확인 버튼을 눌러주세요!",
       }));
       setInputWarn((prevState) => ({ ...prevState, [check]: "warn" }));
-    } else if (check === "nickname" && inputWarn.nickname === "none") {
+    } else if (check === "nickname") {
       apis
         .nicknameAX(signupInfo.nickname)
         .then((response) => {
@@ -169,14 +192,16 @@ const Signup = () => {
 
           console.log(check, " check:::", response);
           overlapAxios(code, check);
+          setOvelapClick((prev) => ({ ...prev, nickname: true }));
         })
         .catch((err) => console.log(err));
-    } else if (check === "username" && inputWarn.username === "none") {
+    } else if (check === "username") {
       apis
         .usernameAX(signupInfo.username)
         .then((response) => {
           const code = Number(response.data.code);
           overlapAxios(code, check);
+          setOvelapClick((prev) => ({ ...prev, username: true }));
         })
         .catch((err) => console.log(err));
     }
