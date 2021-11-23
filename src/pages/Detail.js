@@ -63,19 +63,31 @@ const Detail = ({ history, location, match }) => {
     bookmark: false,
   });
 
+  const [likeCount, setLikeCount] = React.useState(0);
+
   const is_login = useSelector((state) => state.login.is_login);
   const weather = data.weather;
   const wList = weather.weatherList;
   const dispatch = useDispatch();
 
   const markFunc = (data, name) => {
+    if (name === "like") {
+      setLikeCount(data.data.likeCount);
+    }
     if (data.code === 200) {
       setMarkButton((prev) => ({
         ...prev,
-        [name]: [!markButton[name]],
+        [name]: true,
       }));
+      console.log("mark ::: ", data);
+    } else if (data.code === 201) {
+      setMarkButton((prev) => ({
+        ...prev,
+        [name]: false,
+      }));
+      console.log("mark ::: ", data);
     } else {
-      console.log("북마크 실패 ::: ", data);
+      console.log("mark fail ::: ", data);
     }
   };
   const bookmarkAxios = () => {
@@ -102,7 +114,6 @@ const Detail = ({ history, location, match }) => {
       alert("로그인을 해주세요!");
       history.push("/login");
     }
-    console.log(name, " button change to :::", markButton[name]);
   };
 
   React.useEffect(() => {
@@ -113,6 +124,11 @@ const Detail = ({ history, location, match }) => {
       console.log("post detail:::", response);
       if (response.data.code === 200) {
         setData(response.data.data);
+        setMarkButton({
+          like: response.data.data.likeCheck,
+          bookmark: response.data.data.bookmarkCheck,
+        });
+        setLikeCount(response.data.data.likeCount);
       } else {
         alert(response.data.msg);
       }
@@ -234,7 +250,7 @@ const Detail = ({ history, location, match }) => {
                   alt="like button"
                   name="like"
                 />
-                10
+                {likeCount}
               </button>
               <button name="bookmark" onClick={markClick}>
                 <img
