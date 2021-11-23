@@ -16,9 +16,6 @@ import { textLogo } from "../redux/modules/header";
 import { actionCreators as loginCheckAction } from "../redux/modules/login";
 import card from "../redux/modules/card";
 import { apis } from "../lib/axios";
-// import "slick-carousel/slick/slick.css";
-// import "slick-carousel/slick/slick-theme.css";
-// import Slider from "react-slick";
 import axios from "axios";
 
 const Detail = ({ history, location, match }) => {
@@ -200,6 +197,43 @@ const Detail = ({ history, location, match }) => {
               <button className="slideNext">
                 <img src={ic_arrow} alt="next button" />
               </button>
+
+              <tr className="tableHead">
+                <th>시간</th>
+                <th>날씨</th>
+                <th>온도</th>
+                <th>강수확률</th>
+                <th>습도</th>
+                <th>구름양</th>
+                <th>미세먼지</th>
+              </tr>
+              <tbody>
+                {wList?.map((l, idx) => {
+                  return (
+                    <tr key={idx}>
+                      <td className="openSans thinPlus">
+                        {l.time.slice(0, 2) + ":" + l.time.slice(2, 4)}
+                      </td>
+                      <td>
+                        <img src={ic_sunny} alt="weather" />
+                      </td>
+                      <td className="openSans temperature">{l.temperature}°</td>
+                      <td className="openSans">
+                        {l.rainPercent}
+                        <span className="thinPlus">%</span>
+                      </td>
+                      <td className="openSans">
+                        {l.humidity}
+                        <span className="thinPlus">%</span>
+                      </td>
+                      <td className="thin">{l.weather}</td>
+                      <td className="dust">
+                        <p className="openSans">{l.dust}</p>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
             </WeatherTable>
           </WeatherInfoBox>
         </div>
@@ -313,7 +347,6 @@ const WeaterInfoImport = styled.ul`
     justify-content: center;
     align-items: center;
     gap: 8px;
-
     h3 {
       display: flex;
       align-items: center;
@@ -399,13 +432,11 @@ const WeatherTable = styled.table`
   }
   td {
     justify-content: center;
-
     img {
       width: 48px;
       height: 48px;
     }
   }
-
   .slidePrev,
   .slideNext {
     width: 24px;
@@ -435,7 +466,6 @@ const ContentBox = styled.section`
   background: #303136;
   border-radius: 10px;
   padding: 28px;
-
   .line {
     display: block;
     width: 100%;
