@@ -61,14 +61,6 @@ const Detail = ({ history, location, match }) => {
     },
   });
 
-  // const settings = React.useState({
-  //   dots: false, //점 안 보임
-  //   infinite: true, //무한
-  //   speed: 300,
-  //   slidesToShow: 4, //4장씩 보이게
-  //   slidesToScroll: 1, //1장씩 넘어감
-  // });
-
   const [markButton, setMarkButton] = React.useState({
     like: false,
     bookmark: false,
@@ -208,8 +200,6 @@ const Detail = ({ history, location, match }) => {
               <button className="slideNext">
                 <img src={ic_arrow} alt="next button" />
               </button>
-
-              {/* <Slider {...settings}></Slider> */}
             </WeatherTable>
           </WeatherInfoBox>
         </div>
