@@ -11,12 +11,14 @@ import ic_heart_on from "../img/ic_heart_on.svg";
 import ic_bookmark from "../img/ic_bookmark_off.svg";
 import ic_bookmark_on from "../img/ic_bookmark_on.svg";
 import ic_arrow from "../img/ic_slideArrow.svg";
-import SimpleSlider from "../components/SimpleSlider";
 import { useDispatch, useSelector } from "react-redux";
 import { textLogo } from "../redux/modules/header";
 import { actionCreators as loginCheckAction } from "../redux/modules/login";
 import card from "../redux/modules/card";
 import { apis } from "../lib/axios";
+// import "slick-carousel/slick/slick.css";
+// import "slick-carousel/slick/slick-theme.css";
+// import Slider from "react-slick";
 import axios from "axios";
 
 const Detail = ({ history, location, match }) => {
@@ -58,6 +60,14 @@ const Detail = ({ history, location, match }) => {
       ],
     },
   });
+
+  // const settings = React.useState({
+  //   dots: false, //점 안 보임
+  //   infinite: true, //무한
+  //   speed: 300,
+  //   slidesToShow: 4, //4장씩 보이게
+  //   slidesToScroll: 1, //1장씩 넘어감
+  // });
 
   const [markButton, setMarkButton] = React.useState({
     like: false,
@@ -199,42 +209,7 @@ const Detail = ({ history, location, match }) => {
                 <img src={ic_arrow} alt="next button" />
               </button>
 
-              <tr className="tableHead">
-                <th>시간</th>
-                <th>날씨</th>
-                <th>온도</th>
-                <th>강수확률</th>
-                <th>습도</th>
-                <th>구름양</th>
-                <th>미세먼지</th>
-              </tr>
-              <tbody>
-                {wList?.map((l, idx) => {
-                  return (
-                    <tr key={idx}>
-                      <td className="openSans thinPlus">
-                        {l.time.slice(0, 2) + ":" + l.time.slice(2, 4)}
-                      </td>
-                      <td>
-                        <img src={ic_sunny} alt="weather" />
-                      </td>
-                      <td className="openSans temperature">{l.temperature}°</td>
-                      <td className="openSans">
-                        {l.rainPercent}
-                        <span className="thinPlus">%</span>
-                      </td>
-                      <td className="openSans">
-                        {l.humidity}
-                        <span className="thinPlus">%</span>
-                      </td>
-                      <td className="thin">{l.weather}</td>
-                      <td className="dust">
-                        <p className="openSans">{l.dust}</p>
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
+              {/* <Slider {...settings}></Slider> */}
             </WeatherTable>
           </WeatherInfoBox>
         </div>
