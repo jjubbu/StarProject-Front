@@ -40,20 +40,23 @@ const MainMap = () => {
   };
 
   const getMapList = (num) => {
-    apis.getMapListAX(params, num).then((response) => {
-      console.log("searchCity:::", response);
-      const data = response.data.data;
+    apis
+      .getMapListAX(params, num)
+      .then((response) => {
+        console.log("searchCity:::", response);
+        const data = response.data.data;
 
-      if (data) {
-        const list = [...data.dataList].sort((x, y) => {
-          return x.title > y.title ? -1 : x.title < y.title ? 1 : 0;
-        });
+        if (data) {
+          const list = [...data.dataList].sort((x, y) => {
+            return x.title > y.title ? -1 : x.title < y.title ? 1 : 0;
+          });
 
-        setResultList(list);
-        setPageNum({ page: data.currentPage, max: data.maxPage });
-        setDataSize(data.dataSize);
-      }
-    });
+          setResultList(list);
+          setPageNum({ page: data.currentPage, max: data.maxPage });
+          setDataSize(data.dataSize);
+        }
+      })
+      .catch((err) => console.log(err));
   };
 
   const success = (x) => {
@@ -141,8 +144,6 @@ const MainMap = () => {
         .catch((err) => {
           console.log(err);
         });
-    } else {
-      return;
     }
   };
 
@@ -221,28 +222,7 @@ const MainMap = () => {
     dispatch(textLogo(false));
 
     setLoading(true);
-    apis
-      .getMapListAX("", 1)
-      .then((response) => {
-        const data = response.data.data;
-
-        console.log("main map list ::", response);
-        const list = [...data.dataList].sort((x, y) => {
-          return x.title > y.title ? -1 : x.title < y.title ? 1 : 0;
-        });
-        const latitude = list[0].y_location;
-        const longitude = list[0].x_location;
-        setResultList(list);
-        setMapLocation({ lat: latitude, lon: longitude });
-        setPageNum({ page: data.currentPage, max: data.maxPage });
-        setDataSize(data.dataSize);
-      })
-      .then(() => {
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    setLocation();
   }, []);
 
   return (

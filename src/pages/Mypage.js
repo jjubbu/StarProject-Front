@@ -324,6 +324,7 @@ const ListBox = styled.section`
     row-gap: 28px;
     min-height: 88px;
     margin-top: 28px;
+    min-height: 260px;
   }
   .empty {
     width: 100%;

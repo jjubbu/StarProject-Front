@@ -86,21 +86,16 @@ const AddEditPost = () => {
   const addressCheck = React.useCallback(
     _.debounce((e) => {
       const address = e.target.value;
-      const korean = /^[ㄱ-ㅎ|가-힣|0-9|]+$/;
-      console.log(e.target.value);
-      if (korean.test(address)) {
-        apis.getCheckAddressAX(address).then((response) => {
-          console.log("check address AX :::", response);
-          const data = response.data;
-          if (data.code === 200) {
-            setWarn("none");
-          } else {
-            setWarn("warn");
-          }
-        });
-      } else {
-        setWarn("warn");
-      }
+      console.log("this is address:::", address);
+      apis.getCheckAddressAX(address).then((response) => {
+        console.log("check address AX :::", response);
+        const data = response.data;
+        if (data.code === 200) {
+          setWarn("none");
+        } else {
+          setWarn("warn");
+        }
+      });
     }, 500),
     []
   );
