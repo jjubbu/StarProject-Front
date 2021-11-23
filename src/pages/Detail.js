@@ -7,7 +7,9 @@ import ic_moonset from "../img/ic_moonset.svg";
 import ic_mypage from "../img/ic_mypage.svg";
 import ic_sunny from "../img/weather/ic_sunny.svg";
 import ic_heart from "../img/ic_heart.svg";
+import ic_heart_on from "../img/ic_heart_on.svg";
 import ic_bookmark from "../img/ic_bookmark_off.svg";
+import ic_bookmark_on from "../img/ic_bookmark_on.svg";
 import ic_arrow from "../img/ic_slideArrow.svg";
 import { useDispatch, useSelector } from "react-redux";
 import { textLogo } from "../redux/modules/header";
@@ -56,10 +58,52 @@ const Detail = ({ history, location, match }) => {
     },
   });
 
+  const [markButton, setMarkButton] = React.useState({
+    like: false,
+    bookmark: false,
+  });
+
   const is_login = useSelector((state) => state.login.is_login);
   const weather = data.weather;
   const wList = weather.weatherList;
   const dispatch = useDispatch();
+
+  const markFunc = (data, name) => {
+    if (data.code === 200) {
+      setMarkButton((prev) => ({
+        ...prev,
+        [name]: [!markButton[name]],
+      }));
+    } else {
+      console.log("북마크 실패 ::: ", data);
+    }
+  };
+  const bookmarkAxios = () => {
+    apis
+      .postBookmarkAX(data.id)
+      .then((response) => {
+        markFunc(response.data, "bookmark");
+      })
+      .catch((err) => console.log(err));
+  };
+  const likeAxios = () => {
+    apis
+      .postLikeAX(data.id)
+      .then((response) => {
+        markFunc(response.data, "like");
+      })
+      .catch((err) => console.log(err));
+  };
+  const markClick = (e) => {
+    const name = e.target.name;
+    if (is_login) {
+      name === "bookmark" ? bookmarkAxios() : likeAxios();
+    } else {
+      alert("로그인을 해주세요!");
+      history.push("/login");
+    }
+    console.log(name, " button change to :::", markButton[name]);
+  };
 
   React.useEffect(() => {
     // setData(getPostByID(id));
@@ -184,12 +228,20 @@ const Detail = ({ history, location, match }) => {
               <p className="openSans">2021.00.00 작성</p>
             </div>
             <div className="buttonBox">
-              <button className="openSans">
-                <img src={ic_heart} alt="like button" />
+              <button className="openSans" name="like" onClick={markClick}>
+                <img
+                  src={markButton.like ? ic_heart_on : ic_heart}
+                  alt="like button"
+                  name="like"
+                />
                 10
               </button>
-              <button>
-                <img src={ic_bookmark} alt="bookmark button" />
+              <button name="bookmark" onClick={markClick}>
+                <img
+                  src={markButton.bookmark ? ic_bookmark_on : ic_bookmark}
+                  alt="bookmark button"
+                  name="bookmark"
+                />
               </button>
             </div>
           </ContentHeader>
