@@ -4,7 +4,7 @@ import { Cookies } from "react-cookie";
 const cookies = new Cookies();
 
 const instance = axios.create({
-  baseURL: "http://52.78.32.216/",
+  baseURL: "https://starback.shop/",
   headers: {
     "content-type": "application/json;charset=UTF-8",
     accept: "application/json",
