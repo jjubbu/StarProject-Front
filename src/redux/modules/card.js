@@ -11,30 +11,23 @@ import { actionCreators as loginCheckAction } from "./login";
 const ADD_CARD = "ADD_CARD";
 const SET_CARD = "SET_CARD";
 const SET_LIKE = "SET_LIKE";
+const SET_BOOKMARK = "SET_BOOKMARK";
 
 // Action creators
 
 const setCard = createAction(SET_CARD, (card_list) => ({ card_list }));
 const addCard = createAction(ADD_CARD, (card) => ({ card }));
 const setLike = createAction(SET_LIKE, (likeInfo) => ({ likeInfo }));
+const setBookmark = createAction(SET_BOOKMARK, (bookmarkCheck) => ({
+  bookmarkCheck,
+}));
 // initial state
 
 const initialState = {
   list: [],
   likeInfo: [],
+  bookmarkCheck: [],
 };
-// 카드 하나당 들어가 있어야 하는 정보
-// const initialCard = {
-//   id: 1,
-//   writer: "salmon",
-//   title: "제목",
-//   주소: "대구시",
-//   img: "https://campimage.s3.ap-northeast-2.amazonaws.com/campimage.jpg",
-//   contents: "본문",
-//   modifiedAt: "수정일",
-//   likeCheck: "false",
-//   likeCount: "0",
-// };
 
 // middleware
 
@@ -60,10 +53,6 @@ const postLikeDB = (id) => {
   return function (dispatch, getState, { history }) {
     dispatch(loginCheckAction.isLoginMW());
 
-    // card를 찾기 위해, 배열의 몇 번째에 있나 확인
-    // const _card_idx = getState().card.list.findIndex((p) => p.cardId === id);
-    // const _card = getState().card.list[_card_idx];
-
     apis
       .postLikeAX(id)
       .then((res) => {
@@ -71,6 +60,40 @@ const postLikeDB = (id) => {
         const newLikeInfo = res.data.data;
         console.log(newLikeInfo);
         dispatch(setLike(newLikeInfo));
+      })
+      .catch((error) => {
+        window.alert("좋아요 정보를 가져올 수 없습니다");
+        console.log(error);
+        if (error.response) {
+          // 요청이 이루어졌으며 서버가 2xx의 범위를 벗어나는 상태 코드로 응답했습니다.
+          console.log(error.response.data);
+          console.log(error.response.status);
+          console.log(error.response.headers);
+        } else if (error.request) {
+          // 요청이 이루어 졌으나 응답을 받지 못했습니다.
+          // `error.request`는 브라우저의 XMLHttpRequest 인스턴스 또는
+          // Node.js의 http.ClientRequest 인스턴스입니다.
+          console.log(error.request);
+        } else {
+          // 오류를 발생시킨 요청을 설정하는 중에 문제가 발생했습니다.
+          console.log("Error", error.message);
+        }
+        console.log(error.config);
+      });
+  };
+};
+
+const postBookmarkDB = (id) => {
+  return function (dispatch, getState, { history }) {
+    dispatch(loginCheckAction.isLoginMW());
+
+    apis
+      .postBookmarkAX(id)
+      .then((res) => {
+        console.log(res.data.data);
+        const newBookmarkInfo = res.data.data;
+        console.log(newBookmarkInfo);
+        dispatch(setBookmark(newBookmarkInfo));
       })
       .catch((error) => {
         window.alert("좋아요 정보를 가져올 수 없습니다");
@@ -157,6 +180,18 @@ export default handleActions(
         draft.list[idx].likeCount = action.payload.likeInfo.likeCount;
       }),
 
+    [SET_BOOKMARK]: (state, action) =>
+      // 배열에서 몇 번째에 있는 지 찾은 다음, setLike action에서 가져온 값으로 바꾸기
+      produce(state, (draft) => {
+        draft.bookmarkCheck = action.payload.bookmarkCheck;
+        console.log(draft.bookmarkCheck);
+        let idx = draft.list.findIndex(
+          (p) => p.id === action.payload.bookmarkCheck.cardId
+        );
+        draft.list[idx].bookmarkCheck =
+          action.payload.bookmarkCheck.bookmarkCheck;
+      }),
+
     // [ADD_CARD]: (state, action) => produce(state, (draft) => {}),
   },
   initialState
@@ -169,6 +204,7 @@ const actionCreators = {
   addCard,
   getCardDB,
   postLikeDB,
+  postBookmarkDB,
 };
 
 export { actionCreators };

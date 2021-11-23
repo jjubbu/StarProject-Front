@@ -9,6 +9,7 @@ import ic_profile from "../img/ic_profile.svg";
 import ic_heart from "../img/ic_heart.svg";
 import ic_heart_on from "../img/ic_heart_on.svg";
 import ic_bookmark_off from "../img/ic_bookmark_off.svg";
+import ic_bookmark_on from "../img/ic_bookmark_on.svg";
 
 import { useDispatch } from "react-redux";
 
@@ -114,8 +115,6 @@ const Card = (props) => {
               src={props.likeCheck ? ic_heart_on : ic_heart}
               onClick={() => {
                 dispatch(likeActions.postLikeDB(props.id));
-                console.log(props);
-                console.log(card_list);
               }}
               alt="ic_heart_on"
             />
@@ -124,10 +123,12 @@ const Card = (props) => {
             <div className="bookmarkDiv">
               <img
                 className="ic_bookmark_off"
-                src={ic_bookmark_off}
+                src={props.bookmarkCheck ? ic_bookmark_on : ic_bookmark_off}
                 alt="ic_bookmark_off"
+                onClick={() => {
+                  dispatch(likeActions.postBookmarkDB(props.id));
+                }}
               />
-              {/* <p className="bookmark">{props.bookmark}</p> */}
             </div>
           </div>
         </BottomDiv>
