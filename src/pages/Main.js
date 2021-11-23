@@ -8,7 +8,6 @@ import ic_star from "../img/ic_star.svg";
 import ic_bookmark_off from "../img/ic_bookmark_off.svg";
 import ic_bookmark_on from "../img/ic_bookmark_on.svg";
 import ic_logo from "../img/ic_logo.svg";
-import mainV from "../img/mainV.mp4";
 import mainVT from "../img/Night Sky.mp4";
 import { apis } from "../lib/axios";
 
