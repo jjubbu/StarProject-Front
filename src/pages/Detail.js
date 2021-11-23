@@ -9,6 +9,7 @@ import ic_sunny from "../img/weather/ic_sunny.svg";
 import ic_heart from "../img/ic_heart.svg";
 import ic_bookmark from "../img/ic_bookmark_off.svg";
 import ic_arrow from "../img/ic_slideArrow.svg";
+import SimpleSlider from "../components/SimpleSlider";
 import { useDispatch, useSelector } from "react-redux";
 import { textLogo } from "../redux/modules/header";
 import { actionCreators as loginCheckAction } from "../redux/modules/login";
