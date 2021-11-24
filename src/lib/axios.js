@@ -84,6 +84,10 @@ export const apis = {
   //메인커뮤니티 페이지
   postLikeAX: (id) => instance.post(`/board/like?cardId=${id}`),
   // getCardAX: (sort) => instance.get(`/community/list?sort=${sort}`),
-  getCardAX: (sort, offset) =>
-    instance.get(`/community/list?sort=${sort}&offset=${offset}`),
+  getCardAX: (sort, cityName, offset) =>
+    instance.get(
+      `/community/list?sort=${sort}${cityName ? cityName : ""}&offset=${offset}`
+    ),
+
+  // 메인 커뮤니티 검색
 };

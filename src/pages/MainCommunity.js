@@ -5,6 +5,7 @@ import { Grid } from "../elements";
 import { useHistory } from "react-router";
 import { Write } from "./Write";
 import Detail from "../pages/Detail";
+import _ from "lodash";
 
 // redux
 import card, { actionCreators as postActions } from "../redux/modules/card";
@@ -25,10 +26,10 @@ const MainCommunity = (props) => {
   const history = useHistory();
 
   const card_list = useSelector((state) => state.card.list);
-
   const page_info = useSelector((state) => state.card.paging);
-  const [activeClass, setActive] = React.useState([true, false, false]);
   const is_login = useSelector((state) => state.login.is_login);
+
+  const [activeClass, setActive] = React.useState([true, false, false]);
 
   // 무한스크롤
 
@@ -43,10 +44,11 @@ const MainCommunity = (props) => {
   const [is_search, setSearch] = React.useState(false);
   const [dataSize, setDataSize] = React.useState(0);
   const [params, setParams] = React.useState("");
+  const [sort, setSort] = React.useState("");
 
   React.useEffect(() => {
     dispatch(textLogo(false));
-    dispatch(postActions.getCardDB("star", 1));
+    dispatch(postActions.getCardDB("star", "", 1));
   }, []);
 
   // 무한스크롤
@@ -70,7 +72,13 @@ const MainCommunity = (props) => {
         console.log("currentPage", currentPage);
 
         // dispatch(postActions.getCardDB(params, Number(pageNum.page + 1)));
-        dispatch(postActions.getCardDB(params, Number(currentPage + 1)));
+        dispatch(
+          postActions.getInfinityScrollCardDB(
+            sort,
+            params,
+            Number(currentPage + 1)
+          )
+        );
         // apis
         //   .getCardAX(params, Number(pageNum.page + 1))
         //   .then(async (response) => {
@@ -91,15 +99,17 @@ const MainCommunity = (props) => {
 
   const searchCity = (e) => {
     const text = e.target.value;
-    setParams(`cityName=${text}&`);
+    setParams(`&cityName=${text}`);
 
     if (window.event.keyCode === 13) {
       console.log("enter", text);
-      apis.getMapListAX(params, 1).then((response) => {
-        console.log("searchCity:::", response);
-        const data = response.data.data;
-      });
+      dispatch(postActions.getSearchListDB(sort, params, 1));
     }
+
+    // apis.getCardAX(params, 1).then((response) => {
+    //   console.log("searchCity:::", response);
+    //   const data = response.data.data;
+    // });
   };
 
   const searchValueChange = (e) => {
@@ -108,42 +118,43 @@ const MainCommunity = (props) => {
     setSearchValue(text);
   };
 
-  // const getSearchAuto = React.useCallback(
-  //   _.debounce((e) => {
-  //     const text = e.target.value;
-  //     console.log(text);
-  //     if (text !== "") {
-  //       setSearch(true);
-  //       apis
-  //         .getMapSearchAX(text)
-  //         .then((response) => {
-  //           console.log(response.data.data);
-  //           if (response.data.data.length !== 0) {
-  //             setSearchList(response.data.data);
-  //           } else {
-  //             setSearchList([{ address: "검색 결과가 없습니다." }]);
-  //           }
-  //         })
-  //         .catch((err) => {
-  //           console.log(err);
-  //         });
-  //     } else {
-  //       setSearch(false);
-  //     }
-  //   }, 500),
-  //   []
-  // );
+  const getSearchAuto = React.useCallback(
+    _.debounce((e) => {
+      const text = e.target.value;
+      console.log(text);
+      if (text !== "") {
+        setSearch(true);
+        apis
+          .getMapSearchAX(text)
+          .then((response) => {
+            console.log(response.data.data);
+            if (response.data.data.length !== 0) {
+              setSearchList(response.data.data);
+            } else {
+              setSearchList([{ address: "검색 결과가 없습니다." }]);
+            }
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      } else {
+        setSearch(false);
+      }
+    }, 500),
+    []
+  );
 
   return (
     <React.Fragment>
       <div className="CommonPageStyle">
-        <CommunityPage>
+        <CommunityPage id="container" onScroll={scrollEvent}>
           <TopDiv>
             <ul className="tab">
               <div
                 className="star"
                 onClick={() => {
-                  dispatch(postActions.getCardDB("star", 1));
+                  dispatch(postActions.getCardDB("star", "", 1));
+                  setSort("star");
                   setActive([true, false, false]);
                 }}
               >
@@ -153,7 +164,8 @@ const MainCommunity = (props) => {
               <div
                 className="like"
                 onClick={() => {
-                  dispatch(postActions.getCardDB("like", 1));
+                  dispatch(postActions.getCardDB("like", "", 1));
+                  setSort("like");
                   setActive([false, true, false]);
                 }}
               >
@@ -163,7 +175,8 @@ const MainCommunity = (props) => {
               <div
                 className="latest"
                 onClick={() => {
-                  dispatch(postActions.getCardDB("latest", 1));
+                  dispatch(postActions.getCardDB("latest", "", 1));
+                  setSort("latest");
                   setActive([false, false, true]);
                 }}
               >
@@ -171,19 +184,22 @@ const MainCommunity = (props) => {
                 {activeClass[2] ? <li class="bottom__line3"></li> : false}
               </div>
             </ul>
-            <div className="searchbar">
-              <img src={ic_search} alt="ic_search" />
-              <input
-                type="text"
-                placeholder="검색어를 입력하세요"
-                // onKeyPress={searchCity}
-                // onChange={(e) => {
-                //   getSearchAuto(e);
-                //   searchValueChange(e);
-                // }}
-                // value={searchValue}
-              />
+            <div className="searchbox">
+              <div className="searchbar">
+                <img src={ic_search} alt="ic_search" />
+                <input
+                  type="text"
+                  placeholder="검색어를 입력하세요"
+                  onKeyPress={searchCity}
+                  // onChange={(e) => {
+                  //   getSearchAuto(e);
+                  //   searchValueChange(e);
+                  // }}
+                  // value={searchValue}
+                />
+              </div>
             </div>
+
             <button
               className="btn-write"
               onClick={() => {
@@ -194,7 +210,7 @@ const MainCommunity = (props) => {
               <img src={ic_write} alt="ic_write" />
             </button>
           </TopDiv>
-          <Wrapper id="container" onScroll={scrollEvent}>
+          <Wrapper>
             {card_list.map((p, i) => {
               return (
                 <Card key={i} cardID={p.id} {...p}>
@@ -210,7 +226,7 @@ const MainCommunity = (props) => {
 };
 
 const CommunityPage = styled.main`
-  /* overflow-y: scroll; */
+  overflow-y: scroll;
 
   ::-webkit-scrollbar {
     display: none;
@@ -225,7 +241,7 @@ const Wrapper = styled.main`
   flex-wrap: wrap;
   justify-content: center;
   margin: auto;
-  overflow-y: scroll;
+  /* overflow-y: scroll; */
 
   ::-webkit-scrollbar {
     display: none;
