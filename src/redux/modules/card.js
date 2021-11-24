@@ -12,20 +12,30 @@ const ADD_CARD = "ADD_CARD";
 const SET_CARD = "SET_CARD";
 const SET_LIKE = "SET_LIKE";
 const SET_BOOKMARK = "SET_BOOKMARK";
+const SET_INFINITY_CARD = "SET_INFINITY_CARD";
 const SET_PAGE = "SET_PAGE";
+const SET_SEARCHLIST = "SET_SEARCHLIST";
 
 // Action creators
 
-const setCard = createAction(SET_CARD, (card_list, paging) => ({
-  card_list,
-  paging,
-}));
+const setInfinityCard = createAction(
+  SET_INFINITY_CARD,
+  (card_list, paging) => ({
+    card_list,
+    paging,
+  })
+);
+const setCard = createAction(SET_CARD, (card, paging) => ({ card, paging }));
+
 const setLike = createAction(SET_LIKE, (likeInfo) => ({ likeInfo }));
 const setBookmark = createAction(SET_BOOKMARK, (bookmarkCheck) => ({
   bookmarkCheck,
 }));
 const setPage = createAction(SET_PAGE, (pageInfo) => ({ pageInfo }));
-
+const setSearchList = createAction(SET_SEARCHLIST, (search_list, paging) => ({
+  search_list,
+  paging,
+}));
 // initial state
 
 const initialState = {
@@ -37,10 +47,10 @@ const initialState = {
 
 // middleware
 
-const getCardDB = (sort, offset) => {
+const getSearchListDB = (sort, cityName, offset) => {
   return function (dispatch, getState, { history }) {
     apis
-      .getCardAX(sort, offset)
+      .getCardAX(sort, cityName, offset)
       .then((res) => {
         console.log(res);
         const cardList = res.data.data.dataList;
@@ -52,7 +62,57 @@ const getCardDB = (sort, offset) => {
           dataSize: res.data.data.dataSize,
         };
 
-        dispatch(setCard(cardList, paging));
+        dispatch(setSearchList(cardList, paging));
+      })
+      .catch((err) => {
+        window.alert("포스트 정보를 가져올 수 없습니다 ");
+        console.log(err);
+        return err;
+      });
+  };
+};
+
+const getCardDB = (sort, cityName, offset) => {
+  return function (dispatch, getState, { history }) {
+    apis
+      .getCardAX(sort, cityName, offset)
+      .then((res) => {
+        console.log(res);
+        const searchList = res.data.data.dataList;
+        console.log(searchList);
+
+        const paging = {
+          currentPage: res.data.data.currentPage,
+          maxPage: res.data.data.maxPage,
+          dataSize: res.data.data.dataSize,
+        };
+
+        dispatch(setCard(searchList, paging));
+      })
+      .catch((err) => {
+        window.alert("포스트 정보를 가져올 수 없습니다 ");
+        console.log(err);
+        return err;
+      });
+  };
+};
+
+const getInfinityScrollCardDB = (sort, cityName, offset) => {
+  return function (dispatch, getState, { history }) {
+    apis
+      .getCardAX(sort, cityName, offset)
+      .then((res) => {
+        console.log(res);
+        const cardList = res.data.data.dataList;
+        console.log(cardList);
+
+        const paging = {
+          currentPage: res.data.data.currentPage,
+          maxPage: res.data.data.maxPage,
+          dataSize: res.data.data.dataSize,
+        };
+
+        dispatch(setInfinityCard(cardList, paging));
       })
       .catch((err) => {
         window.alert("포스트 정보를 가져올 수 없습니다 ");
@@ -174,7 +234,20 @@ export default handleActions(
   {
     [SET_CARD]: (state, action) =>
       produce(state, (draft) => {
+        draft.list = action.payload.card;
+        draft.paging = action.payload.paging;
+      }),
+
+    [SET_SEARCHLIST]: (state, action) =>
+      produce(state, (draft) => {
+        draft.list = action.payload.search_list;
+        draft.paging = action.payload.paging;
+      }),
+
+    [SET_INFINITY_CARD]: (state, action) =>
+      produce(state, (draft) => {
         draft.list = draft.list.concat(...action.payload.card_list);
+        console.log(action.payload.card_list);
         console.log(draft.list);
         draft.paging = action.payload.paging;
       }),
@@ -215,6 +288,8 @@ const actionCreators = {
   getCardDB,
   postLikeDB,
   postBookmarkDB,
+  getInfinityScrollCardDB,
+  getSearchListDB,
 };
 
 export { actionCreators };
