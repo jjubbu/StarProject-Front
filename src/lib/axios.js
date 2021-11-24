@@ -57,11 +57,12 @@ export const apis = {
   getMapSearchAX: (keyword) =>
     instance.get(`/board/keyword?cityName=${keyword}`),
 
-  //디테일 페이지***
+  //디테일 페이지
   getPostDetailAX: (id) => instance.get(`/detail?boardId=${id}`),
   //게시글 삭제
   getDeletePostAX: (id) => instance.delete(`/detail/delete?boardId=${id}`),
   //게시글 작성
+  //게시글 수정
   postAddPostAX: (content) => instance.post("/board", content),
   putEditPostAX: (id, content) =>
     instance.put(`/board/update?boardId=${id}`, content),

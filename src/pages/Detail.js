@@ -139,6 +139,22 @@ const Detail = ({ history, location, match }) => {
       })
       .catch((err) => console.log(err));
   };
+
+  const deleteAxios = () => {
+    apis.getDeletePostAX(data.id).then((response) => {
+      console.log("delete::: ", response);
+      if (is_login) {
+        alert("작성글이 삭제되었습니다.");
+      }
+    });
+  };
+
+  const editAxios = () => {
+    apis.putEditPostAX(data.id).then((response) => {
+      console.log("edit::: ", response);
+    });
+  };
+
   const markClick = (e) => {
     const name = e.target.name;
     if (is_login) {
@@ -169,6 +185,7 @@ const Detail = ({ history, location, match }) => {
           console.log(data);
         }
       })
+
       .catch((err) => {
         console.log(err);
       });
@@ -337,8 +354,8 @@ const Detail = ({ history, location, match }) => {
           <ContentFooter>
             {is_login ? (
               <React.Fragment>
-                <button>수정</button>
-                <button>삭제</button>
+                <button onClick={editAxios}>수정</button>
+                <button onClick={deleteAxios}>삭제</button>
               </React.Fragment>
             ) : null}
           </ContentFooter>
