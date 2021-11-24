@@ -1,5 +1,5 @@
 import React from "react";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import { apis } from "../lib/axios";
 
 import ic_sunny from "../img/weather/ic_sunny.svg"; //맑음
@@ -26,6 +26,7 @@ import { textLogo } from "../redux/modules/header";
 
 const MainStar = () => {
   const [text, setText] = React.useState("지금 내 위치!");
+  const [is_loading, setIsLoading] = React.useState(true);
   const [userLocation, setUserLocation] = React.useState();
   const [data, setData] = React.useState({
     moonrise: "...",
@@ -149,6 +150,8 @@ const MainStar = () => {
               resData.moonset.slice(0, 2) + ":" + resData.moonset.slice(2, 4),
             starGazing: resData.starGazing,
           }));
+          setTimeout(200);
+          setIsLoading(false);
         })
         .catch((err) => {
           console.log(err);
@@ -168,7 +171,12 @@ const MainStar = () => {
       <div className="CommonPageStyle CommonGap">
         <StyledStar>
           <div>
-            <LocationBox className="contentsBox">
+            <LocationBox
+              className="contentsBox"
+              id={is_loading ? "isLoading" : ""}
+            >
+              {is_loading ? <span className="loader" /> : null}
+
               <img src={ic_map} alt="map icon" />
               <h3>{data.location}</h3>
               <button onClick={locationButton}>
@@ -187,7 +195,12 @@ const MainStar = () => {
               </button>
               <span className="buttonHover">현재위치</span>
             </LocationBox>
-            <WeatherBox className="contentsBox">
+            <WeatherBox
+              className="contentsBox"
+              id={is_loading ? "isLoading" : ""}
+            >
+              {is_loading ? <span className="loader" /> : null}
+
               <WeatherTemperature>
                 <div>
                   <img
@@ -250,7 +263,13 @@ const MainStar = () => {
                 </section>
               </WeatherETC>
             </WeatherBox>
-            <VisiblityBox className="contentsBox" visiblity={data.starGazing}>
+            <VisiblityBox
+              className="contentsBox"
+              visiblity={data.starGazing}
+              id={is_loading ? "isLoading" : ""}
+            >
+              {is_loading ? <span className="loader" /> : null}
+
               <div className="title">
                 <img src={ic_star} alt="star icon" />
                 <h3>관측지수</h3>
@@ -272,14 +291,24 @@ const MainStar = () => {
               </div>
             </VisiblityBox>
             <MoonBox>
-              <section className="contentsBox">
+              <section
+                className="contentsBox"
+                id={is_loading ? "isLoading" : ""}
+              >
+                {is_loading ? <span className="loader" /> : null}
+
                 <h3>
                   <img src={ic_moonrise} alt="moon icon" />
                   월출
                 </h3>
                 <p className="openSans">{data.moonrise}</p>
               </section>
-              <section className="contentsBox">
+              <section
+                className="contentsBox"
+                id={is_loading ? "isLoading" : ""}
+              >
+                {is_loading ? <span className="loader" /> : null}
+
                 <h3>
                   <img src={ic_moonset} alt="moon icon" />
                   월몰
@@ -289,7 +318,12 @@ const MainStar = () => {
             </MoonBox>
           </div>
           <div>
-            <ImageBox className="contentsBox">
+            <ImageBox
+              className="contentsBox"
+              id={is_loading ? "isLoading" : ""}
+            >
+              {is_loading ? <span className="loader" /> : null}
+
               <button>
                 <span className="buttonHover">별자리 설명</span>
                 <section className="buttonActive">
@@ -300,7 +334,12 @@ const MainStar = () => {
               </button>
               <img src={star.starImg} alt="star" />
             </ImageBox>
-            <RecommendBox className="contentsBox">
+            <RecommendBox
+              className="contentsBox"
+              id={is_loading ? "isLoading" : ""}
+            >
+              {is_loading ? <span className="loader" /> : null}
+
               <div>
                 <h3>실시간 별보기 좋은 지역</h3>
                 <p className="openSans">{hotTime} 기준</p>
@@ -310,10 +349,7 @@ const MainStar = () => {
                 {hot.map((l, idx) => {
                   return (
                     <li key={idx}>
-                      <img
-                        src="https://cdn.pixabay.com/photo/2017/08/30/01/05/milky-way-2695569_1280.jpg"
-                        alt="star"
-                      />
+                      <img src={l.img} alt="star" />
                       <div>
                         <h3>{l.cityName}</h3>
                         <p>
@@ -336,9 +372,43 @@ const MainStar = () => {
   );
 };
 
+const loading = keyframes`
+ 0%{
+    transform: translate3d(-100%, 0, 0);
+  }
+ 100%{
+    transform: translate3d(100%, 0, 0);
+  }
+`;
+
 const StyledStar = styled.main`
   display: flex;
   gap: 24px;
+  #isLoading {
+    padding: 0;
+    width: 100%;
+    overflow: hidden;
+    *:not(.loader) {
+      display: none;
+    }
+  }
+  .loader {
+    content: "";
+    display: block;
+    width: 100%;
+    height: 100%;
+    background: rgb(0, 0, 0);
+    background: linear-gradient(
+      90deg,
+      rgba(0, 0, 0, 0) 35%,
+      rgba(255, 255, 255, 0.05) 40%,
+      rgba(255, 255, 255, 0.15) 50%,
+      rgba(255, 255, 255, 0.05) 60%,
+      rgba(0, 0, 0, 0) 65%
+    );
+    opacity: 0.1;
+    animation: ${loading} infinite 1s;
+  }
 
   & > div {
     display: flex;

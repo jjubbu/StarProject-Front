@@ -56,6 +56,7 @@ export const apis = {
   //검색 자동 완성 키워드
   getMapSearchAX: (keyword) =>
     instance.get(`/board/keyword?cityName=${keyword}`),
+  getMapMarkerAX: (id) => instance.get(`/board/map/search?id=${id}`),
 
   //디테일 페이지***
   getPostDetailAX: (id) => instance.get(`/detail?boardId=${id}`),

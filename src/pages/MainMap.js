@@ -32,6 +32,8 @@ const MainMap = () => {
   const [pageNum, setPageNum] = React.useState({ page: 1, max: 1 });
   const [dataSize, setDataSize] = React.useState(0);
   const [params, setParams] = React.useState("");
+  const [is_markerClick, setIsMarkerClick] = React.useState(false);
+  const [markerInfo, setMarkerInfo] = React.useState([{}]);
   const dispatch = useDispatch();
   const options = {
     enableHighAccuracy: true,
@@ -121,6 +123,7 @@ const MainMap = () => {
     setParams(`cityName=${text}&`);
     console.log("text::::", params);
     if (text !== "검색 결과가 없습니다.") {
+      setSearch(false);
       apis
         .getMapListAX(`cityName=${text}&`, 1)
         .then((response) => {
@@ -136,6 +139,7 @@ const MainMap = () => {
             setMapLocation({ lat: latitude, lon: longitude });
             setPageNum({ page: data.currentPage, max: data.maxPage });
             setDataSize(data.dataSize);
+            setIsMarkerClick(false);
           }
         })
         .then(() => {
@@ -161,12 +165,13 @@ const MainMap = () => {
           const list = [...data.dataList].sort((x, y) => {
             return x.title > y.title ? -1 : x.title < y.title ? 1 : 0;
           });
-          const latitude = list[0].y_location;
-          const longitude = list[0].x_location;
+          const latitude = list[0]?.y_location;
+          const longitude = list[0]?.x_location;
           setResultList(list);
           setMapLocation({ lat: latitude, lon: longitude });
           setPageNum({ page: data.currentPage, max: data.maxPage });
           setDataSize(data.dataSize);
+          setIsMarkerClick(false);
         }
       });
     }
@@ -187,6 +192,8 @@ const MainMap = () => {
     const latitude = newList[0].y_location;
     const longitude = newList[0].x_location;
     setResultList(newList);
+    setIsMarkerClick(false);
+
     setMapLocation({ lat: latitude, lon: longitude });
   };
 
@@ -218,6 +225,20 @@ const MainMap = () => {
     }
   };
 
+  const markerClick = (id) => {
+    apis
+      .getMapMarkerAX(id)
+      .then((response) => {
+        const data = response.data.data;
+        console.log("marker click:::", data);
+        setMarkerInfo([data]);
+        setIsMarkerClick(true);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   React.useEffect(() => {
     dispatch(textLogo(false));
 
@@ -241,8 +262,8 @@ const MainMap = () => {
               </div>
             </ResultHeader>
             <ResultListBox id="container" onScroll={scrollEvent}>
-              {resultList.length > 0 ? (
-                resultList?.map((l, idx) => {
+              {!is_loading && resultList.length > 0 ? (
+                (is_markerClick ? markerInfo : resultList)?.map((l, idx) => {
                   return (
                     <li
                       key={idx}
@@ -349,6 +370,10 @@ const MainMap = () => {
                         <MapMarker
                           key={idx}
                           position={{ lat: l.y_location, lng: l.x_location }}
+                          clickable={true}
+                          onClick={() => {
+                            markerClick(l.id);
+                          }}
                           image={{
                             src: `${ic_map_b}`,
                             size: {
@@ -367,8 +392,15 @@ const MainMap = () => {
                           position={{ lat: l.y_location, lng: l.x_location }}
                           yAnchor={1}
                         >
-                          <MapMarkerCustom className="customoverlay">
-                            <span className="title">{l.title}</span>
+                          <MapMarkerCustom
+                            className="customoverlay"
+                            onClick={() => {
+                              markerClick(l.id);
+                            }}
+                          >
+                            <span className="title">
+                              {l.title} {String(">")}
+                            </span>
                           </MapMarkerCustom>
                         </CustomOverlayMap>
                       </React.Fragment>
