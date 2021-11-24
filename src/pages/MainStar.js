@@ -19,13 +19,10 @@ import ic_location_off from "../img/map/ic_location_off.svg";
 import ic_location_on from "../img/map/ic_location_on.svg";
 
 //임시 이미지
-import image_sample from "../img/Rectangle 16.png";
-
 import { useDispatch } from "react-redux";
 import { textLogo } from "../redux/modules/header";
 
 const MainStar = () => {
-  const [text, setText] = React.useState("지금 내 위치!");
   const [is_loading, setIsLoading] = React.useState(true);
   const [userLocation, setUserLocation] = React.useState();
   const [data, setData] = React.useState({
@@ -56,9 +53,6 @@ const MainStar = () => {
   const [hotTime, setHotTime] = React.useState();
   const dispatch = useDispatch();
 
-  const image =
-    "https://cdn.pixabay.com/photo/2011/12/14/12/21/orion-nebula-11107_1280.jpg";
-
   const options = {
     enableHighAccuracy: true,
     timeout: 5000,
@@ -76,7 +70,7 @@ const MainStar = () => {
   };
 
   const error = (x) => {
-    setText(x.code + ":::" + x.message);
+    console.log(x.code + ":::" + x.message);
   };
 
   const weatherNow = () => {
@@ -114,7 +108,7 @@ const MainStar = () => {
     if ("geolocation" in navigator) {
       navigator.geolocation.getCurrentPosition(success, error, options);
     } else {
-      setText("확인할 수 없다 ㅠㅠ");
+      console.log("확인할 수 없다 ㅠㅠ");
     }
     apis
       .getStarHotAX()

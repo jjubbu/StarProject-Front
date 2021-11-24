@@ -2,7 +2,6 @@ import React from "react";
 import { Route } from "react-router";
 import { ConnectedRouter } from "connected-react-router";
 import styled from "styled-components";
-import { Cookies } from "react-cookie";
 
 import Main from "../pages/Main";
 import MainStar from "../pages/MainStar";
@@ -18,7 +17,7 @@ import Mypage from "../pages/Mypage";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import "./font.css";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { history } from "../redux/configureStore";
 import { actionCreators as tokenCheckAction } from "../redux/modules/login";
 
