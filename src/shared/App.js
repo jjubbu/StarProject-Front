@@ -18,7 +18,6 @@ import Mypage from "../pages/Mypage";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import "./font.css";
-
 import { useDispatch, useSelector } from "react-redux";
 import { history } from "../redux/configureStore";
 import { actionCreators as tokenCheckAction } from "../redux/modules/login";

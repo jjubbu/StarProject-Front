@@ -384,7 +384,6 @@ const WeaterInfoImport = styled.ul`
     justify-content: center;
     align-items: center;
     gap: 8px;
-
     h3 {
       display: flex;
       align-items: center;
@@ -483,13 +482,11 @@ const WeatherTable = styled.table`
   }
   td {
     justify-content: center;
-
     img {
       width: 48px;
       height: 48px;
     }
   }
-
   .slidePrev,
   .slideNext {
     width: 24px;
@@ -519,7 +516,6 @@ const ContentBox = styled.section`
   background: #303136;
   border-radius: 10px;
   padding: 28px;
-
   .line {
     display: block;
     width: 100%;
