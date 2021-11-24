@@ -1,6 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import styled from "styled-components";
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+
 import { Map, MapMarker } from "react-kakao-maps-sdk";
+import { apis } from "../lib/axios";
+
 import ic_star from "../img/ic_star.svg";
 import ic_moonrise from "../img/ic_moonrise.svg";
 import ic_moonset from "../img/ic_moonset.svg";
@@ -11,15 +17,42 @@ import ic_heart_on from "../img/ic_heart_on.svg";
 import ic_bookmark from "../img/ic_bookmark_off.svg";
 import ic_bookmark_on from "../img/ic_bookmark_on.svg";
 import ic_arrow from "../img/ic_slideArrow.svg";
+
 import { useDispatch, useSelector } from "react-redux";
 import { textLogo } from "../redux/modules/header";
 import { actionCreators as loginCheckAction } from "../redux/modules/login";
-import card from "../redux/modules/card";
-import { apis } from "../lib/axios";
-import axios from "axios";
+
+function SampleNextArrow(props) {
+  const { className, style, onClick } = props;
+  return (
+    <div
+      className={className}
+      id="prevButton"
+      style={{
+        ...style,
+        position: "absolute",
+      }}
+      onClick={onClick}
+    />
+  );
+}
+function SamplePrevArrow(props) {
+  const { className, style, onClick } = props;
+  return (
+    <div
+      className={className}
+      id="nextButton"
+      style={{
+        ...style,
+        position: "absolute",
+      }}
+      onClick={onClick}
+    />
+  );
+}
 
 const Detail = ({ history, location, match }) => {
-  const [data, setData] = useState({
+  const [data, setData] = React.useState({
     id: "3",
     writer: "홍길동",
     title: "칠성캠핑장",
@@ -64,8 +97,6 @@ const Detail = ({ history, location, match }) => {
   });
 
   const [likeCount, setLikeCount] = React.useState(0);
-  const [slideY, setSlideY] = React.useState(0);
-  const [is_press, setPress] = React.useState(false);
 
   const is_login = useSelector((state) => state.login.is_login);
   const weather = data.weather;
@@ -117,44 +148,55 @@ const Detail = ({ history, location, match }) => {
       history.push("/login");
     }
   };
-  const slideButton = (e) => {
-    const name = e.target.name;
-    console.log(slideY);
-    setPress(true);
-    console.log(is_press);
-
-    if (is_press) {
-      if (slideY === 0 && name === "next") {
-        setSlideY(slideY - 100);
-      } else if (slideY < 0 && slideY >= -1566) {
-        setSlideY(name === "next" ? slideY - 100 : slideY + 100);
-      }
-    }
-    setTimeout(200);
-  };
 
   React.useEffect(() => {
     // setData(getPostByID(id));
     dispatch(loginCheckAction.isLoginMW());
     const id = window.location.pathname.split("/")[2];
-    apis.getPostDetailAX(id).then((response) => {
-      console.log("post detail:::", response);
-      if (response.data.code === 200) {
-        setData(response.data.data);
-        setMarkButton({
-          like: response.data.data.likeCheck,
-          bookmark: response.data.data.bookmarkCheck,
-        });
-        setLikeCount(response.data.data.likeCount);
-      } else {
-        alert(response.data.msg);
-      }
-    });
+    apis
+      .getPostDetailAX(id)
+      .then((response) => {
+        console.log("post detail:::", response);
+        const data = response.data;
+        if (data.code === 200) {
+          setData(data.data);
+          setMarkButton({
+            like: data.data.likeCheck,
+            bookmark: data.data.bookmarkCheck,
+          });
+          setLikeCount(data.data.likeCount);
+        } else {
+          console.log(data);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
 
     dispatch(textLogo(false));
   }, []);
 
-  //지도 구현함수
+  //슬라이더 세팅
+  const settings = {
+    infinite: true,
+    slidesToShow: 4,
+    slidesToScroll: 4,
+    swipeToSlide: true,
+    // adaptiveHeight:true,
+
+    nextArrow: <SampleNextArrow />,
+    prevArrow: <SamplePrevArrow />,
+  };
+
+  const sliderButton = (e) => {
+    const name = e.target.name;
+    if (name === "prev") {
+      document.getElementById("nextButton").click();
+    } else {
+      document.getElementById("prevButton").click();
+    }
+  };
+
   return (
     <React.Fragment>
       <StyledDetail className="CommonPageStyle CommonGap">
@@ -207,28 +249,12 @@ const Detail = ({ history, location, match }) => {
             </WeaterInfoImport>
             <span className="line" />
 
-            <WeatherTable slideY={slideY}>
-              <button className="slidePrev">
-                <img
-                  src={ic_arrow}
-                  alt="prev button"
-                  name="prev"
-                  onMouseDown={slideButton}
-                  onMouseUp={() => {
-                    setPress(false);
-                  }}
-                />
+            <WeatherTable>
+              <button className="slidePrev" onClick={sliderButton}>
+                <img src={ic_arrow} alt="prev button" name="prev" />
               </button>
-              <button className="slideNext">
-                <img
-                  src={ic_arrow}
-                  alt="next button"
-                  name="next"
-                  onMouseDown={slideButton}
-                  onMouseUp={() => {
-                    setPress(false);
-                  }}
-                />
+              <button className="slideNext" onClick={sliderButton}>
+                <img src={ic_arrow} alt="next button" name="next" />
               </button>
 
               <tr className="tableHead">
@@ -241,7 +267,7 @@ const Detail = ({ history, location, match }) => {
                 <th>미세먼지</th>
               </tr>
               <tbody>
-                <div>
+                <Slider {...settings}>
                   {wList?.map((l, idx) => {
                     return (
                       <tr key={idx}>
@@ -269,7 +295,7 @@ const Detail = ({ history, location, match }) => {
                       </tr>
                     );
                   })}
-                </div>
+                </Slider>
               </tbody>
             </WeatherTable>
           </WeatherInfoBox>
@@ -400,6 +426,11 @@ const WeaterInfoImport = styled.ul`
   }
 `;
 
+const SliderDetail = styled(Slider)`
+  display: flex;
+  gap: 18px;
+`;
+
 const WeatherTable = styled.table`
   margin-top: 21px;
   display: flex;
@@ -415,13 +446,19 @@ const WeatherTable = styled.table`
     overflow: scroll;
     -ms-overflow-style: none;
     scrollbar-width: none;
-    & > div {
-      position: absolute;
-      top: 0;
-      left: ${(props) => props.slideY}px;
-      display: flex;
-      gap: 18px;
+    .slick-slider.slick-initialized {
+      .slick-prev,
+      .slick-next {
+        position: absolute;
+        left: -9999px;
+      }
+      .slick-prev:before,
+      .slick-next:before {
+        position: absolute;
+        left: -9999px;
+      }
     }
+
     &::-webkit-scrollbar {
       display: none;
     }
