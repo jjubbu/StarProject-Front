@@ -12,34 +12,47 @@ const ADD_CARD = "ADD_CARD";
 const SET_CARD = "SET_CARD";
 const SET_LIKE = "SET_LIKE";
 const SET_BOOKMARK = "SET_BOOKMARK";
+const SET_PAGE = "SET_PAGE";
 
 // Action creators
 
-const setCard = createAction(SET_CARD, (card_list) => ({ card_list }));
-const addCard = createAction(ADD_CARD, (card) => ({ card }));
+const setCard = createAction(SET_CARD, (card_list, paging) => ({
+  card_list,
+  paging,
+}));
 const setLike = createAction(SET_LIKE, (likeInfo) => ({ likeInfo }));
 const setBookmark = createAction(SET_BOOKMARK, (bookmarkCheck) => ({
   bookmarkCheck,
 }));
+const setPage = createAction(SET_PAGE, (pageInfo) => ({ pageInfo }));
+
 // initial state
 
 const initialState = {
   list: [],
   likeInfo: [],
   bookmarkCheck: [],
+  paging: { currentPage: null, maxPage: null, dataSize: null },
 };
 
 // middleware
 
-const getCardDB = (sort) => {
+const getCardDB = (sort, offset) => {
   return function (dispatch, getState, { history }) {
     apis
-      .getCardAX(sort)
+      .getCardAX(sort, offset)
       .then((res) => {
         console.log(res);
         const cardList = res.data.data.dataList;
         console.log(cardList);
-        dispatch(setCard(cardList));
+
+        const paging = {
+          currentPage: res.data.data.currentPage,
+          maxPage: res.data.data.maxPage,
+          dataSize: res.data.data.dataSize,
+        };
+
+        dispatch(setCard(cardList, paging));
       })
       .catch((err) => {
         window.alert("포스트 정보를 가져올 수 없습니다 ");
@@ -49,12 +62,12 @@ const getCardDB = (sort) => {
   };
 };
 
-const postLikeDB = (id) => {
+const postLikeDB = (id, offset) => {
   return function (dispatch, getState, { history }) {
     dispatch(loginCheckAction.isLoginMW());
 
     apis
-      .postLikeAX(id)
+      .postLikeAX(id, offset)
       .then((res) => {
         console.log(res.data.data);
         const newLikeInfo = res.data.data;
@@ -161,11 +174,9 @@ export default handleActions(
   {
     [SET_CARD]: (state, action) =>
       produce(state, (draft) => {
+        draft.list = draft.list.concat(...action.payload.card_list);
         console.log(draft.list);
-        console.log(action.payload.card_list);
-        draft.list = action.payload.card_list;
-        console.log(draft.list);
-        console.log(draft.list);
+        draft.paging = action.payload.paging;
       }),
 
     [SET_LIKE]: (state, action) =>
@@ -201,7 +212,6 @@ export default handleActions(
 
 const actionCreators = {
   setCard,
-  addCard,
   getCardDB,
   postLikeDB,
   postBookmarkDB,
