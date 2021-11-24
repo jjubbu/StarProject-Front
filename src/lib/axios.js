@@ -5,6 +5,7 @@ const cookies = new Cookies();
 
 const instance = axios.create({
   baseURL: "http://52.78.32.216/",
+
   headers: {
     "content-type": "application/json;charset=UTF-8",
     accept: "application/json",
@@ -82,5 +83,7 @@ export const apis = {
   //좋아요
   //메인커뮤니티 페이지
   postLikeAX: (id) => instance.post(`/board/like?cardId=${id}`),
-  getCardAX: (sort) => instance.get(`/community/list?sort=${sort}`),
+  // getCardAX: (sort) => instance.get(`/community/list?sort=${sort}`),
+  getCardAX: (sort, offset) =>
+    instance.get(`/community/list?sort=${sort}&offset=${offset}`),
 };
