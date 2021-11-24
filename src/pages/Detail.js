@@ -457,6 +457,10 @@ const WeatherTable = styled.table`
         position: absolute;
         left: -9999px;
       }
+      .slick-track:before,
+      .slick-track:after {
+        display: none;
+      }
     }
 
     &::-webkit-scrollbar {
@@ -473,6 +477,7 @@ const WeatherTable = styled.table`
     font-weight: bold;
     font-size: 18px;
     line-height: 25px;
+    text-align: center;
     gap: 2px;
     &.temperature {
       font-size: 20px;
