@@ -93,6 +93,7 @@ const MainMap = () => {
     setSearchValue(text);
   };
 
+  //자동완성 얻기
   const getSearchAuto = React.useCallback(
     _.debounce((e) => {
       const text = e.target.value;
@@ -102,7 +103,7 @@ const MainMap = () => {
         apis
           .getMapSearchAX(text)
           .then((response) => {
-            console.log(response.data.data);
+            console.log("자동완성 결과:::", response.data.data);
             if (response.data.data.length !== 0) {
               setSearchList(response.data.data);
             } else {
@@ -119,6 +120,7 @@ const MainMap = () => {
     []
   );
 
+  //자동완성 클릭
   const autoSearchClick = (text) => {
     setParams(`cityName=${text}&`);
     console.log("text::::", params);
@@ -128,7 +130,7 @@ const MainMap = () => {
         .getMapListAX(`cityName=${text}&`, 1)
         .then((response) => {
           const data = response.data.data;
-
+          console.log("검색결과:::", response);
           if (data) {
             const list = [...data.dataList].sort((x, y) => {
               return x.title > y.title ? -1 : x.title < y.title ? 1 : 0;
@@ -151,13 +153,14 @@ const MainMap = () => {
     }
   };
 
+  //검색 엔터
   const searchCity = (e) => {
     const text = e.target.value;
+    const p = `cityName=${text}&`;
     setParams(`cityName=${text}&`);
-
     if (window.event.keyCode === 13) {
-      console.log("enter", text);
-      apis.getMapListAX(params, 1).then((response) => {
+      console.log("enter", p);
+      apis.getMapListAX(p, 1).then((response) => {
         console.log("searchCity:::", response);
         const data = response.data.data;
 
