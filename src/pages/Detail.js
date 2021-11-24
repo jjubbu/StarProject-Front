@@ -64,6 +64,8 @@ const Detail = ({ history, location, match }) => {
   });
 
   const [likeCount, setLikeCount] = React.useState(0);
+  const [slideY, setSlideY] = React.useState(0);
+  const [is_press, setPress] = React.useState(false);
 
   const is_login = useSelector((state) => state.login.is_login);
   const weather = data.weather;
@@ -114,6 +116,21 @@ const Detail = ({ history, location, match }) => {
       alert("로그인을 해주세요!");
       history.push("/login");
     }
+  };
+  const slideButton = (e) => {
+    const name = e.target.name;
+    console.log(slideY);
+    setPress(true);
+    console.log(is_press);
+
+    if (is_press) {
+      if (slideY === 0 && name === "next") {
+        setSlideY(slideY - 100);
+      } else if (slideY < 0 && slideY >= -1566) {
+        setSlideY(name === "next" ? slideY - 100 : slideY + 100);
+      }
+    }
+    setTimeout(200);
   };
 
   React.useEffect(() => {
@@ -190,12 +207,28 @@ const Detail = ({ history, location, match }) => {
             </WeaterInfoImport>
             <span className="line" />
 
-            <WeatherTable>
+            <WeatherTable slideY={slideY}>
               <button className="slidePrev">
-                <img src={ic_arrow} alt="prev button" />
+                <img
+                  src={ic_arrow}
+                  alt="prev button"
+                  name="prev"
+                  onMouseDown={slideButton}
+                  onMouseUp={() => {
+                    setPress(false);
+                  }}
+                />
               </button>
               <button className="slideNext">
-                <img src={ic_arrow} alt="next button" />
+                <img
+                  src={ic_arrow}
+                  alt="next button"
+                  name="next"
+                  onMouseDown={slideButton}
+                  onMouseUp={() => {
+                    setPress(false);
+                  }}
+                />
               </button>
 
               <tr className="tableHead">
@@ -208,31 +241,35 @@ const Detail = ({ history, location, match }) => {
                 <th>미세먼지</th>
               </tr>
               <tbody>
-                {wList?.map((l, idx) => {
-                  return (
-                    <tr key={idx}>
-                      <td className="openSans thinPlus">
-                        {l.time.slice(0, 2) + ":" + l.time.slice(2, 4)}
-                      </td>
-                      <td>
-                        <img src={ic_sunny} alt="weather" />
-                      </td>
-                      <td className="openSans temperature">{l.temperature}°</td>
-                      <td className="openSans">
-                        {l.rainPercent}
-                        <span className="thinPlus">%</span>
-                      </td>
-                      <td className="openSans">
-                        {l.humidity}
-                        <span className="thinPlus">%</span>
-                      </td>
-                      <td className="thin">{l.weather}</td>
-                      <td className="dust">
-                        <p className="openSans">{l.dust}</p>
-                      </td>
-                    </tr>
-                  );
-                })}
+                <div>
+                  {wList?.map((l, idx) => {
+                    return (
+                      <tr key={idx}>
+                        <td className="openSans thinPlus">
+                          {l.time.slice(0, 2) + ":" + l.time.slice(2, 4)}
+                        </td>
+                        <td>
+                          <img src={ic_sunny} alt="weather" />
+                        </td>
+                        <td className="openSans temperature">
+                          {l.temperature}°
+                        </td>
+                        <td className="openSans">
+                          {l.rainPercent}
+                          <span className="thinPlus">%</span>
+                        </td>
+                        <td className="openSans">
+                          {l.humidity}
+                          <span className="thinPlus">%</span>
+                        </td>
+                        <td className="thin">{l.weather}</td>
+                        <td className="dust">
+                          <p className="openSans">{l.dust}</p>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </div>
               </tbody>
             </WeatherTable>
           </WeatherInfoBox>
@@ -374,10 +411,23 @@ const WeatherTable = styled.table`
     width: fit-content;
   }
   tbody {
-    display: flex;
+    position: relative;
     flex: 1;
-    overflow: hidden;
-    gap: 18px;
+    overflow: scroll;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+    & > div {
+      position: absolute;
+      top: 0;
+      left: ${(props) => props.slideY}px;
+      display: flex;
+      gap: 18px;
+    }
+    &::-webkit-scrollbar {
+      display: none;
+    }
+    tr:last-child {
+    }
   }
   th,
   td {

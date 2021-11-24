@@ -39,7 +39,7 @@ const MainMap = () => {
     maximumAge: 0,
   };
 
-  const getMapList = (num) => {
+  const getMapList = (params, num) => {
     apis
       .getMapListAX(params, num)
       .then((response) => {
@@ -65,8 +65,8 @@ const MainMap = () => {
     const longitude = position.longitude;
     console.log(latitude, longitude);
     setMapLocation({ lat: latitude, lon: longitude });
-    setParams(`x_location=${longitude}&y_location=${latitude}&`);
-    getMapList(1);
+    const p = `x_location=${longitude}&y_location=${latitude}&`;
+    getMapList(p, 1);
     setLoading(false);
   };
 
