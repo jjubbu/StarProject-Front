@@ -12,12 +12,12 @@ jobs:
         uses: actions/checkout@master
 
       - name: Install Dependencies
-        uses: borales/actions-yarn@v2.0.0
+        uses: borales/actions-yarn@v2.3.0
         with:
           cmd: install
 
       - name: Build
-        uses: borales/actions-yarn@v2.0.0
+        uses: borales/actions-yarn@v2.3.0
         with:
           cmd: build
 
