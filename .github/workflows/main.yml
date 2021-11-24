@@ -38,5 +38,5 @@ jobs:
       - name: CloudFront Invalidate
         run: |
           aws cloudfront create-invalidation \
-            --distribution-id ${{CDN_DISTRIBUTION_ID}} \        # CloudFront Distribution ID
+            --distribution-id ${{secrets.CDN_DISTRIBUTION_ID}} \        # CloudFront Distribution ID
             --paths / /index.html /service-worker.js /manifest.json /favicon.ico /robots.txt /logo192.png /logo512.png /asset-mainfest.json
