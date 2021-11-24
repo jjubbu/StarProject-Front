@@ -10,6 +10,7 @@
     "aws-sdk": "^2.1034.0",
     "axios": "^0.24.0",
     "connected-react-router": "^6.9.1",
+    "core-js": "^3.19.1",
     "history": "4.10.1",
     "http-proxy-middleware": "^2.0.1",
     "immer": "^9.0.6",

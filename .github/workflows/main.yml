@@ -1,5 +1,4 @@
-name: s3-depl
-
+name: CRA(Create React App) Build & deploy on AWS S3 + CloudFront invalidate
 on:
   push:
     branches:
@@ -7,16 +6,37 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-18.04
     steps:
-      - uses: actions/checkout@v2
-      - name: Configure AWS Credentials
+      - name: Checkout source code
+        uses: actions/checkout@master
+
+      - name: Install Dependencies
+        uses: borales/actions-yarn@v2.0.0
+        with:
+          cmd: install
+
+      - name: Build
+        uses: borales/actions-yarn@v2.0.0
+        with:
+          cmd: build
+
+      - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ secrets.AWS_REGION }}
-      - name: Build React App
-        run: npm install && npm run build
-      - name: Deploy app build to S3 bucket
-        run: aws s3 sync ./dist/ s3://<bucket-name> --delete
+          aws-region: ap-northeast-2
+
+      - name: Deploy to S3
+        run: |
+          aws s3 cp \
+            --recursive \
+            --region ap-northeast-2 \
+            build s3://${{secrets.S3_BUCKET_NAME}}                  # S3 Bucket Name
+
+      - name: CloudFront Invalidate
+        run: |
+          aws cloudfront create-invalidation \
+            --distribution-id ${{CDN_DISTRIBUTION_ID}} \        # CloudFront Distribution ID
+            --paths / /index.html /service-worker.js /manifest.json /favicon.ico /robots.txt /logo192.png /logo512.png /asset-mainfest.json
