@@ -56,6 +56,7 @@ const MainMap = () => {
           setResultList(list);
           setPageNum({ page: data.currentPage, max: data.maxPage });
           setDataSize(data.dataSize);
+          setIsMarkerClick(false);
         }
       })
       .catch((err) => console.log(err));
@@ -242,6 +243,10 @@ const MainMap = () => {
       });
   };
 
+  const seeAllButton = () => {
+    getMapList("", 1);
+  };
+
   React.useEffect(() => {
     dispatch(textLogo(false));
 
@@ -257,6 +262,7 @@ const MainMap = () => {
             <ResultHeader url={ic_option}>
               <h3>전체({dataSize})</h3>
               <div>
+                <button onClick={seeAllButton}>모두 보기</button>
                 <select onChange={optionClick}>
                   <option value="descending">내림차순</option>
                   <option value="ascending">오름차순</option>
@@ -563,6 +569,25 @@ const ResultHeader = styled.div`
   div {
     position: relative;
     width: 57px;
+    display: flex;
+    gap: 10px;
+  }
+
+  button {
+    font-size: 12px;
+    line-height: 15px;
+    position: absolute;
+    right: 67px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: fit-content;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: white;
+    &:hover {
+      color: #ffce00;
+    }
   }
 
   select {
