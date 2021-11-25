@@ -1,6 +1,5 @@
 import React from "react";
 import styled, { keyframes } from "styled-components";
-import { apis } from "../lib/axios";
 
 import ic_sunny from "../img/weather/ic_sunny.svg"; //맑음
 import ic_cloudy from "../img/weather/ic_cloudy.svg"; //구름많음
@@ -18,146 +17,31 @@ import ic_map from "../img/map/ic_map.svg";
 import ic_location_off from "../img/map/ic_location_off.svg";
 import ic_location_on from "../img/map/ic_location_on.svg";
 
-//임시 이미지
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { textLogo } from "../redux/modules/header";
+import { actionCreators as starAction } from "../redux/modules/star";
+import { actionCreators as starUserAction } from "../redux/modules/user";
 
 const MainStar = () => {
-  const [is_loading, setIsLoading] = React.useState(true);
-  const [userLocation, setUserLocation] = React.useState();
-  const [data, setData] = React.useState({
-    moonrise: "...",
-    moonset: " ...",
-    starGazing: 0,
-    location: "loading...",
-    rainPercent: 0,
-    humidity: 0,
-    weather: "loading...",
-    temperature: 0,
-    maxTemperature: 0,
-    minTemperature: 0,
-    dust: 0,
-  });
-  const [star, setStar] = React.useState({
-    starImg: "",
-    starName: "",
-    comment: "",
-  });
-  const [hot, setHot] = React.useState([
-    {
-      cityName: "loading...",
-      starGazing: 0,
-      Temperature: 0,
-    },
-  ]);
-  const [hotTime, setHotTime] = React.useState();
+  const star_photo = useSelector((state) => state.star.star_photo);
+  const star_notice = useSelector((state) => state.star.star_notice);
+  const star_weather = useSelector((state) => state.star.star_weather);
+  const star_hot = useSelector((state) => state.star.star_hot);
+  const is_loading = useSelector((state) => state.star.loading);
+
   const dispatch = useDispatch();
-
-  const options = {
-    enableHighAccuracy: true,
-    timeout: 5000,
-    maximumAge: 0,
-  };
-
-  const success = (x) => {
-    console.log("success");
-    const position = x.coords;
-    const latitude = position.latitude;
-    const longitude = position.longitude;
-    setTimeout(500);
-    setUserLocation({ lat: latitude, lon: longitude });
-    console.log("user location:::", userLocation);
-  };
-
-  const error = (x) => {
-    console.log(x.code + ":::" + x.message);
-  };
-
-  const weatherNow = () => {
-    const date = new Date();
-    const hour = date.getHours();
-    let hourText = String(
-      (Number(hour) < 10 ? "0" + String(hour) : String(hour)) + "00"
-    );
-    console.log("hour:::", hour);
-    apis
-      .getNoticeWeatherAX(userLocation.lat, userLocation.lon, hourText)
-      .then((response) => {
-        console.log("[AX] get notice weather:::", response);
-        const resData = response.data.data;
-        setData((prev) => ({
-          ...prev,
-          location: resData.cityName,
-          rainPercent: resData.rainPercent,
-          humidity: resData.humidity,
-          weather: resData.weather,
-          temperature: resData.temperature,
-          maxTemperature: resData.maxTemperature,
-          minTemperature: resData.minTemperature,
-          dust: resData.dust,
-        }));
-      })
-      .catch((err) => {
-        console.log("[AX] get notice weather:::", err);
-      });
-  };
 
   React.useEffect(() => {
     dispatch(textLogo(false));
-
-    if ("geolocation" in navigator) {
-      navigator.geolocation.getCurrentPosition(success, error, options);
-    } else {
-      console.log("확인할 수 없다 ㅠㅠ");
-    }
-    apis
-      .getStarHotAX()
-      .then((response) => {
-        console.log("[AX] star hot:::", response);
-        setHot(response.data.data.starList);
-        setHotTime(response.data.data.currentTime);
-      })
-      .catch((err) => console.log("[AX] star hot error:::", err));
-    apis
-      .getStarPhotoAX()
-      .then((response) => {
-        console.log("getStarPhotoAX::: ", response);
-        setStar(response.data.data);
-      })
-      .catch((err) => console.log(err));
-  }, []);
-
-  React.useEffect(() => {
-    if (userLocation) {
-      weatherNow();
-
-      apis
-        .getNoticeAX(userLocation.lat, userLocation.lon)
-        .then((response) => {
-          console.log("get notice:::", response);
-          const resData = response.data.data;
-          setData((prev) => ({
-            ...prev,
-            moonrise:
-              resData.moonrise.slice(0, 2) + ":" + resData.moonrise.slice(2, 4),
-            moonset:
-              resData.moonset.slice(0, 2) + ":" + resData.moonset.slice(2, 4),
-            starGazing: resData.starGazing,
-          }));
-          setTimeout(200);
-          setIsLoading(false);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    }
-  }, [userLocation]);
+    dispatch(starUserAction.userLocationMW("star"));
+    dispatch(starAction.starHotMW());
+    dispatch(starAction.starPhotoMW());
+  }, [dispatch]);
 
   const liArray = Array.from(new Array(11).keys());
 
   const locationButton = () => {
-    weatherNow();
-    console.log("user location :::", userLocation);
+    dispatch(starUserAction.userLocationMW("star"));
   };
 
   return (
@@ -167,12 +51,12 @@ const MainStar = () => {
           <div>
             <LocationBox
               className="contentsBox"
-              id={is_loading ? "isLoading" : ""}
+              id={is_loading.weather ? "isLoading" : ""}
             >
-              {is_loading ? <span className="loader" /> : null}
+              {is_loading.weather ? <span className="loader" /> : null}
 
               <img src={ic_map} alt="map icon" />
-              <h3>{data.location}</h3>
+              <h3>{star_weather.cityName}</h3>
               <button onClick={locationButton}>
                 <img
                   src={ic_location_off}
@@ -191,19 +75,19 @@ const MainStar = () => {
             </LocationBox>
             <WeatherBox
               className="contentsBox"
-              id={is_loading ? "isLoading" : ""}
+              id={is_loading.weather ? "isLoading" : ""}
             >
-              {is_loading ? <span className="loader" /> : null}
+              {is_loading.weather ? <span className="loader" /> : null}
 
               <WeatherTemperature>
                 <div>
                   <img
                     src={
-                      data.weather === "맑음"
+                      star_weather.weather === "맑음"
                         ? ic_sunny
-                        : data.weather === "흐림"
+                        : star_weather.weather === "흐림"
                         ? ic_overcast
-                        : data.weather === "구름 조금 많음"
+                        : star_weather.weather === "구름 조금 많음"
                         ? ic_cloudy
                         : null
                     }
@@ -211,15 +95,16 @@ const MainStar = () => {
                   />
                   <div className="temperature">
                     <h3 className="openSans">
-                      {data.temperature}
+                      {star_weather.temperature}
                       <span>°C</span>
                     </h3>
                     <p>
-                      {data.minTemperature}° / {data.maxTemperature}°
+                      {star_weather.minTemperature}° /{" "}
+                      {star_weather.maxTemperature}°
                     </p>
                   </div>
                 </div>
-                <p className="comment">{data.weather}</p>
+                <p className="comment">{star_weather.weather}</p>
               </WeatherTemperature>
               <span className="line" />
               <WeatherETC>
@@ -227,23 +112,23 @@ const MainStar = () => {
                   <h3>미세먼지</h3>
                   <img
                     src={
-                      data.dust <= 30
+                      star_weather.dust <= 30
                         ? ic_finedust1
-                        : (data.dust > 30 && data.dust) <= 80
+                        : (star_weather.dust > 30 && star_weather.dust) <= 80
                         ? ic_finedust2
-                        : (data.dust > 80 && data.dust) <= 150
+                        : (star_weather.dust > 80 && star_weather.dust) <= 150
                         ? ic_finedust3
                         : ic_finedust4
                     }
                     alt="finedust icon"
                   />
-                  <p className="openSans">{data.dust}</p>
+                  <p className="openSans">{star_weather.dust}</p>
                 </section>
                 <section>
                   <h3>강수확률</h3>
                   <img src={ic_umbrella} alt="ultra finedust icon" />
                   <p className="openSans">
-                    {data.rainPercent}
+                    {star_weather.rainPercent}
                     <span>%</span>
                   </p>
                 </section>
@@ -251,7 +136,7 @@ const MainStar = () => {
                   <h3>습도</h3>
                   <img src={ic_humidity} alt="humidity icon" />
                   <p className="openSans">
-                    {data.humidity}
+                    {star_weather.humidity}
                     <span>%</span>
                   </p>
                 </section>
@@ -259,10 +144,10 @@ const MainStar = () => {
             </WeatherBox>
             <VisiblityBox
               className="contentsBox"
-              visiblity={data.starGazing}
-              id={is_loading ? "isLoading" : ""}
+              visiblity={star_notice.starGazing}
+              id={is_loading.notice ? "isLoading" : ""}
             >
-              {is_loading ? <span className="loader" /> : null}
+              {is_loading.notice ? <span className="loader" /> : null}
 
               <div className="title">
                 <img src={ic_star} alt="star icon" />
@@ -287,60 +172,60 @@ const MainStar = () => {
             <MoonBox>
               <section
                 className="contentsBox"
-                id={is_loading ? "isLoading" : ""}
+                id={is_loading.notice ? "isLoading" : ""}
               >
-                {is_loading ? <span className="loader" /> : null}
+                {is_loading.notice ? <span className="loader" /> : null}
 
                 <h3>
                   <img src={ic_moonrise} alt="moon icon" />
                   월출
                 </h3>
-                <p className="openSans">{data.moonrise}</p>
+                <p className="openSans">{star_notice.moonrise}</p>
               </section>
               <section
                 className="contentsBox"
-                id={is_loading ? "isLoading" : ""}
+                id={is_loading.notice ? "isLoading" : ""}
               >
-                {is_loading ? <span className="loader" /> : null}
+                {is_loading.notice ? <span className="loader" /> : null}
 
                 <h3>
                   <img src={ic_moonset} alt="moon icon" />
                   월몰
                 </h3>
-                <p className="openSans">{data.moonset}</p>
+                <p className="openSans">{star_notice.moonset}</p>
               </section>
             </MoonBox>
           </div>
           <div>
             <ImageBox
               className="contentsBox"
-              id={is_loading ? "isLoading" : ""}
+              id={is_loading.photo ? "isLoading" : ""}
             >
-              {is_loading ? <span className="loader" /> : null}
+              {is_loading.photo ? <span className="loader" /> : null}
 
               <button>
                 <span className="buttonHover">별자리 설명</span>
                 <section className="buttonActive">
-                  <h3>{star.starName}</h3>
-                  <p>{star.comment}</p>
+                  <h3>{star_photo.starName}</h3>
+                  <p>{star_photo.comment}</p>
                 </section>
                 ?
               </button>
-              <img src={star.starImg} alt="star" />
+              <img src={star_photo.starImg} alt="star" />
             </ImageBox>
             <RecommendBox
               className="contentsBox"
-              id={is_loading ? "isLoading" : ""}
+              id={is_loading.hot ? "isLoading" : ""}
             >
-              {is_loading ? <span className="loader" /> : null}
+              {is_loading.hot ? <span className="loader" /> : null}
 
               <div>
                 <h3>실시간 별보기 좋은 지역</h3>
-                <p className="openSans">{hotTime} 기준</p>
+                <p className="openSans">{star_hot.currentTime} 기준</p>
               </div>
               <span className="line" />
               <ul>
-                {hot.map((l, idx) => {
+                {star_hot.starList.map((l, idx) => {
                   return (
                     <li key={idx}>
                       <img src={l.img} alt="star" />
