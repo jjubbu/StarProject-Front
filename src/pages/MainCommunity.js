@@ -98,6 +98,7 @@ const MainCommunity = (props) => {
                       // setSort("star");
                       dispatch(changeSortMW("star"));
                       setActive([true, false, false]);
+                      setPageNum((prev) => ({ ...prev, current: 1 }));
                     }}
                   >
                     <a class="recommend">추천순</a>
@@ -111,6 +112,11 @@ const MainCommunity = (props) => {
                       // dispatch(postActions.getCardDB("like", "", 1));
                       // setSort("like");
                       dispatch(changeSortMW("like"));
+                      setPageNum((prev) => ({
+                        ...prev,
+                        current: 1,
+                      }));
+
                       setActive([false, true, false]);
                     }}
                   >
@@ -125,6 +131,8 @@ const MainCommunity = (props) => {
                     onClick={() => {
                       // dispatch(postActions.getCardDB("latest", "", 1));
                       // setSort("latest");
+                      setPageNum((prev) => ({ ...prev, current: 1 }));
+
                       dispatch(changeSortMW("latest"));
                       setActive([false, false, true]);
                     }}
