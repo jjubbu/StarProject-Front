@@ -10,6 +10,7 @@ import ic_heart from "../img/ic_heart.svg";
 import ic_heart_on from "../img/ic_heart_on.svg";
 import ic_bookmark_off from "../img/ic_bookmark_off.svg";
 import ic_bookmark_on from "../img/ic_bookmark_on.svg";
+import ic_logo from "../img/ic_logo.svg";
 
 import { useDispatch } from "react-redux";
 
@@ -80,12 +81,19 @@ const Card = (props) => {
     // cardID={props.cardID} onClick={cardClick}
     >
       <div onClick={cardClick}>
-        <Image
-          height="288px"
-          shape={"rectangle"}
-          src={props.img}
-          oject-fit={"cover"}
-        />
+        <ImageArea>
+          {props.img ? (
+            <Image
+              height="288px"
+              shape={"rectangle"}
+              src={props.img}
+              oject-fit={"cover"}
+            />
+          ) : (
+            <img src={ic_logo} height="128px" />
+          )}
+        </ImageArea>
+
         <InfoDiv>
           <img className="ic_heart" src={ic_map} size="5" alt="address icon" />
           <h3>{props.address}</h3>
@@ -138,6 +146,36 @@ const Card = (props) => {
 };
 
 Card.defaultProps = {};
+
+const ImageArea = styled.div`
+  position: relative;
+  width: 100%;
+  height: 288px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  .img {
+    width: 125px;
+    height: 125px;
+  }
+`;
+
+const ImageBox = styled.div`
+  position: relative;
+  width: 100%;
+  height: 288px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  .campImage {
+    ${(props) =>
+      props.img !== ""
+        ? "width: 100%; height: 288px;"
+        : "width:128px; height:128px; margin-top:2px;"}
+
+    object-fit: cover;
+  }
+`;
 
 const BottomDiv = styled.div`
   padding: 18px 20px 18px 20px;
@@ -270,7 +308,7 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: flex;
-  transition: box-shadow 0.25s ease-in 0s, transform 0.25s ease-in 0s;
+  /* transition: box-shadow 0.25s ease-in 0s, transform 0.25s ease-in 0s; */
   /* margin: 50px auto 20px auto; */
   /* margin-right: 24px; */
   border-radius: 10px;
@@ -284,6 +322,14 @@ const Wrapper = styled.div`
     transform: translateY(-12px);
     box-shadow: 0 3px 40px 0 #ddd;
   } */
+  .defaultImage {
+    display: flex;
+    align-items: center;
+    .img {
+      width: 285px;
+      height: 285px;
+    }
+  }
 `;
 
 const DateDiv = styled.div`
