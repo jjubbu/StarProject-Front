@@ -27,19 +27,14 @@ function App() {
   }, []);
   return (
     <ConnectedRouter history={history}>
-      <StyledViewContainer>
+      <StyledViewContainer id="card-container">
         <Header />
         <Route path="/" exact component={Main} />
         <Route path="/star" exact component={MainStar} />
         <Route path="/map" exact component={MainMap} />
-        <Route
-          path="/community"
-          exact
-          component={MainCommunity}
-          id="card-container"
-        />
+        <Route path="/community" exact component={MainCommunity} />
         <Route path="/post/add" exact component={AddEditPost} />
-        <Route path="/post/edit/:id" exact component={AddEditPost} />
+        <Route path="/post/edit" exact component={AddEditPost} />
         <Route path="/login" exact component={Login} />
         <Route path="/signup" exact component={Signup} />
         <Route path="/detail/:id" exact component={Detail} />

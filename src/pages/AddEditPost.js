@@ -10,17 +10,26 @@ import { StyledInput } from "../elements/CommonInput";
 import CustomToolbar from "../components/QuillCustomToolbar";
 import ic_save from "../img/ic_save.svg";
 
+import { useSelector, useDispatch } from "react-redux";
 import { history } from "../redux/configureStore";
+import { actionCreators as editDataAction } from "../redux/modules/edit";
 
 const AddEditPost = () => {
   const [quillValue, setQuillValue] = React.useState();
   const [quillImage, setQuillImage] = React.useState([]);
   const [quillImagebase, setQuillImagebase] = React.useState([]);
   const [warn, setWarn] = React.useState("none");
+  const [inputValue, setInputValue] = React.useState({
+    title: "",
+    address: "",
+  });
   const imageInputREF = React.useRef();
   const QuillREF = React.useRef();
   const titleREF = React.useRef();
   const addressREF = React.useRef();
+
+  const editData = useSelector((state) => state.edit.data);
+  const dispatch = useDispatch();
 
   AWS.config.update({
     region: "ap-northeast-2", // 버킷이 존재하는 리전을 문자열로 입력합니다. (Ex. "ap-northeast-2")
@@ -165,12 +174,27 @@ const AddEditPost = () => {
         apis.postAddPostAX(uploadResult).then((response) => {
           console.log("post add:::", response);
           if (response.data.code === 200) {
+            dispatch(editDataAction.deleteData());
             history.push("/community");
           }
         });
       }
     }
   };
+
+  const inputDataSet = (e) => {
+    const name = e.target.name;
+    const value = e.target.value;
+    setInputValue((prev) => ({ ...prev, [name]: value }));
+  };
+
+  React.useEffect(() => {
+    const path = history.location.pathname.split("/post/").join("");
+    if (path === "edit") {
+      setQuillValue(editData.content);
+      setInputValue({ title: editData.title, address: editData.address });
+    }
+  }, []);
 
   return (
     <React.Fragment>
@@ -187,6 +211,8 @@ const AddEditPost = () => {
             name="title"
             placeholder="제목을 입력해주세요"
             ref={titleREF}
+            value={inputValue.title}
+            onChange={inputDataSet}
           />
           <TextEditorBox className="textEditor">
             <input
@@ -211,9 +237,13 @@ const AddEditPost = () => {
               type="text"
               name="address"
               placeholder="캠핑한 장소의 주소를 입력하세요"
-              onChange={addressCheck}
+              onChange={(e) => {
+                addressCheck(e);
+                inputDataSet(e);
+              }}
               border={warn}
               ref={addressREF}
+              value={inputValue.address}
             />
           </TextEditorBox>
 

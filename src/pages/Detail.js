@@ -21,6 +21,7 @@ import ic_arrow from "../img/ic_slideArrow.svg";
 import { useDispatch, useSelector } from "react-redux";
 import { textLogo } from "../redux/modules/header";
 import { actionCreators as loginCheckAction } from "../redux/modules/login";
+import { actionCreators as editDataAction } from "../redux/modules/edit";
 
 function SampleNextArrow(props) {
   const { className, style, onClick } = props;
@@ -162,9 +163,14 @@ const Detail = ({ history, location, match }) => {
   // };
 
   const editClick = () => {
-    if (is_login) {
-      history.push(`/post/edit/${data.id}`);
-    }
+    const editData = {
+      title: data.title,
+      content: data.content,
+      address: data.address,
+      id: data.id,
+    };
+    dispatch(editDataAction.addData(editData));
+    history.push("/post/edit");
   };
 
   const markClick = (e) => {
