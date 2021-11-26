@@ -110,7 +110,14 @@ const AddEditPost = () => {
     []
   );
 
+  let uploadClick = false;
+
   const uploadPost = async () => {
+    if (!uploadClick) {
+      uploadClick = true;
+    } else {
+      return;
+    }
     let List = {};
     for (let i = 0; i < quillImage.length; i++) {
       List[quillImagebase[i]] = quillImage[i].name;
@@ -138,7 +145,6 @@ const AddEditPost = () => {
       title: titleREF.current.value,
       address: addressREF.current.value,
     };
-    console.log("quillResult:::", uploadResult);
 
     if (
       Object.keys(uploadResult).find(
@@ -192,6 +198,7 @@ const AddEditPost = () => {
           // });
         }
         if (pathNow === "add") {
+          console.log("quillResult:::", uploadResult);
           apis.postAddPostAX(uploadResult).then((response) => {
             if (response.data.code === 200) {
               history.push("/community");
@@ -212,7 +219,9 @@ const AddEditPost = () => {
                 // console.log("edit response:::", response);
               }
             })
-            .catch((err) => {});
+            .catch((err) => {
+              console.log(err);
+            });
         }
       }
     }
