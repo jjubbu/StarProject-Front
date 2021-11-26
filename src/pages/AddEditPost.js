@@ -15,6 +15,7 @@ import { history } from "../redux/configureStore";
 import { actionCreators as editDataAction } from "../redux/modules/edit";
 
 const AddEditPost = () => {
+  const [pathNow, setPathNow] = React.useState("add");
   const [quillValue, setQuillValue] = React.useState();
   const [quillImage, setQuillImage] = React.useState([]);
   const [quillImagebase, setQuillImagebase] = React.useState([]);
@@ -151,7 +152,7 @@ const AddEditPost = () => {
         alert("주소를 알맞게 입력해주세요");
       } else {
         if (quillImage.length > 0) {
-          quillImage.map((l, idx) => {
+          quillImage.forEach((l, idx) => {
             // S3 SDK에 내장된 업로드 함수
             const upload = new AWS.S3.ManagedUpload({
               params: {
@@ -170,14 +171,49 @@ const AddEditPost = () => {
               }
             );
           });
+          // quillImage.map((l, idx) => {
+          //   // S3 SDK에 내장된 업로드 함수
+          //   const upload = new AWS.S3.ManagedUpload({
+          //     params: {
+          //       Bucket: "star-project-post-storage", // 업로드할 대상 버킷명
+          //       Key: l.name, // 업로드할 파일명 (* 확장자를 추가해야 합니다!)
+          //       Body: l, // 업로드할 파일 객체
+          //     },
+          //   });
+          //   const promise = upload.promise();
+          //   promise.then(
+          //     function (data) {
+          //       console.log("이미지 업로드에 성공했습니다.");
+          //     },
+          //     function (err) {
+          //       return console.log("오류가 발생했습니다: ", err.message);
+          //     }
+          //   );
+          // });
         }
-        apis.postAddPostAX(uploadResult).then((response) => {
-          console.log("post add:::", response);
-          if (response.data.code === 200) {
-            dispatch(editDataAction.deleteData());
-            history.push("/community");
-          }
-        });
+        if (pathNow === "add") {
+          apis.postAddPostAX(uploadResult).then((response) => {
+            if (response.data.code === 200) {
+              history.push("/community");
+            }
+          });
+        } else {
+          let editResult = {
+            content: content,
+            title: titleREF.current.value,
+            address: addressREF.current.value,
+          };
+          apis
+            .putEditPostAX(editData.id, editResult)
+            .then((response) => {
+              if (response.data.code === 200) {
+                dispatch(editDataAction.deleteData());
+                history.goBack();
+                // console.log("edit response:::", response);
+              }
+            })
+            .catch((err) => {});
+        }
       }
     }
   };
@@ -191,16 +227,17 @@ const AddEditPost = () => {
   React.useEffect(() => {
     const path = history.location.pathname.split("/post/").join("");
     if (path === "edit") {
+      setPathNow("edit");
       setQuillValue(editData.content);
       setInputValue({ title: editData.title, address: editData.address });
     }
-  }, []);
+  }, [editData]);
 
   return (
     <React.Fragment>
       <AddEditStyled className="CommonPageStyle CommonGap">
         <AddEditHeader>
-          <h3>커뮤니티 게시글 작성</h3>
+          <h3>커뮤니티 게시글 {pathNow === "add" ? "작성" : "수정"}</h3>
           <button onClick={uploadPost}>
             업로드 <img src={ic_save} alt="save" />
           </button>

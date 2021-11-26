@@ -209,7 +209,7 @@ const Detail = ({ history, location, match }) => {
       });
 
     dispatch(textLogo(false));
-  }, []);
+  }, [dispatch]);
 
   //슬라이더 세팅
   const settings = {
@@ -459,11 +459,6 @@ const WeaterInfoImport = styled.ul`
       line-height: 33px;
     }
   }
-`;
-
-const SliderDetail = styled(Slider)`
-  display: flex;
-  gap: 18px;
 `;
 
 const WeatherTable = styled.table`
