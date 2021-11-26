@@ -56,7 +56,7 @@ const MainStar = () => {
               {is_loading.weather ? <span className="loader" /> : null}
 
               <img src={ic_map} alt="map icon" />
-              <h3>{star_weather.cityName}</h3>
+              <h3>{star_weather?.cityName}</h3>
               <button onClick={locationButton}>
                 <img
                   src={ic_location_off}
@@ -122,13 +122,13 @@ const MainStar = () => {
                     }
                     alt="finedust icon"
                   />
-                  <p className="openSans">{star_weather.dust}</p>
+                  <p className="openSans">{star_weather?.dust}</p>
                 </section>
                 <section>
                   <h3>강수확률</h3>
                   <img src={ic_umbrella} alt="ultra finedust icon" />
                   <p className="openSans">
-                    {star_weather.rainPercent}
+                    {star_weather?.rainPercent}
                     <span>%</span>
                   </p>
                 </section>
@@ -136,7 +136,7 @@ const MainStar = () => {
                   <h3>습도</h3>
                   <img src={ic_humidity} alt="humidity icon" />
                   <p className="openSans">
-                    {star_weather.humidity}
+                    {star_weather?.humidity}
                     <span>%</span>
                   </p>
                 </section>
