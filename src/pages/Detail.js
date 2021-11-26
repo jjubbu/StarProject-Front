@@ -102,6 +102,8 @@ const Detail = ({ history, location, match }) => {
   const weather = data.weather;
   const wList = weather.weatherList;
   const dispatch = useDispatch();
+  const user_info = useSelector((state) => state.login.user_info.nickname);
+  const writer = data.writer;
 
   const markFunc = (data, name) => {
     if (name === "like") {
@@ -145,14 +147,24 @@ const Detail = ({ history, location, match }) => {
       console.log("delete::: ", response);
       if (is_login) {
         alert("작성글이 삭제되었습니다.");
+        history.push("/community");
       }
     });
   };
 
-  const editAxios = () => {
-    apis.putEditPostAX(data.id).then((response) => {
-      console.log("edit::: ", response);
-    });
+  // const editAxios = (id) => {
+  //   apis.putEditPostAX(id).then((response) => {
+  //     console.log("edit::: ", response);
+  //     if (is_login) {
+  //       history.push("/post/add"); //페이지 먼저 넘기기
+  //     }
+  //   });
+  // };
+
+  const editClick = () => {
+    if (is_login) {
+      history.push(`/post/edit/${data.id}`);
+    }
   };
 
   const markClick = (e) => {
@@ -352,9 +364,9 @@ const Detail = ({ history, location, match }) => {
           <span className="line" />
 
           <ContentFooter>
-            {is_login ? (
+            {is_login && user_info === writer ? (
               <React.Fragment>
-                <button onClick={editAxios}>수정</button>
+                <button onClick={editClick}>수정</button>
                 <button onClick={deleteAxios}>삭제</button>
               </React.Fragment>
             ) : null}
