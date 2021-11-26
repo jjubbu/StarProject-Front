@@ -115,15 +115,12 @@ const Detail = ({ history, location, match }) => {
         ...prev,
         [name]: true,
       }));
-      console.log("mark ::: ", data);
     } else if (data.code === 201) {
       setMarkButton((prev) => ({
         ...prev,
         [name]: false,
       }));
-      console.log("mark ::: ", data);
     } else {
-      console.log("mark fail ::: ", data);
     }
   };
   const bookmarkAxios = () => {
@@ -145,7 +142,6 @@ const Detail = ({ history, location, match }) => {
 
   const deleteAxios = () => {
     apis.getDeletePostAX(data.id).then((response) => {
-      console.log("delete::: ", response);
       if (is_login) {
         alert("작성글이 삭제되었습니다.");
         history.push("/community");
@@ -190,7 +186,6 @@ const Detail = ({ history, location, match }) => {
     apis
       .getPostDetailAX(id)
       .then((response) => {
-        console.log("post detail:::", response);
         const data = response.data;
         if (data.code === 200) {
           setData(data.data);
@@ -200,13 +195,10 @@ const Detail = ({ history, location, match }) => {
           });
           setLikeCount(data.data.likeCount);
         } else {
-          console.log(data);
         }
       })
 
-      .catch((err) => {
-        console.log(err);
-      });
+      .catch((err) => {});
 
     dispatch(textLogo(false));
   }, [dispatch]);
@@ -239,7 +231,7 @@ const Detail = ({ history, location, match }) => {
           <MapBox>
             <Map
               center={{ lat: data.y_location, lng: data.x_location }}
-              style={{ width: "100%", height: "360px" }}
+              style={{ width: "384px", height: "360px" }}
             >
               <MapMarker
                 position={{ lat: data.y_location, lng: data.x_location }}
