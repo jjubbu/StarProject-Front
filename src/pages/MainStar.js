@@ -83,11 +83,11 @@ const MainStar = () => {
                 <div>
                   <img
                     src={
-                      star_weather.weather === "맑음"
+                      star_weather?.weather === "맑음"
                         ? ic_sunny
-                        : star_weather.weather === "흐림"
+                        : star_weather?.weather === "흐림"
                         ? ic_overcast
-                        : star_weather.weather === "구름 조금 많음"
+                        : star_weather?.weather === "구름 조금 많음"
                         ? ic_cloudy
                         : null
                     }
@@ -95,16 +95,16 @@ const MainStar = () => {
                   />
                   <div className="temperature">
                     <h3 className="openSans">
-                      {star_weather.temperature}
+                      {star_weather?.temperature}
                       <span>°C</span>
                     </h3>
                     <p>
-                      {star_weather.minTemperature}° /{" "}
-                      {star_weather.maxTemperature}°
+                      {star_weather?.minTemperature}° /{" "}
+                      {star_weather?.maxTemperature}°
                     </p>
                   </div>
                 </div>
-                <p className="comment">{star_weather.weather}</p>
+                <p className="comment">{star_weather?.weather}</p>
               </WeatherTemperature>
               <span className="line" />
               <WeatherETC>
@@ -112,11 +112,11 @@ const MainStar = () => {
                   <h3>미세먼지</h3>
                   <img
                     src={
-                      star_weather.dust <= 30
+                      star_weather?.dust <= 30
                         ? ic_finedust1
-                        : (star_weather.dust > 30 && star_weather.dust) <= 80
+                        : (star_weather?.dust > 30 && star_weather?.dust) <= 80
                         ? ic_finedust2
-                        : (star_weather.dust > 80 && star_weather.dust) <= 150
+                        : (star_weather?.dust > 80 && star_weather?.dust) <= 150
                         ? ic_finedust3
                         : ic_finedust4
                     }
