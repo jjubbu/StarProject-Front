@@ -7,7 +7,7 @@ import ic_star from "../img/ic_star.svg";
 import ic_bookmark_off from "../img/ic_bookmark_off.svg";
 import ic_bookmark_on from "../img/ic_bookmark_on.svg";
 import ic_logo from "../img/ic_logo.svg";
-import mainVT from "../img/Night Sky.mp4";
+
 import { apis } from "../lib/axios";
 
 import { useDispatch, useSelector } from "react-redux";
@@ -30,25 +30,15 @@ const Main = () => {
   const is_login = useSelector((state) => state.login.is_login);
   const dispatch = useDispatch();
 
-  const bookmarkCheck = (id, idx, e) => {
-    // dispatch(loginCheckAction.isLoginMW());
-    const cardid = e.target.getAttribute("cardid");
+  const bookmarkCheck = (id, idx) => {
     if (!is_login) {
       history.push("/login");
-    }
-    console.log("bookmark click:::", id);
-    console.log("bookmark click::: e", e);
-    if (id === null) {
-      console.log("no id", cardid);
     }
     apis
       .postBookmarkAX(id)
       .then((response) => {
-        console.log(response);
         const check = response.data.data.bookmarkCheck;
-        console.log(check);
         let newList = [...boardList];
-        console.log(newList);
         newList[idx].bookmark = check;
         setBoardList(newList);
       })
@@ -73,13 +63,16 @@ const Main = () => {
       .catch((err) => {
         console.log(err);
       });
-  }, []);
+  }, [dispatch]);
   return (
     <React.Fragment>
       <StyldMain className="CommonGap">
         <VisualBox>
           <video loop autoPlay muted>
-            <source src={mainVT} type="video/mp4" />
+            <source
+              src="https://stella-image-storage.s3.ap-northeast-2.amazonaws.com/Night+Sky.mp4"
+              type="video/mp4"
+            />
           </video>
           <h3 className="visualText">
             밤하늘 야경 명당 캠핑장 <br />
@@ -127,7 +120,7 @@ const Main = () => {
                         className="bookmark"
                         cardid={l.id}
                         onClick={(e) => {
-                          bookmarkCheck(l.id, idx, e);
+                          bookmarkCheck(l.id, idx);
                           e.stopPropagation();
                         }}
                       />

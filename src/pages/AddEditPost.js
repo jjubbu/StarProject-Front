@@ -17,7 +17,6 @@ const AddEditPost = () => {
   const [quillImage, setQuillImage] = React.useState([]);
   const [quillImagebase, setQuillImagebase] = React.useState([]);
   const [warn, setWarn] = React.useState("none");
-  const [canUpload, setCanUpload] = React.useState(true);
   const imageInputREF = React.useRef();
   const QuillREF = React.useRef();
   const titleREF = React.useRef();
@@ -83,20 +82,21 @@ const AddEditPost = () => {
     "align",
   ];
 
-  const addressCheck = React.useCallback(
-    _.debounce((e) => {
-      const address = e.target.value;
-      console.log("this is address:::", address);
-      apis.getCheckAddressAX(address).then((response) => {
-        console.log("check address AX :::", response);
-        const data = response.data;
-        if (data.code === 200) {
-          setWarn("none");
-        } else {
-          setWarn("warn");
-        }
-      });
-    }, 500),
+  const addressCheck = React.useMemo(
+    (e) =>
+      _.debounce((e) => {
+        const address = e.target.value;
+        console.log("this is address:::", address);
+        apis.getCheckAddressAX(address).then((response) => {
+          console.log("check address AX :::", response);
+          const data = response.data;
+          if (data.code === 200) {
+            setWarn("none");
+          } else {
+            setWarn("warn");
+          }
+        });
+      }, 500),
     []
   );
 

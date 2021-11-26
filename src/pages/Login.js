@@ -22,7 +22,6 @@ const Login = () => {
     const { name, value } = e.target;
     setLoginInfo((prevState) => ({ ...prevState, [name]: value }));
   };
-  const cookie = new Cookies();
 
   const saveID = (e) => {
     if (e.target.checked) {
@@ -33,6 +32,8 @@ const Login = () => {
   };
 
   const login = () => {
+    const cookie = new Cookies();
+
     if (loginInfo.password === "" || loginInfo.username === "") {
       alert("값을 입력해주세요!");
       return;
@@ -59,7 +60,7 @@ const Login = () => {
 
   React.useEffect(() => {
     dispatch(textLogo(true));
-
+    const cookie = new Cookies();
     const userIdCookie = cookie.get("starCampID");
     if (userIdCookie !== "") {
       setLoginInfo((prevState) => ({ ...prevState, username: userIdCookie }));
@@ -67,7 +68,7 @@ const Login = () => {
     } else {
       setIsSave(false);
     }
-  }, []);
+  }, [dispatch]);
 
   return (
     <React.Fragment>
