@@ -51,24 +51,32 @@ const MainCommunity = (props) => {
     dispatch(postActions.getCardDB("star", "", 1));
   }, []);
 
+  React.useEffect(() => {
+    window.addEventListener("scroll", scrollEvent);
+    window.addEventListener("scroll", console.log("scrollevent"));
+
+    return () => {
+      window.removeEventListener("scroll", scrollEvent);
+    };
+  }, []);
+
   // 무한스크롤
-  const scrollEvent = (e) => {
-    let scrollHeight = document.getElementById("container").scrollHeight;
-    let scrollTop = document.getElementById("container").scrollTop;
-    let clientHeight = document.getElementById("container").clientHeight;
+  const scrollEvent = () => {
+    let scrollHeight = document.documentElement.scrollHeight;
+    let scrollTop = document.documentElement.scrollTop;
+    let clientHeight = document.documentElement.clientHeight;
 
     console.log(scrollHeight);
     console.log(scrollTop);
     console.log(clientHeight);
 
     if (scrollTop + clientHeight >= scrollHeight) {
-      console.log("scrollTop::::", e.target.scrollTop);
+      console.log("scrollTop::::", scrollTop);
       if (currentPage >= maxPage) {
         console.log(currentPage);
         console.log(maxPage);
         console.log("더 이상 페이지 없음");
       } else {
-        // setPageNum((prev) => ({ ...prev, page: pageNum.page + 1 }));
         console.log("currentPage", currentPage);
 
         // dispatch(postActions.getCardDB(params, Number(pageNum.page + 1)));
@@ -79,18 +87,6 @@ const MainCommunity = (props) => {
             Number(currentPage + 1)
           )
         );
-        // apis
-        //   .getCardAX(params, Number(pageNum.page + 1))
-        //   .then(async (response) => {
-        //     const data = response.data.data;
-        //     console.log(data);
-        //     const mergeData = resultList.concat(...data.dataList);
-        //     setResultList(mergeData);
-        //     setDataSize(data.dataSize);
-        //   })
-        //   .catch((err) => {
-        //     console.log(err);
-        //   });
       }
     }
   };
@@ -99,11 +95,11 @@ const MainCommunity = (props) => {
 
   const searchCity = (e) => {
     const text = e.target.value;
-    setParams(`&cityName=${text}`);
+    const p = `&cityName=${text}`;
 
     if (window.event.keyCode === 13) {
-      console.log("enter", text);
-      dispatch(postActions.getSearchListDB(sort, params, 1));
+      console.log("enter", p);
+      dispatch(postActions.getSearchListDB(sort, p, 1));
     }
 
     // apis.getCardAX(params, 1).then((response) => {
@@ -118,69 +114,76 @@ const MainCommunity = (props) => {
     setSearchValue(text);
   };
 
-  const getSearchAuto = React.useCallback(
-    _.debounce((e) => {
-      const text = e.target.value;
-      console.log(text);
-      if (text !== "") {
-        setSearch(true);
-        apis
-          .getMapSearchAX(text)
-          .then((response) => {
-            console.log(response.data.data);
-            if (response.data.data.length !== 0) {
-              setSearchList(response.data.data);
-            } else {
-              setSearchList([{ address: "검색 결과가 없습니다." }]);
-            }
-          })
-          .catch((err) => {
-            console.log(err);
-          });
-      } else {
-        setSearch(false);
-      }
-    }, 500),
-    []
-  );
+  // const getSearchAuto = React.useCallback(
+  //   _.debounce((e) => {
+  //     const text = e.target.value;
+  //     console.log(text);
+  //     if (text !== "") {
+  //       setSearch(true);
+  //       apis
+  //         .getMapSearchAX(text)
+  //         .then((response) => {
+  //           console.log(response.data.data);
+  //           if (response.data.data.length !== 0) {
+  //             setSearchList(response.data.data);
+  //           } else {
+  //             setSearchList([{ address: "검색 결과가 없습니다." }]);
+  //           }
+  //         })
+  //         .catch((err) => {
+  //           console.log(err);
+  //         });
+  //     } else {
+  //       setSearch(false);
+  //     }
+  //   }, 500),
+  //   []
+  // );
 
   return (
     <React.Fragment>
       <div className="CommonPageStyle">
-        <CommunityPage id="container" onScroll={scrollEvent}>
+        <CommunityPage>
           <TopDiv>
             <ul className="tab">
-              <div
-                className="star"
-                onClick={() => {
-                  dispatch(postActions.getCardDB("star", "", 1));
-                  setSort("star");
-                  setActive([true, false, false]);
-                }}
-              >
-                <a class="recommend">추천순</a>
+              <div className="tab-container1">
+                <div
+                  className="star"
+                  onClick={() => {
+                    dispatch(postActions.getCardDB("star", "", 1));
+                    setSort("star");
+                    setActive([true, false, false]);
+                  }}
+                >
+                  <a class="recommend">추천순</a>
+                </div>
                 {activeClass[0] ? <li class="bottom__line1"></li> : false}
               </div>
-              <div
-                className="like"
-                onClick={() => {
-                  dispatch(postActions.getCardDB("like", "", 1));
-                  setSort("like");
-                  setActive([false, true, false]);
-                }}
-              >
-                <a className="popular">인기순</a>
+              <div className="tab-container2">
+                <div
+                  className="like"
+                  onClick={() => {
+                    dispatch(postActions.getCardDB("like", "", 1));
+                    setSort("like");
+                    setActive([false, true, false]);
+                  }}
+                >
+                  <a className="popular">인기순</a>
+                </div>
                 {activeClass[1] ? <li class="bottom__line2"></li> : false}
               </div>
-              <div
-                className="latest"
-                onClick={() => {
-                  dispatch(postActions.getCardDB("latest", "", 1));
-                  setSort("latest");
-                  setActive([false, false, true]);
-                }}
-              >
-                <a className="latest">최신순</a>
+
+              <div className="tab-container3">
+                <div
+                  className="latest"
+                  onClick={() => {
+                    dispatch(postActions.getCardDB("latest", "", 1));
+                    setSort("latest");
+                    setActive([false, false, true]);
+                  }}
+                >
+                  <a className="latest">최신순</a>
+                </div>
                 {activeClass[2] ? <li class="bottom__line3"></li> : false}
               </div>
             </ul>
@@ -203,7 +206,7 @@ const MainCommunity = (props) => {
             <button
               className="btn-write"
               onClick={() => {
-                history.push("/post/add");
+                !is_login ? history.push("/login") : history.push("/post/add");
               }}
             >
               <p>글쓰기</p>
@@ -226,26 +229,25 @@ const MainCommunity = (props) => {
 };
 
 const CommunityPage = styled.main`
-  overflow-y: scroll;
-
+  /* overflow-y: scroll;
   ::-webkit-scrollbar {
     display: none;
-  }
+  } */
   height: 100%;
 `;
 
-const Wrapper = styled.main`
+const Wrapper = styled.div`
   gap: 24px;
   display: flex;
   /* box-sizing: border-box; */
   flex-wrap: wrap;
   justify-content: center;
   margin: auto;
-  /* overflow-y: scroll; */
+  /* overflow-y: scroll;
 
   ::-webkit-scrollbar {
     display: none;
-  }
+  } */
 `;
 
 const TopDiv = styled.div`
@@ -260,58 +262,81 @@ const TopDiv = styled.div`
     justify-content: space-between;
     align-items: center;
     height: 40px;
-    width: 268px;
+    width: 277px;
+    padding-bottom: 10px;
 
-    .star {
-      width: 67px;
-      font-size: 24px;
-      color: white;
-      text-align: center;
-      z-index: 2;
-      a {
-        cursor: pointer;
-      }
-      .bottom__line1 {
-        position: relative;
-        z-index: 1;
-        top: 10px;
-        /* left: 2px; */
+    .tab-container1 {
+      width: 85px;
+      align-items: center;
+      display: flex;
+      justify-content: center;
+      position: relative;
+      .star {
         width: 67px;
-        height: 2px;
-        background-color: #ffffff;
+        font-size: 24px;
+        color: white;
+        text-align: center;
+
+        a {
+          cursor: pointer;
+        }
       }
     }
 
-    .like {
-      width: 67px;
-      font-size: 24px;
-      text-align: center;
-      color: white;
-      a {
-        cursor: pointer;
+    .bottom__line1 {
+      position: absolute;
+      top: 37px;
+      width: 85px;
+      height: 1px;
+      background-color: #ffffff;
+    }
+
+    .tab-container2 {
+      width: 85px;
+      align-items: center;
+      display: flex;
+      justify-content: center;
+      position: relative;
+      .like {
+        width: 67px;
+        font-size: 24px;
+        text-align: center;
+        color: white;
+
+        a {
+          cursor: pointer;
+        }
       }
       .bottom__line2 {
-        position: relative;
-        top: 10px;
-        width: 67px;
-        height: 2px;
+        position: absolute;
+        top: 37px;
+        width: 85px;
+        height: 1px;
         background-color: #ffffff;
       }
     }
 
-    .latest {
-      width: 67px;
-      font-size: 24px;
-      text-align: center;
-      color: white;
-      a {
-        cursor: pointer;
+    .tab-container3 {
+      width: 85px;
+      align-items: center;
+      display: flex;
+      justify-content: center;
+      position: relative;
+      .latest {
+        width: 67px;
+        font-size: 24px;
+        text-align: center;
+        color: white;
+
+        a {
+          cursor: pointer;
+        }
       }
       .bottom__line3 {
-        position: relative;
-        top: 10px;
-        width: 65px;
-        height: 2px;
+        position: absolute;
+        top: 37px;
+        width: 85px;
+        height: 1px;
         background-color: #ffffff;
       }
     }

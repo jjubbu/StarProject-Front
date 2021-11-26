@@ -33,7 +33,12 @@ function App() {
         <Route path="/" exact component={Main} />
         <Route path="/star" exact component={MainStar} />
         <Route path="/map" exact component={MainMap} />
-        <Route path="/community" exact component={MainCommunity} />
+        <Route
+          path="/community"
+          exact
+          component={MainCommunity}
+          id="card-container"
+        />
         <Route path="/post/add" exact component={AddEditPost} />
         <Route path="/post/edit/:id" exact component={AddEditPost} />
         {/* <Route path="/community" exact component={Write} /> */}
