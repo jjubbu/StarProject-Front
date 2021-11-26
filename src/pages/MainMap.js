@@ -46,7 +46,6 @@ const MainMap = () => {
     apis
       .getMapListAX(params, num)
       .then((response) => {
-        console.log("searchCity:::", response);
         const data = response.data.data;
 
         if (data) {
@@ -60,7 +59,7 @@ const MainMap = () => {
           setIsMarkerClick(false);
         }
       })
-      .catch((err) => console.log(err));
+      .catch((err) => alert(err));
   };
 
   const success = (x) => {
@@ -86,7 +85,6 @@ const MainMap = () => {
 
   const searchValueChange = (e) => {
     const text = e.target.value;
-    console.log(e);
     setSearchValue(text);
   };
 
@@ -95,13 +93,11 @@ const MainMap = () => {
     () =>
       _.debounce((e) => {
         const text = e.target.value;
-        console.log(text);
         if (text !== "") {
           setSearch(true);
           apis
             .getMapSearchAX(text)
             .then((response) => {
-              console.log("자동완성 결과:::", response.data.data);
               if (response.data.data.length !== 0) {
                 setSearchList(response.data.data);
               } else {
@@ -109,7 +105,7 @@ const MainMap = () => {
               }
             })
             .catch((err) => {
-              console.log(err);
+              alert(err);
             });
         } else {
           setSearch(false);
@@ -121,14 +117,12 @@ const MainMap = () => {
   //자동완성 클릭
   const autoSearchClick = (text) => {
     setParams(`cityName=${text}&`);
-    console.log("text::::", params);
     if (text !== "검색 결과가 없습니다.") {
       setSearch(false);
       apis
         .getMapListAX(`cityName=${text}&`, 1)
         .then((response) => {
           const data = response.data.data;
-          console.log("검색결과:::", response);
           if (data) {
             const list = [...data.dataList].sort((x, y) => {
               return x.title > y.title ? -1 : x.title < y.title ? 1 : 0;
@@ -146,7 +140,7 @@ const MainMap = () => {
           setSearch(false);
         })
         .catch((err) => {
-          console.log(err);
+          alert(err);
         });
     }
   };
@@ -157,9 +151,7 @@ const MainMap = () => {
     const p = `cityName=${text}&`;
     setParams(`cityName=${text}&`);
     if (window.event.keyCode === 13) {
-      console.log("enter", p);
       apis.getMapListAX(p, 1).then((response) => {
-        console.log("searchCity:::", response);
         const data = response.data.data;
 
         if (data) {
@@ -206,7 +198,6 @@ const MainMap = () => {
     if (scrollTop + clientHeight >= scrollHeight) {
       if (!(pageNum.page > pageNum.max)) {
         setPageNum((prev) => ({ ...prev, page: pageNum.page + 1 }));
-        console.log("now page", pageNum.page);
         apis
           .getMapListAX(params, Number(pageNum.page + 1))
           .then(async (response) => {
@@ -217,7 +208,7 @@ const MainMap = () => {
             setTimeout(500);
           })
           .catch((err) => {
-            console.log(err);
+            alert(err);
           });
       }
     }
@@ -228,12 +219,11 @@ const MainMap = () => {
       .getMapMarkerAX(id)
       .then((response) => {
         const data = response.data.data;
-        console.log("marker click:::", data);
         setMarkerInfo([data]);
         setIsMarkerClick(true);
       })
       .catch((err) => {
-        console.log(err);
+        alert(err);
       });
   };
 
@@ -271,8 +261,6 @@ const MainMap = () => {
                       id={l.id}
                       onClick={() => {
                         listClick(l.id);
-                        console.log("lat:::", l.y_location);
-                        console.log("lon:::", l.x_location);
                       }}
                     >
                       <img src={l.img !== "" ? l.img : ic_logo} alt="camp" />
@@ -324,17 +312,11 @@ const MainMap = () => {
                     src={ic_location_off}
                     alt="location icon"
                     className="off"
-                    onClick={() => {
-                      console.log("aaa");
-                    }}
                   />
                   <img
                     src={ic_location_on}
                     alt="location icon"
                     className="on"
-                    onClick={() => {
-                      console.log("dajfew");
-                    }}
                   />
                 </button>
               </div>

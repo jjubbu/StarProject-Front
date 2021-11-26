@@ -109,17 +109,24 @@ const Mypage = ({ history, match }) => {
   return (
     <React.Fragment>
       <MypageStyled className="CommonPageStyle">
-        <UserProfile>
-          <img src={ic_profile} alt="user profile" />
-          <div className="infoText">
-            <h3>{user_info.nickname}님</h3>
-            <p>{user_info.username}</p>
-          </div>
-          <div className="buttonBox">
-            <button onClick={editUserInfo}>내 정보 수정</button>
-            <button onClick={deleteAccount}>회원탈퇴</button>
-          </div>
-        </UserProfile>
+        <div className="leftBox">
+          <UserProfile>
+            <img src={ic_profile} alt="user profile" />
+            <div className="infoText">
+              <h3>{user_info.nickname}님</h3>
+              <p>{user_info.username}</p>
+            </div>
+            <div className="buttonBox">
+              <button onClick={editUserInfo}>내 정보 수정</button>
+              <button onClick={deleteAccount}>회원탈퇴</button>
+            </div>
+          </UserProfile>
+          <a href="#" className="feedback">
+            {" "}
+            {String(">")} 이 사이트 피드백하기
+          </a>
+        </div>
+
         <div className="list">
           <ListBox>
             <div className="boxHeader">
@@ -218,10 +225,17 @@ const MypageStyled = styled.div`
     flex-direction: column;
     gap: 24px;
   }
+  .leftBox {
+    width: 32%;
+    .feedback {
+      display: block;
+      margin-top: 24px;
+    }
+  }
 `;
 
 const UserProfile = styled.div`
-  width: 32%;
+  width: 100%;
   height: fit-content;
   background: #303136;
   border-radius: 10px;

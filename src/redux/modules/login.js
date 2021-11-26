@@ -31,11 +31,12 @@ const isLoginMW = () => {
         .then((response) => {
           console.log("login check:::", response.data);
           const data = response.data;
+          setTimeout(500);
           if (data.code === 500) {
             cookie.remove("token");
             if (state) {
               dispatch(isLogin(false));
-              alert(`"login check ax" ${data.msg}`);
+              alert(`토큰이 만료되었습니다.`);
             }
           } else if (data.code === 200) {
             dispatch(isLogin(true));
