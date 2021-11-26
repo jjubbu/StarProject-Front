@@ -3,7 +3,6 @@ import styled from "styled-components";
 import Card from "../components/Card";
 import { Grid } from "../elements";
 import { useHistory } from "react-router";
-import { Write } from "./Write";
 import Detail from "../pages/Detail";
 import _ from "lodash";
 

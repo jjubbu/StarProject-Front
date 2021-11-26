@@ -180,7 +180,7 @@ const MainStar = () => {
                   <img src={ic_moonrise} alt="moon icon" />
                   월출
                 </h3>
-                <p className="openSans">{star_notice.moonrise}</p>
+                <p className="openSans">{star_notice?.moonrise}</p>
               </section>
               <section
                 className="contentsBox"
@@ -192,7 +192,7 @@ const MainStar = () => {
                   <img src={ic_moonset} alt="moon icon" />
                   월몰
                 </h3>
-                <p className="openSans">{star_notice.moonset}</p>
+                <p className="openSans">{star_notice?.moonset}</p>
               </section>
             </MoonBox>
           </div>
@@ -206,12 +206,12 @@ const MainStar = () => {
               <button>
                 <span className="buttonHover">별자리 설명</span>
                 <section className="buttonActive">
-                  <h3>{star_photo.starName}</h3>
-                  <p>{star_photo.comment}</p>
+                  <h3>{star_photo?.starName}</h3>
+                  <p>{star_photo?.comment}</p>
                 </section>
                 ?
               </button>
-              <img src={star_photo.starImg} alt="star" />
+              <img src={star_photo?.starImg} alt="star" />
             </ImageBox>
             <RecommendBox
               className="contentsBox"
@@ -221,11 +221,11 @@ const MainStar = () => {
 
               <div>
                 <h3>실시간 별보기 좋은 지역</h3>
-                <p className="openSans">{star_hot.currentTime} 기준</p>
+                <p className="openSans">{star_hot?.currentTime} 기준</p>
               </div>
               <span className="line" />
               <ul>
-                {star_hot.starList.map((l, idx) => {
+                {star_hot?.starList.map((l, idx) => {
                   return (
                     <li key={idx}>
                       <img src={l.img} alt="star" />

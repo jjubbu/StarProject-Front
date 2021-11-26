@@ -10,7 +10,6 @@ import MainCommunity from "../pages/MainCommunity";
 import Detail from "../pages/Detail";
 import Login from "../pages/Login";
 import Signup from "../pages/Signup";
-// import Write from "../pages/Write";
 import AddEditPost from "../pages/AddEditPost";
 import UserInfoEdit from "../pages/UserInfoEdit";
 import Mypage from "../pages/Mypage";
@@ -41,7 +40,6 @@ function App() {
         />
         <Route path="/post/add" exact component={AddEditPost} />
         <Route path="/post/edit/:id" exact component={AddEditPost} />
-        {/* <Route path="/community" exact component={Write} /> */}
         <Route path="/login" exact component={Login} />
         <Route path="/signup" exact component={Signup} />
         <Route path="/detail/:id" exact component={Detail} />
