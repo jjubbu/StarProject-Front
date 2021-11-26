@@ -34,7 +34,6 @@ const MainCommunity = (props) => {
 
   const currentPage = page_info.currentPage;
   const maxPage = page_info.maxPage;
-  console.log(currentPage);
 
   const [resultList, setResultList] = React.useState([{}]);
   const [searchList, setSearchList] = React.useState([{}]);
@@ -65,20 +64,20 @@ const MainCommunity = (props) => {
     let scrollTop = document.documentElement.scrollTop;
     let clientHeight = document.documentElement.clientHeight;
 
-    console.log(scrollHeight);
-    console.log(scrollTop);
-    console.log(clientHeight);
+    // console.log(scrollHeight);
+    // console.log(scrollTop);
+    // console.log(clientHeight);
 
     if (scrollTop + clientHeight >= scrollHeight) {
+      console.log("page info:::", page_info);
       console.log("scrollTop::::", scrollTop);
-      if (currentPage >= maxPage) {
-        console.log(currentPage);
-        console.log(maxPage);
-        console.log("더 이상 페이지 없음");
-      } else {
-        console.log("currentPage", currentPage);
-
-        // dispatch(postActions.getCardDB(params, Number(pageNum.page + 1)));
+      if (page_info.currentPage <= page_info.maxPage) {
+        // console.log(currentPage);
+        // console.log(maxPage);
+        console.log(
+          "무한스크롤:::",
+          page_info.currentPage <= page_info.maxPage
+        );
         dispatch(
           postActions.getInfinityScrollCardDB(
             sort,
@@ -87,6 +86,10 @@ const MainCommunity = (props) => {
           )
         );
       }
+      // else {
+      //   // console.log("currentPage", currentPage);
+      //   // dispatch(postActions.getCardDB(params, Number(pageNum.page + 1)));
+      // }
     }
   };
 

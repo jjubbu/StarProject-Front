@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Cookies } from "react-cookie";
 
 import { useDispatch, useSelector } from "react-redux";
@@ -11,13 +11,12 @@ import ic_logo from "../img/ic_logo.svg";
 import { actionCreators as loginCheckAction } from "../redux/modules/login";
 
 const Mypage = ({ history, match }) => {
-  const is_login = useSelector((state) => state.login.is_login);
   const user_info = useSelector((state) => state.login.user_info);
-  const [myList, setMyList] = useState([]);
-  const [bookmarkList, setBookmarkList] = useState([]);
-  const [page, setPage] = useState({ bookmark: 1, myPost: 1 });
-  const [maxPage, setMaxPage] = useState({ bookmark: 1, myPost: 1 });
-  const [dataSize, setDataSize] = useState({ bookmark: 0, myPost: 0 });
+  const [myList, setMyList] = React.useState([]);
+  const [bookmarkList, setBookmarkList] = React.useState([]);
+  const [page, setPage] = React.useState({ bookmark: 1, myPost: 1 });
+  const [maxPage, setMaxPage] = React.useState({ bookmark: 1, myPost: 1 });
+  const [dataSize, setDataSize] = React.useState({ bookmark: 0, myPost: 0 });
 
   const dispatch = useDispatch();
 
@@ -47,7 +46,6 @@ const Mypage = ({ history, match }) => {
         setMaxPage((prev) => ({ ...prev, myPost: data.maxPage }));
         setDataSize((prev) => ({ ...prev, myPost: data.dataSize }));
         setTimeout(500);
-        console.log("my list:::", myList.length);
       })
       .catch((err) => {
         console.log(err);
@@ -101,18 +99,12 @@ const Mypage = ({ history, match }) => {
   };
 
   React.useEffect(() => {
-    console.log("user info:::", user_info);
     dispatch(loginCheckAction.isLoginMW());
     setTimeout(500);
-    // if (!is_login) {
-    //   alert("로그인을 해주세요!");
-    //   history.push("/login");
-    //   return;
-    // }
     dispatch(textLogo(false));
     getMyList(1);
     getMyBookmark(1);
-  }, []);
+  }, [dispatch]);
 
   return (
     <React.Fragment>

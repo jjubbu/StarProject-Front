@@ -35,6 +35,7 @@ const MainMap = () => {
   const [is_markerClick, setIsMarkerClick] = React.useState(false);
   const [markerInfo, setMarkerInfo] = React.useState([{}]);
   const dispatch = useDispatch();
+
   const options = {
     enableHighAccuracy: true,
     timeout: 5000,
@@ -66,26 +67,21 @@ const MainMap = () => {
     const position = x.coords;
     const latitude = position.latitude;
     const longitude = position.longitude;
-    console.log(latitude, longitude);
     setMapLocation({ lat: latitude, lon: longitude });
     const p = `x_location=${longitude}&y_location=${latitude}&`;
     getMapList(p, 1);
     setLoading(false);
   };
 
-  const error = (x) => {
-    console.log(x.code + ":::" + x.message);
+  const error = () => {
+    alert("현재 위치 불러오기에 실패했습니다.");
   };
 
   const setLocation = () => {
     setLoading(true);
     if ("geolocation" in navigator) {
       navigator.geolocation.getCurrentPosition(success, error, options);
-    } else {
-      console.log("확인할 수 없다 ㅠㅠ");
-      return;
     }
-    console.log("set location");
   };
 
   const searchValueChange = (e) => {
@@ -95,29 +91,30 @@ const MainMap = () => {
   };
 
   //자동완성 얻기
-  const getSearchAuto = React.useCallback(
-    _.debounce((e) => {
-      const text = e.target.value;
-      console.log(text);
-      if (text !== "") {
-        setSearch(true);
-        apis
-          .getMapSearchAX(text)
-          .then((response) => {
-            console.log("자동완성 결과:::", response.data.data);
-            if (response.data.data.length !== 0) {
-              setSearchList(response.data.data);
-            } else {
-              setSearchList([{ address: "검색 결과가 없습니다." }]);
-            }
-          })
-          .catch((err) => {
-            console.log(err);
-          });
-      } else {
-        setSearch(false);
-      }
-    }, 500),
+  const getSearchAuto = React.useMemo(
+    () =>
+      _.debounce((e) => {
+        const text = e.target.value;
+        console.log(text);
+        if (text !== "") {
+          setSearch(true);
+          apis
+            .getMapSearchAX(text)
+            .then((response) => {
+              console.log("자동완성 결과:::", response.data.data);
+              if (response.data.data.length !== 0) {
+                setSearchList(response.data.data);
+              } else {
+                setSearchList([{ address: "검색 결과가 없습니다." }]);
+              }
+            })
+            .catch((err) => {
+              console.log(err);
+            });
+        } else {
+          setSearch(false);
+        }
+      }, 500),
     []
   );
 
@@ -207,10 +204,7 @@ const MainMap = () => {
     let scrollTop = document.getElementById("container").scrollTop;
     let clientHeight = document.getElementById("container").clientHeight;
     if (scrollTop + clientHeight >= scrollHeight) {
-      console.log("scrollTop::::", e.target.scrollTop);
-      if (pageNum.page > pageNum.max) {
-        console.log("더 이상 페이지 없음");
-      } else {
+      if (!(pageNum.page > pageNum.max)) {
         setPageNum((prev) => ({ ...prev, page: pageNum.page + 1 }));
         console.log("now page", pageNum.page);
         apis
@@ -249,10 +243,8 @@ const MainMap = () => {
 
   React.useEffect(() => {
     dispatch(textLogo(false));
-
-    setLoading(true);
     setLocation();
-  }, []);
+  }, [dispatch]);
 
   return (
     <React.Fragment>

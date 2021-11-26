@@ -22,9 +22,10 @@ import { actionCreators as tokenCheckAction } from "../redux/modules/login";
 
 function App() {
   const dispatch = useDispatch();
+
   React.useEffect(() => {
     dispatch(tokenCheckAction.isLoginMW());
-  }, []);
+  }, [dispatch]);
   return (
     <ConnectedRouter history={history}>
       <StyledViewContainer id="card-container">

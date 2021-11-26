@@ -77,9 +77,9 @@ const getCardDB = (sort, cityName, offset) => {
     apis
       .getCardAX(sort, cityName, offset)
       .then((res) => {
-        console.log(res);
+        console.log("getCardAX", res);
         const searchList = res.data.data.dataList;
-        console.log(searchList);
+        // console.log(searchList);
 
         const paging = {
           currentPage: res.data.data.currentPage,
