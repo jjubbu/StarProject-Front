@@ -19,6 +19,9 @@ import { apis } from "../lib/axios";
 import ic_write from "../img/ic_write.svg";
 import ic_search from "../img/ic_search.svg";
 import { result } from "lodash";
+import { changeSortMW } from "../redux/modules/community";
+import Header from "../components/Header";
+import Footer from "../components/Footer";
 
 const MainCommunity = (props) => {
   const dispatch = useDispatch();
@@ -27,69 +30,40 @@ const MainCommunity = (props) => {
   const card_list = useSelector((state) => state.card.list);
   const page_info = useSelector((state) => state.card.paging);
   const is_login = useSelector((state) => state.login.is_login);
+  const sort = useSelector((state) => state.community.sort);
 
   const [activeClass, setActive] = React.useState([true, false, false]);
-
-  // 무한스크롤
-
-  const currentPage = page_info.currentPage;
-  const maxPage = page_info.maxPage;
-
-  const [resultList, setResultList] = React.useState([{}]);
-  const [searchList, setSearchList] = React.useState([{}]);
-  const [searchValue, setSearchValue] = React.useState("");
-  const [pageNum, setPageNum] = React.useState({ page: 1, max: 1 });
-  const [is_search, setSearch] = React.useState(false);
-  const [dataSize, setDataSize] = React.useState(0);
-  const [params, setParams] = React.useState("");
-  const [sort, setSort] = React.useState("");
+  const [pageNum, setPageNum] = React.useState({ current: 1, max: 2 });
 
   React.useEffect(() => {
     dispatch(textLogo(false));
     dispatch(postActions.getCardDB("star", "", 1));
-  }, []);
+  }, [dispatch]);
 
-  React.useEffect(() => {
-    window.addEventListener("scroll", scrollEvent);
-    window.addEventListener("scroll", console.log("scrollevent"));
-
-    return () => {
-      window.removeEventListener("scroll", scrollEvent);
-    };
-  }, []);
-
-  // 무한스크롤
   const scrollEvent = () => {
-    let scrollHeight = document.documentElement.scrollHeight;
-    let scrollTop = document.documentElement.scrollTop;
-    let clientHeight = document.documentElement.clientHeight;
-
-    // console.log(scrollHeight);
-    // console.log(scrollTop);
-    // console.log(clientHeight);
-
+    let scrollHeight = document.getElementById("card_container").scrollHeight;
+    let scrollTop = document.getElementById("card_container").scrollTop;
+    let clientHeight = document.getElementById("card_container").clientHeight;
     if (scrollTop + clientHeight >= scrollHeight) {
-      console.log("page info:::", page_info);
-      console.log("scrollTop::::", scrollTop);
-      if (page_info.currentPage <= page_info.maxPage) {
-        // console.log(currentPage);
-        // console.log(maxPage);
-        console.log(
-          "무한스크롤:::",
-          page_info.currentPage <= page_info.maxPage
-        );
+      if (!(pageNum.current > pageNum.max)) {
+        console.log(pageNum);
+
+        setPageNum((prev) => ({ ...prev, current: pageNum.current + 1 }));
         dispatch(
-          postActions.getInfinityScrollCardDB(
-            sort,
-            params,
-            Number(currentPage + 1)
-          )
+          postActions.setPage({
+            ...page_info,
+            currentPage: page_info.currentPage + 1,
+          })
         );
+        apis.getCardAX(sort, "", pageNum.current + 1).then((response) => {
+          console.log("scrollEvent:::", response);
+          const data = response.data.data;
+          const mergeData = card_list.concat(...data.dataList);
+          dispatch(postActions.setCard(mergeData));
+          setPageNum((prev) => ({ ...prev, max: data.maxPage }));
+          setTimeout(500);
+        });
       }
-      // else {
-      //   // console.log("currentPage", currentPage);
-      //   // dispatch(postActions.getCardDB(params, Number(pageNum.page + 1)));
-      // }
     }
   };
 
@@ -103,128 +77,103 @@ const MainCommunity = (props) => {
       console.log("enter", p);
       dispatch(postActions.getSearchListDB(sort, p, 1));
     }
-
-    // apis.getCardAX(params, 1).then((response) => {
-    //   console.log("searchCity:::", response);
-    //   const data = response.data.data;
-    // });
   };
-
-  const searchValueChange = (e) => {
-    const text = e.target.value;
-    console.log(e);
-    setSearchValue(text);
-  };
-
-  // const getSearchAuto = React.useCallback(
-  //   _.debounce((e) => {
-  //     const text = e.target.value;
-  //     console.log(text);
-  //     if (text !== "") {
-  //       setSearch(true);
-  //       apis
-  //         .getMapSearchAX(text)
-  //         .then((response) => {
-  //           console.log(response.data.data);
-  //           if (response.data.data.length !== 0) {
-  //             setSearchList(response.data.data);
-  //           } else {
-  //             setSearchList([{ address: "검색 결과가 없습니다." }]);
-  //           }
-  //         })
-  //         .catch((err) => {
-  //           console.log(err);
-  //         });
-  //     } else {
-  //       setSearch(false);
-  //     }
-  //   }, 500),
-  //   []
-  // );
-
   return (
     <React.Fragment>
-      <div className="CommonPageStyle">
-        <CommunityPage>
-          <TopDiv>
-            <ul className="tab">
-              <div className="tab-container1">
-                <div
-                  className="star"
-                  onClick={() => {
-                    dispatch(postActions.getCardDB("star", "", 1));
-                    setSort("star");
-                    setActive([true, false, false]);
-                  }}
-                >
-                  <a class="recommend">추천순</a>
+      <div
+        onScroll={scrollEvent}
+        id="card_container"
+        style={{ overflowY: "scroll" }}
+      >
+        <Header />
+        <div className="CommonPageStyle">
+          <CommunityPage id="commu_container">
+            <TopDiv>
+              <ul className="tab">
+                <div className="tab-container1">
+                  <div
+                    className="star"
+                    onClick={() => {
+                      // dispatch(postActions.getCardDB("star", "", 1));
+                      // setSort("star");
+                      dispatch(changeSortMW("star"));
+                      setActive([true, false, false]);
+                    }}
+                  >
+                    <a class="recommend">추천순</a>
+                  </div>
+                  {activeClass[0] ? <li class="bottom__line1"></li> : false}
                 </div>
-                {activeClass[0] ? <li class="bottom__line1"></li> : false}
-              </div>
-              <div className="tab-container2">
-                <div
-                  className="like"
-                  onClick={() => {
-                    dispatch(postActions.getCardDB("like", "", 1));
-                    setSort("like");
-                    setActive([false, true, false]);
-                  }}
-                >
-                  <a className="popular">인기순</a>
+                <div className="tab-container2">
+                  <div
+                    className="like"
+                    onClick={() => {
+                      // dispatch(postActions.getCardDB("like", "", 1));
+                      // setSort("like");
+                      dispatch(changeSortMW("like"));
+                      setActive([false, true, false]);
+                    }}
+                  >
+                    <a className="popular">인기순</a>
+                  </div>
+                  {activeClass[1] ? <li class="bottom__line2"></li> : false}
                 </div>
-                {activeClass[1] ? <li class="bottom__line2"></li> : false}
+
+                <div className="tab-container3">
+                  <div
+                    className="latest"
+                    onClick={() => {
+                      // dispatch(postActions.getCardDB("latest", "", 1));
+                      // setSort("latest");
+                      dispatch(changeSortMW("latest"));
+                      setActive([false, false, true]);
+                    }}
+                  >
+                    <a className="latest">최신순</a>
+                  </div>
+                  {activeClass[2] ? <li class="bottom__line3"></li> : false}
+                </div>
+              </ul>
+              <div className="searchbox">
+                <div className="searchbar">
+                  <img src={ic_search} alt="ic_search" />
+                  <input
+                    type="text"
+                    placeholder="검색어를 입력하세요"
+                    onKeyPress={searchCity}
+                    // onChange={(e) => {
+                    //   getSearchAuto(e);
+                    //   searchValueChange(e);
+                    // }}
+                    // value={searchValue}
+                  />
+                </div>
               </div>
 
-              <div className="tab-container3">
-                <div
-                  className="latest"
-                  onClick={() => {
-                    dispatch(postActions.getCardDB("latest", "", 1));
-                    setSort("latest");
-                    setActive([false, false, true]);
-                  }}
-                >
-                  <a className="latest">최신순</a>
-                </div>
-                {activeClass[2] ? <li class="bottom__line3"></li> : false}
-              </div>
-            </ul>
-            <div className="searchbox">
-              <div className="searchbar">
-                <img src={ic_search} alt="ic_search" />
-                <input
-                  type="text"
-                  placeholder="검색어를 입력하세요"
-                  onKeyPress={searchCity}
-                  // onChange={(e) => {
-                  //   getSearchAuto(e);
-                  //   searchValueChange(e);
-                  // }}
-                  // value={searchValue}
-                />
-              </div>
-            </div>
-
-            <button
-              className="btn-write"
-              onClick={() => {
-                !is_login ? history.push("/login") : history.push("/post/add");
-              }}
-            >
-              <p>글쓰기</p>
-              <img src={ic_write} alt="ic_write" />
-            </button>
-          </TopDiv>
-          <Wrapper>
-            {card_list.map((p, i) => {
-              return (
-                <Card key={i} cardID={p.id} {...p}>
-                  {/* {test_card_list} */}
-                </Card>
-              );
-            })}
-          </Wrapper>
-        </CommunityPage>
+              <button
+                className="btn-write"
+                onClick={() => {
+                  !is_login
+                    ? history.push("/login")
+                    : history.push("/post/add");
+                }}
+              >
+                <p>글쓰기</p>
+                <img src={ic_write} alt="ic_write" />
+              </button>
+            </TopDiv>
+            <Wrapper>
+              {card_list.map((p, i) => {
+                return (
+                  <Card key={i} cardID={p.id} {...p}>
+                    {/* {test_card_list} */}
+                  </Card>
+                );
+              })}
+            </Wrapper>
+          </CommunityPage>
+        </div>
+        <Footer />
       </div>
     </React.Fragment>
   );
