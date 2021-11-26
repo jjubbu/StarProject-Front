@@ -127,10 +127,13 @@ const MainMap = () => {
             const list = [...data.dataList].sort((x, y) => {
               return x.title > y.title ? -1 : x.title < y.title ? 1 : 0;
             });
-            const latitude = list[0].y_location;
-            const longitude = list[0].x_location;
+            if (list.length > 0) {
+              const latitude = list[0]?.y_location;
+              const longitude = list[0]?.x_location;
+              setMapLocation({ lat: latitude, lon: longitude });
+            }
             setResultList(list);
-            setMapLocation({ lat: latitude, lon: longitude });
+
             setPageNum({ page: data.currentPage, max: data.maxPage });
             setDataSize(data.dataSize);
             setIsMarkerClick(false);
@@ -138,6 +141,7 @@ const MainMap = () => {
         })
         .then(() => {
           setSearch(false);
+          setPageNum((prev) => ({ ...prev, page: 1 }));
         })
         .catch((err) => {
           alert(err);
@@ -182,8 +186,8 @@ const MainMap = () => {
         return x.title > y.title ? -1 : x.title < y.title ? 1 : 0;
       }
     });
-    const latitude = newList[0].y_location;
-    const longitude = newList[0].x_location;
+    const latitude = newList[0]?.y_location;
+    const longitude = newList[0]?.x_location;
     setResultList(newList);
     setIsMarkerClick(false);
 
@@ -228,6 +232,7 @@ const MainMap = () => {
   };
 
   const seeAllButton = () => {
+    setParams("");
     getMapList("", 1);
   };
 
@@ -352,7 +357,7 @@ const MainMap = () => {
                       <React.Fragment>
                         <MapMarker
                           key={idx}
-                          position={{ lat: l.y_location, lng: l.x_location }}
+                          position={{ lat: l?.y_location, lng: l?.x_location }}
                           clickable={true}
                           onClick={() => {
                             markerClick(l.id);
@@ -372,7 +377,7 @@ const MainMap = () => {
                           }}
                         />
                         <CustomOverlayMap
-                          position={{ lat: l.y_location, lng: l.x_location }}
+                          position={{ lat: l?.y_location, lng: l?.x_location }}
                           yAnchor={1}
                         >
                           <MapMarkerCustom
