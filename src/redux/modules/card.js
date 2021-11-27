@@ -13,19 +13,26 @@ const SET_CARD = "SET_CARD";
 const SET_LIKE = "SET_LIKE";
 const SET_BOOKMARK = "SET_BOOKMARK";
 const SET_INFINITY_CARD = "SET_INFINITY_CARD";
-const SET_PAGE = "SET_PAGE";
+
 const SET_SEARCHLIST = "SET_SEARCHLIST";
+
+const SET_PAGE = "SET_PAGE";
 
 // Action creators
 
-const setInfinityCard = createAction(
-  SET_INFINITY_CARD,
-  (card_list, paging) => ({
-    card_list,
-    paging,
+const setInfinityCard = createAction(SET_INFINITY_CARD, (card_list) => ({
+  card_list,
+}));
+const setCard = createAction(
+  SET_CARD,
+  (
+    card
+    // , paging
+  ) => ({
+    card,
+    // , paging
   })
 );
-const setCard = createAction(SET_CARD, (card, paging) => ({ card, paging }));
 
 const setLike = createAction(SET_LIKE, (likeInfo) => ({ likeInfo }));
 const setBookmark = createAction(SET_BOOKMARK, (bookmarkCheck) => ({
@@ -46,6 +53,33 @@ const initialState = {
 };
 
 // middleware
+
+const setPageDB = (sort, cityName, offset) => {
+  return function (dispatch, getState, { history }) {
+    apis
+      .getCardAX(sort, cityName, offset)
+      .then((res) => {
+        console.log(res);
+
+        const current_page = res.data.data.currentPage;
+        const max_page = res.data.data.maxPage;
+        const data_size = res.data.data.dataSize;
+
+        const paging = {
+          currentPage: current_page,
+          maxPage: max_page,
+          dataSize: data_size,
+        };
+
+        dispatch(setPage(paging));
+      })
+      .catch((err) => {
+        window.alert("페이지 정보를 가져올 수 없습니다.");
+        console.log(err);
+        return err;
+      });
+  };
+};
 
 const getSearchListDB = (sort, cityName, offset) => {
   return function (dispatch, getState, { history }) {
@@ -78,16 +112,25 @@ const getCardDB = (sort, cityName, offset) => {
       .getCardAX(sort, cityName, offset)
       .then((res) => {
         console.log(res);
-        const searchList = res.data.data.dataList;
-        console.log(searchList);
+        const cardList = res.data.data.dataList;
+        console.log(cardList);
 
-        const paging = {
-          currentPage: res.data.data.currentPage,
-          maxPage: res.data.data.maxPage,
-          dataSize: res.data.data.dataSize,
-        };
+        // const current_Page = res.data.data.currentPage;
+        // const max_Page = res.data.data.maxPage;
+        // const data_Size = res.data.data.dataSize;
 
-        dispatch(setCard(searchList, paging));
+        // const paging = {
+        //   currentPage: current_Page,
+        //   maxPage: max_Page,
+        //   dataSize: data_Size,
+        // };
+
+        dispatch(
+          setCard(
+            cardList
+            // , paging
+          )
+        );
       })
       .catch((err) => {
         window.alert("포스트 정보를 가져올 수 없습니다 ");
@@ -106,13 +149,17 @@ const getInfinityScrollCardDB = (sort, cityName, offset) => {
         const cardList = res.data.data.dataList;
         console.log(cardList);
 
-        const paging = {
-          currentPage: res.data.data.currentPage,
-          maxPage: res.data.data.maxPage,
-          dataSize: res.data.data.dataSize,
-        };
+        // const current_Page = res.data.data.currentPage;
+        // const max_Page = res.data.data.maxPage;
+        // const data_Size = res.data.data.dataSize;
 
-        dispatch(setInfinityCard(cardList, paging));
+        // const paging = {
+        //   currentPage: current_Page,
+        //   maxPage: max_Page,
+        //   dataSize: data_Size,
+        // };
+
+        dispatch(setInfinityCard(cardList));
       })
       .catch((err) => {
         window.alert("포스트 정보를 가져올 수 없습니다 ");
@@ -135,7 +182,7 @@ const postLikeDB = (id, offset) => {
         dispatch(setLike(newLikeInfo));
       })
       .catch((error) => {
-        window.alert("좋아요 정보를 가져올 수 없습니다");
+        window.alert("로그인이 되지 않아 좋아요 정보를 가져올 수 없습니다");
         console.log(error);
         if (error.response) {
           // 요청이 이루어졌으며 서버가 2xx의 범위를 벗어나는 상태 코드로 응답했습니다.
@@ -232,10 +279,15 @@ const postBookmarkDB = (id) => {
 
 export default handleActions(
   {
+    [SET_PAGE]: (state, action) =>
+      produce(state, (draft) => {
+        draft.paging = action.payload.pageInfo;
+      }),
+
     [SET_CARD]: (state, action) =>
       produce(state, (draft) => {
         draft.list = action.payload.card;
-        draft.paging = action.payload.paging;
+        // draft.paging = action.payload.paging;
       }),
 
     [SET_SEARCHLIST]: (state, action) =>
@@ -247,9 +299,9 @@ export default handleActions(
     [SET_INFINITY_CARD]: (state, action) =>
       produce(state, (draft) => {
         draft.list = draft.list.concat(...action.payload.card_list);
-        console.log(action.payload.card_list);
-        console.log(draft.list);
-        draft.paging = action.payload.paging;
+        // console.log(action.payload.card_list);
+        // console.log(draft.list);
+        // draft.paging = action.payload.paging;
       }),
 
     [SET_LIKE]: (state, action) =>
@@ -290,6 +342,7 @@ const actionCreators = {
   postBookmarkDB,
   getInfinityScrollCardDB,
   getSearchListDB,
+  setPageDB,
 };
 
 export { actionCreators };

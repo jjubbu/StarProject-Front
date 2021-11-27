@@ -122,7 +122,9 @@ const Card = (props) => {
               className="ic_heart_on"
               src={props.likeCheck ? ic_heart_on : ic_heart}
               onClick={() => {
-                dispatch(likeActions.postLikeDB(props.id));
+                !is_login
+                  ? history.push("/login")
+                  : dispatch(likeActions.postLikeDB(props.id));
               }}
               alt="ic_heart_on"
             />

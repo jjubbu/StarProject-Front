@@ -28,13 +28,11 @@ const MainCommunity = (props) => {
   const page_info = useSelector((state) => state.card.paging);
   const is_login = useSelector((state) => state.login.is_login);
 
+  console.log(page_info);
+
   const [activeClass, setActive] = React.useState([true, false, false]);
 
   // 무한스크롤
-
-  const currentPage = page_info.currentPage;
-  const maxPage = page_info.maxPage;
-  console.log(currentPage);
 
   const [resultList, setResultList] = React.useState([{}]);
   const [searchList, setSearchList] = React.useState([{}]);
@@ -45,19 +43,28 @@ const MainCommunity = (props) => {
   const [params, setParams] = React.useState("");
   const [sort, setSort] = React.useState("");
 
-  React.useEffect(() => {
-    dispatch(textLogo(false));
-    dispatch(postActions.getCardDB("star", "", 1));
-  }, []);
+  // React.useEffect(() => {}, []);
 
   React.useEffect(() => {
+    // 카드 가져오기
+
+    dispatch(textLogo(false));
+    dispatch(postActions.getCardDB("star", "", 1));
+    dispatch(postActions.setPageDB("star", "", 1));
+
+    // 무한 스크롤
     window.addEventListener("scroll", scrollEvent);
-    window.addEventListener("scroll", console.log("scrollevent"));
+    // window.addEventListener("scroll", console.log("scrollevent"));
 
     return () => {
       window.removeEventListener("scroll", scrollEvent);
     };
   }, []);
+
+  const currentPage = page_info.currentPage;
+  const maxPage = page_info.maxPage;
+  console.log(currentPage);
+  console.log(maxPage);
 
   // 무한스크롤
   const scrollEvent = () => {
@@ -65,19 +72,27 @@ const MainCommunity = (props) => {
     let scrollTop = document.documentElement.scrollTop;
     let clientHeight = document.documentElement.clientHeight;
 
-    console.log(scrollHeight);
-    console.log(scrollTop);
-    console.log(clientHeight);
+    console.log(currentPage);
+    console.log(maxPage);
+
+    // console.log(scrollHeight);
+    // console.log(scrollTop);
+    // console.log(clientHeight);
 
     if (scrollTop + clientHeight >= scrollHeight) {
       console.log("scrollTop::::", scrollTop);
+
+      console.log(currentPage);
+      console.log(maxPage);
+
       if (currentPage >= maxPage) {
         console.log(currentPage);
         console.log(maxPage);
         console.log("더 이상 페이지 없음");
       } else {
-        console.log("currentPage", currentPage);
-
+        console.log(currentPage);
+        console.log(maxPage);
+        // dispatch(postActions.setPageDB(Num(currentPage+1))
         // dispatch(postActions.getCardDB(params, Number(pageNum.page + 1)));
         dispatch(
           postActions.getInfinityScrollCardDB(
