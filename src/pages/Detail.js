@@ -590,7 +590,9 @@ const ContentBox = styled.section`
   .contents {
     margin-top: 32px;
     flex: 1;
-    max-width: 100%;
+    img {
+      max-width: 100%;
+    }
   }
 `;
 
