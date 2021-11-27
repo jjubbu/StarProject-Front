@@ -55,6 +55,7 @@ function SamplePrevArrow(props) {
 const Detail = ({ history, location, match }) => {
   const [data, setData] = React.useState({
     id: "3",
+    date: "2021.10.31 14:58",
     writer: "홍길동",
     title: "칠성캠핑장",
     address: "구리시 어디구 야산",
@@ -331,7 +332,7 @@ const Detail = ({ history, location, match }) => {
           <ContentHeader>
             <div className="titleBox">
               <h3>{data.title}</h3>
-              <p className="openSans">2021.00.00 작성</p>
+              <p className="openSans">{data.date}</p>
             </div>
             <div className="buttonBox">
               <button className="openSans" name="like" onClick={markClick}>
@@ -589,6 +590,7 @@ const ContentBox = styled.section`
   .contents {
     margin-top: 32px;
     flex: 1;
+    max-width: 100%;
   }
 `;
 
