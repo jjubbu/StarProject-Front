@@ -7,6 +7,8 @@ import card from "./modules/card";
 import header from "./modules/header";
 import star from "./modules/star";
 import user from "./modules/user";
+import edit from "./modules/edit";
+import community from "./modules/community";
 
 //만든 히스토리와 라우터가 연결. 스토어에 브라우저 히스토리가 저장되는 것.
 export const history = createBrowserHistory();
@@ -18,6 +20,8 @@ const rootReducer = combineReducers({
   header: header,
   star: star,
   user: user,
+  edit: edit,
+  community: community,
   router: connectRouter(history),
 });
 

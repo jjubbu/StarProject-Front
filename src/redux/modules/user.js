@@ -4,8 +4,8 @@ import { actionCreators as starAction } from "./star";
 
 const initialState = {
   user_location: {
-    lat: "",
-    lon: "",
+    lat: 0,
+    lon: 0,
   },
 };
 
@@ -25,12 +25,10 @@ const userLocationMW = (page) => {
       maximumAge: 0,
     };
     const success = (x) => {
-      console.log("success");
       const position = x.coords;
       const lat = position.latitude;
       const lon = position.longitude;
       const location = { lat: lat, lon: lon };
-      console.log("redux user location:::", location);
       dispatch(userLocation(location));
 
       if (page === "star") {
@@ -45,7 +43,7 @@ const userLocationMW = (page) => {
       }
     };
     const error = (x) => {
-      console.log(x.code + ":::" + x.message);
+      alert("현재 위치를 가져올 수 없습니다.");
     };
 
     if ("geolocation" in navigator) {
@@ -68,4 +66,5 @@ export default handleActions(
 
 export const actionCreators = {
   userLocationMW,
+  userLocation,
 };

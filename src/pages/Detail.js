@@ -21,6 +21,7 @@ import ic_arrow from "../img/ic_slideArrow.svg";
 import { useDispatch, useSelector } from "react-redux";
 import { textLogo } from "../redux/modules/header";
 import { actionCreators as loginCheckAction } from "../redux/modules/login";
+import { actionCreators as editDataAction } from "../redux/modules/edit";
 
 function SampleNextArrow(props) {
   const { className, style, onClick } = props;
@@ -54,6 +55,7 @@ function SamplePrevArrow(props) {
 const Detail = ({ history, location, match }) => {
   const [data, setData] = React.useState({
     id: "3",
+    date: "2021.10.31 14:58",
     writer: "홍길동",
     title: "칠성캠핑장",
     address: "구리시 어디구 야산",
@@ -114,15 +116,12 @@ const Detail = ({ history, location, match }) => {
         ...prev,
         [name]: true,
       }));
-      console.log("mark ::: ", data);
     } else if (data.code === 201) {
       setMarkButton((prev) => ({
         ...prev,
         [name]: false,
       }));
-      console.log("mark ::: ", data);
     } else {
-      console.log("mark fail ::: ", data);
     }
   };
   const bookmarkAxios = () => {
@@ -144,7 +143,6 @@ const Detail = ({ history, location, match }) => {
 
   const deleteAxios = () => {
     apis.getDeletePostAX(data.id).then((response) => {
-      console.log("delete::: ", response);
       if (is_login) {
         alert("작성글이 삭제되었습니다.");
         history.push("/community");
@@ -162,9 +160,14 @@ const Detail = ({ history, location, match }) => {
   // };
 
   const editClick = () => {
-    if (is_login) {
-      history.push(`/post/edit/${data.id}`);
-    }
+    const editData = {
+      title: data.title,
+      content: data.content,
+      address: data.address,
+      id: data.id,
+    };
+    dispatch(editDataAction.addData(editData));
+    history.push("/post/edit");
   };
 
   const markClick = (e) => {
@@ -184,7 +187,6 @@ const Detail = ({ history, location, match }) => {
     apis
       .getPostDetailAX(id)
       .then((response) => {
-        console.log("post detail:::", response);
         const data = response.data;
         if (data.code === 200) {
           setData(data.data);
@@ -194,16 +196,13 @@ const Detail = ({ history, location, match }) => {
           });
           setLikeCount(data.data.likeCount);
         } else {
-          console.log(data);
         }
       })
 
-      .catch((err) => {
-        console.log(err);
-      });
+      .catch((err) => {});
 
     dispatch(textLogo(false));
-  }, []);
+  }, [dispatch]);
 
   //슬라이더 세팅
   const settings = {
@@ -233,7 +232,7 @@ const Detail = ({ history, location, match }) => {
           <MapBox>
             <Map
               center={{ lat: data.y_location, lng: data.x_location }}
-              style={{ width: "100%", height: "360px" }}
+              style={{ width: "384px", height: "360px" }}
             >
               <MapMarker
                 position={{ lat: data.y_location, lng: data.x_location }}
@@ -333,7 +332,7 @@ const Detail = ({ history, location, match }) => {
           <ContentHeader>
             <div className="titleBox">
               <h3>{data.title}</h3>
-              <p className="openSans">2021.00.00 작성</p>
+              <p className="openSans">{data.date}</p>
             </div>
             <div className="buttonBox">
               <button className="openSans" name="like" onClick={markClick}>
@@ -453,11 +452,6 @@ const WeaterInfoImport = styled.ul`
       line-height: 33px;
     }
   }
-`;
-
-const SliderDetail = styled(Slider)`
-  display: flex;
-  gap: 18px;
 `;
 
 const WeatherTable = styled.table`
@@ -596,6 +590,9 @@ const ContentBox = styled.section`
   .contents {
     margin-top: 32px;
     flex: 1;
+    img {
+      max-width: 100%;
+    }
   }
 `;
 

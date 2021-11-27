@@ -16,10 +16,13 @@ import ic_logo from "../img/ic_logo.svg";
 import { apis } from "../lib/axios";
 
 import { history } from "../redux/configureStore";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { textLogo } from "../redux/modules/header";
+import { actionCreators as userLocationAction } from "../redux/modules/user";
 
 const MainMap = () => {
+  const user_location = useSelector((state) => state.user.user_location);
+
   const [is_search, setSearch] = React.useState(false);
   const [is_loading, setLoading] = React.useState();
   const [searchValue, setSearchValue] = React.useState("");
@@ -35,6 +38,7 @@ const MainMap = () => {
   const [is_markerClick, setIsMarkerClick] = React.useState(false);
   const [markerInfo, setMarkerInfo] = React.useState([{}]);
   const dispatch = useDispatch();
+
   const options = {
     enableHighAccuracy: true,
     timeout: 5000,
@@ -45,7 +49,6 @@ const MainMap = () => {
     apis
       .getMapListAX(params, num)
       .then((response) => {
-        console.log("searchCity:::", response);
         const data = response.data.data;
 
         if (data) {
@@ -59,87 +62,81 @@ const MainMap = () => {
           setIsMarkerClick(false);
         }
       })
-      .catch((err) => console.log(err));
+      .catch((err) => alert(err));
   };
 
   const success = (x) => {
     const position = x.coords;
     const latitude = position.latitude;
     const longitude = position.longitude;
-    console.log(latitude, longitude);
     setMapLocation({ lat: latitude, lon: longitude });
     const p = `x_location=${longitude}&y_location=${latitude}&`;
     getMapList(p, 1);
     setLoading(false);
   };
 
-  const error = (x) => {
-    console.log(x.code + ":::" + x.message);
+  const error = () => {
+    alert("현재 위치 불러오기에 실패했습니다.");
   };
 
   const setLocation = () => {
     setLoading(true);
     if ("geolocation" in navigator) {
       navigator.geolocation.getCurrentPosition(success, error, options);
-    } else {
-      console.log("확인할 수 없다 ㅠㅠ");
-      return;
     }
-    console.log("set location");
   };
 
   const searchValueChange = (e) => {
     const text = e.target.value;
-    console.log(e);
     setSearchValue(text);
   };
 
   //자동완성 얻기
-  const getSearchAuto = React.useCallback(
-    _.debounce((e) => {
-      const text = e.target.value;
-      console.log(text);
-      if (text !== "") {
-        setSearch(true);
-        apis
-          .getMapSearchAX(text)
-          .then((response) => {
-            console.log("자동완성 결과:::", response.data.data);
-            if (response.data.data.length !== 0) {
-              setSearchList(response.data.data);
-            } else {
-              setSearchList([{ address: "검색 결과가 없습니다." }]);
-            }
-          })
-          .catch((err) => {
-            console.log(err);
-          });
-      } else {
-        setSearch(false);
-      }
-    }, 500),
+  const getSearchAuto = React.useMemo(
+    () =>
+      _.debounce((e) => {
+        const text = e.target.value;
+        if (text !== "") {
+          setSearch(true);
+          apis
+            .getMapSearchAX(text)
+            .then((response) => {
+              if (response.data.data.length !== 0) {
+                setSearchList(response.data.data);
+              } else {
+                setSearchList([{ address: "검색 결과가 없습니다." }]);
+              }
+            })
+            .catch((err) => {
+              alert(err);
+            });
+        } else {
+          setSearch(false);
+        }
+      }, 500),
     []
   );
 
   //자동완성 클릭
   const autoSearchClick = (text) => {
     setParams(`cityName=${text}&`);
-    console.log("text::::", params);
     if (text !== "검색 결과가 없습니다.") {
       setSearch(false);
       apis
         .getMapListAX(`cityName=${text}&`, 1)
         .then((response) => {
           const data = response.data.data;
-          console.log("검색결과:::", response);
           if (data) {
             const list = [...data.dataList].sort((x, y) => {
               return x.title > y.title ? -1 : x.title < y.title ? 1 : 0;
             });
-            const latitude = list[0].y_location;
-            const longitude = list[0].x_location;
+            if (list.length > 0) {
+              const latitude = list[0]?.y_location;
+              const longitude = list[0]?.x_location;
+              setMapLocation({ lat: latitude, lon: longitude });
+            }
             setResultList(list);
-            setMapLocation({ lat: latitude, lon: longitude });
+
             setPageNum({ page: data.currentPage, max: data.maxPage });
             setDataSize(data.dataSize);
             setIsMarkerClick(false);
@@ -147,9 +144,10 @@ const MainMap = () => {
         })
         .then(() => {
           setSearch(false);
+          setPageNum((prev) => ({ ...prev, page: 1 }));
         })
         .catch((err) => {
-          console.log(err);
+          alert(err);
         });
     }
   };
@@ -160,9 +158,7 @@ const MainMap = () => {
     const p = `cityName=${text}&`;
     setParams(`cityName=${text}&`);
     if (window.event.keyCode === 13) {
-      console.log("enter", p);
       apis.getMapListAX(p, 1).then((response) => {
-        console.log("searchCity:::", response);
         const data = response.data.data;
 
         if (data) {
@@ -193,8 +189,8 @@ const MainMap = () => {
         return x.title > y.title ? -1 : x.title < y.title ? 1 : 0;
       }
     });
-    const latitude = newList[0].y_location;
-    const longitude = newList[0].x_location;
+    const latitude = newList[0]?.y_location;
+    const longitude = newList[0]?.x_location;
     setResultList(newList);
     setIsMarkerClick(false);
 
@@ -207,12 +203,8 @@ const MainMap = () => {
     let scrollTop = document.getElementById("container").scrollTop;
     let clientHeight = document.getElementById("container").clientHeight;
     if (scrollTop + clientHeight >= scrollHeight) {
-      console.log("scrollTop::::", e.target.scrollTop);
-      if (pageNum.page > pageNum.max) {
-        console.log("더 이상 페이지 없음");
-      } else {
+      if (!(pageNum.page > pageNum.max)) {
         setPageNum((prev) => ({ ...prev, page: pageNum.page + 1 }));
-        console.log("now page", pageNum.page);
         apis
           .getMapListAX(params, Number(pageNum.page + 1))
           .then(async (response) => {
@@ -220,10 +212,9 @@ const MainMap = () => {
             const mergeData = resultList.concat(...data.dataList);
             setResultList(mergeData);
             setDataSize(data.dataSize);
-            setTimeout(500);
           })
           .catch((err) => {
-            console.log(err);
+            alert(err);
           });
       }
     }
@@ -234,25 +225,23 @@ const MainMap = () => {
       .getMapMarkerAX(id)
       .then((response) => {
         const data = response.data.data;
-        console.log("marker click:::", data);
         setMarkerInfo([data]);
         setIsMarkerClick(true);
       })
       .catch((err) => {
-        console.log(err);
+        alert(err);
       });
   };
 
   const seeAllButton = () => {
+    setParams("");
     getMapList("", 1);
   };
 
   React.useEffect(() => {
     dispatch(textLogo(false));
-
-    setLoading(true);
     setLocation();
-  }, []);
+  }, [dispatch]);
 
   return (
     <React.Fragment>
@@ -279,8 +268,6 @@ const MainMap = () => {
                       id={l.id}
                       onClick={() => {
                         listClick(l.id);
-                        console.log("lat:::", l.y_location);
-                        console.log("lon:::", l.x_location);
                       }}
                     >
                       <img src={l.img !== "" ? l.img : ic_logo} alt="camp" />
@@ -332,17 +319,11 @@ const MainMap = () => {
                     src={ic_location_off}
                     alt="location icon"
                     className="off"
-                    onClick={() => {
-                      console.log("aaa");
-                    }}
                   />
                   <img
                     src={ic_location_on}
                     alt="location icon"
                     className="on"
-                    onClick={() => {
-                      console.log("dajfew");
-                    }}
                   />
                 </button>
               </div>
@@ -378,7 +359,7 @@ const MainMap = () => {
                       <React.Fragment>
                         <MapMarker
                           key={idx}
-                          position={{ lat: l.y_location, lng: l.x_location }}
+                          position={{ lat: l?.y_location, lng: l?.x_location }}
                           clickable={true}
                           onClick={() => {
                             markerClick(l.id);
@@ -398,7 +379,7 @@ const MainMap = () => {
                           }}
                         />
                         <CustomOverlayMap
-                          position={{ lat: l.y_location, lng: l.x_location }}
+                          position={{ lat: l?.y_location, lng: l?.x_location }}
                           yAnchor={1}
                         >
                           <MapMarkerCustom

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Cookies } from "react-cookie";
 
 import { useDispatch, useSelector } from "react-redux";
@@ -10,14 +10,13 @@ import ic_logo from "../img/ic_logo.svg";
 
 import { actionCreators as loginCheckAction } from "../redux/modules/login";
 
-const Mypage = ({ history, match }) => {
-  const is_login = useSelector((state) => state.login.is_login);
+const Mypage = ({ history }) => {
   const user_info = useSelector((state) => state.login.user_info);
-  const [myList, setMyList] = useState([]);
-  const [bookmarkList, setBookmarkList] = useState([]);
-  const [page, setPage] = useState({ bookmark: 1, myPost: 1 });
-  const [maxPage, setMaxPage] = useState({ bookmark: 1, myPost: 1 });
-  const [dataSize, setDataSize] = useState({ bookmark: 0, myPost: 0 });
+  const [myList, setMyList] = React.useState([]);
+  const [bookmarkList, setBookmarkList] = React.useState([]);
+  const [page, setPage] = React.useState({ bookmark: 1, myPost: 1 });
+  const [maxPage, setMaxPage] = React.useState({ bookmark: 1, myPost: 1 });
+  const [dataSize, setDataSize] = React.useState({ bookmark: 0, myPost: 0 });
 
   const dispatch = useDispatch();
 
@@ -47,7 +46,6 @@ const Mypage = ({ history, match }) => {
         setMaxPage((prev) => ({ ...prev, myPost: data.maxPage }));
         setDataSize((prev) => ({ ...prev, myPost: data.dataSize }));
         setTimeout(500);
-        console.log("my list:::", myList.length);
       })
       .catch((err) => {
         console.log(err);
@@ -101,33 +99,37 @@ const Mypage = ({ history, match }) => {
   };
 
   React.useEffect(() => {
-    console.log("user info:::", user_info);
     dispatch(loginCheckAction.isLoginMW());
     setTimeout(500);
-    // if (!is_login) {
-    //   alert("로그인을 해주세요!");
-    //   history.push("/login");
-    //   return;
-    // }
     dispatch(textLogo(false));
     getMyList(1);
     getMyBookmark(1);
-  }, []);
+  }, [dispatch]);
 
   return (
     <React.Fragment>
       <MypageStyled className="CommonPageStyle">
-        <UserProfile>
-          <img src={ic_profile} alt="user profile" />
-          <div className="infoText">
-            <h3>{user_info.nickname}님</h3>
-            <p>{user_info.username}</p>
-          </div>
-          <div className="buttonBox">
-            <button onClick={editUserInfo}>내 정보 수정</button>
-            <button onClick={deleteAccount}>회원탈퇴</button>
-          </div>
-        </UserProfile>
+        <div className="leftBox">
+          <UserProfile>
+            <img src={ic_profile} alt="user profile" />
+            <div className="infoText">
+              <h3>{user_info.nickname}님</h3>
+              <p>{user_info.username}</p>
+            </div>
+            <div className="buttonBox">
+              <button onClick={editUserInfo}>내 정보 수정</button>
+              <button onClick={deleteAccount}>회원탈퇴</button>
+            </div>
+          </UserProfile>
+          <a
+            href="https://docs.google.com/forms/d/e/1FAIpQLSdOWpKX9C0lgOzum6NOb8UFjeHg4OZaM99pxYfN6d2FaIMk3g/viewform?usp=sf_link"
+            className="feedback"
+          >
+            {" "}
+            {String(">")} 이 사이트 피드백하기
+          </a>
+        </div>
+
         <div className="list">
           <ListBox>
             <div className="boxHeader">
@@ -182,9 +184,10 @@ const Mypage = ({ history, match }) => {
                 </button>
               </div>
             </div>
-            <ul>
-              {dataSize.myPost > 0 ? (
-                myList[page.myPost - 1]?.map((l, idx) => {
+
+            {dataSize.myPost > 0 ? (
+              <ul>
+                {myList[page.myPost - 1]?.map((l, idx) => {
                   return (
                     <ListStyled
                       key={idx}
@@ -202,11 +205,11 @@ const Mypage = ({ history, match }) => {
                       </div>
                     </ListStyled>
                   );
-                })
-              ) : (
-                <h3 className="empty">내가 쓴 글이 없습니다.</h3>
-              )}
-            </ul>
+                })}
+              </ul>
+            ) : (
+              <h3 className="empty">내가 쓴 글이 없습니다.</h3>
+            )}
           </ListBox>
         </div>
       </MypageStyled>
@@ -226,10 +229,17 @@ const MypageStyled = styled.div`
     flex-direction: column;
     gap: 24px;
   }
+  .leftBox {
+    width: 32%;
+    .feedback {
+      display: block;
+      margin-top: 24px;
+    }
+  }
 `;
 
 const UserProfile = styled.div`
-  width: 32%;
+  width: 100%;
   height: fit-content;
   background: #303136;
   border-radius: 10px;

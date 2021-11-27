@@ -31,7 +31,11 @@ const starHot = createAction(STAR_HOT, (object) => ({ object }));
 const loading = createAction(LOADING, (object) => ({ object }));
 
 const starPhotoMW = () => {
-  return async function (dispatch) {
+  return async function (dispatch, getState) {
+    const photo = getState().star.star_photo;
+    if (photo !== {}) {
+      dispatch(loading({ photo: false }));
+    }
     apis
       .getStarPhotoAX()
       .then((response) => {
@@ -45,7 +49,11 @@ const starPhotoMW = () => {
   };
 };
 const starNoticeMW = (lat, lon) => {
-  return async function (dispatch) {
+  return async function (dispatch, getState) {
+    const notice = getState().star.star_notice;
+    if (notice !== {}) {
+      dispatch(loading({ notice: false }));
+    }
     apis
       .getNoticeAX(lat, lon)
       .then((response) => {
@@ -68,7 +76,11 @@ const starNoticeMW = (lat, lon) => {
   };
 };
 const starWeatherMW = (lat, lon, hour) => {
-  return async function (dispatch) {
+  return async function (dispatch, getState) {
+    const weather = getState().star.star_weather;
+    if (weather !== {}) {
+      dispatch(loading({ weather: false }));
+    }
     apis
       .getNoticeWeatherAX(lat, lon, hour)
       .then((response) => {
@@ -82,7 +94,11 @@ const starWeatherMW = (lat, lon, hour) => {
   };
 };
 const starHotMW = () => {
-  return async function (dispatch) {
+  return async function (dispatch, getState) {
+    const hot = getState().star.star_hot;
+    if (hot !== {}) {
+      dispatch(loading({ hot: false }));
+    }
     apis
       .getStarHotAX()
       .then((response) => {

@@ -1,5 +1,3 @@
-//로그인 하면 유저네임, is_login boolean 변경
-//회원가입은 여기 말구 밖에서. 미들웨어 안씀.
 import { Cookies } from "react-cookie";
 import produce from "immer";
 import { apis } from "../../lib/axios";
@@ -25,22 +23,21 @@ const isLoginMW = () => {
     const token = await cookie.get("token");
     const state = getState().login.is_login;
     console.log("token:::", token);
-    if (token !== undefined) {
+    if (token !== undefined && token !== "") {
       apis
         .loginCheckAX()
         .then((response) => {
-          console.log("login check:::", response.data);
           const data = response.data;
+          setTimeout(500);
           if (data.code === 500) {
             cookie.remove("token");
             if (state) {
               dispatch(isLogin(false));
-              alert(`"login check ax" ${data.msg}`);
+              alert(`토큰이 만료되었습니다.`);
             }
           } else if (data.code === 200) {
             dispatch(isLogin(true));
             dispatch(setUserInfo(data.data));
-            console.log("로그인 유지!");
           }
         })
         .catch((err) => {
