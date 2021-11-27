@@ -16,10 +16,13 @@ import ic_logo from "../img/ic_logo.svg";
 import { apis } from "../lib/axios";
 
 import { history } from "../redux/configureStore";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { textLogo } from "../redux/modules/header";
+import { actionCreators as userLocationAction } from "../redux/modules/user";
 
 const MainMap = () => {
+  const user_location = useSelector((state) => state.user.user_location);
+
   const [is_search, setSearch] = React.useState(false);
   const [is_loading, setLoading] = React.useState();
   const [searchValue, setSearchValue] = React.useState("");
@@ -346,8 +349,8 @@ const MainMap = () => {
             </SearchBox>
             <Map
               center={{
-                lat: mapLocation.lat,
-                lng: mapLocation.lon,
+                lat: user_location.lat,
+                lng: user_location.lon,
               }}
               style={{ width: "100%", height: "792px" }}
             >
