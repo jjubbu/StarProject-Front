@@ -10,7 +10,7 @@ import ic_logo from "../img/ic_logo.svg";
 
 import { actionCreators as loginCheckAction } from "../redux/modules/login";
 
-const Mypage = ({ history, match }) => {
+const Mypage = ({ history }) => {
   const user_info = useSelector((state) => state.login.user_info);
   const [myList, setMyList] = React.useState([]);
   const [bookmarkList, setBookmarkList] = React.useState([]);
@@ -121,7 +121,10 @@ const Mypage = ({ history, match }) => {
               <button onClick={deleteAccount}>회원탈퇴</button>
             </div>
           </UserProfile>
-          <a href="#" className="feedback">
+          <a
+            href="https://docs.google.com/forms/d/e/1FAIpQLSdOWpKX9C0lgOzum6NOb8UFjeHg4OZaM99pxYfN6d2FaIMk3g/viewform?usp=sf_link"
+            className="feedback"
+          >
             {" "}
             {String(">")} 이 사이트 피드백하기
           </a>
@@ -181,9 +184,10 @@ const Mypage = ({ history, match }) => {
                 </button>
               </div>
             </div>
-            <ul>
-              {dataSize.myPost > 0 ? (
-                myList[page.myPost - 1]?.map((l, idx) => {
+
+            {dataSize.myPost > 0 ? (
+              <ul>
+                {myList[page.myPost - 1]?.map((l, idx) => {
                   return (
                     <ListStyled
                       key={idx}
@@ -201,11 +205,11 @@ const Mypage = ({ history, match }) => {
                       </div>
                     </ListStyled>
                   );
-                })
-              ) : (
-                <h3 className="empty">내가 쓴 글이 없습니다.</h3>
-              )}
-            </ul>
+                })}
+              </ul>
+            ) : (
+              <h3 className="empty">내가 쓴 글이 없습니다.</h3>
+            )}
           </ListBox>
         </div>
       </MypageStyled>
