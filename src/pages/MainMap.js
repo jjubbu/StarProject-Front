@@ -212,7 +212,6 @@ const MainMap = () => {
             const mergeData = resultList.concat(...data.dataList);
             setResultList(mergeData);
             setDataSize(data.dataSize);
-            setTimeout(500);
           })
           .catch((err) => {
             alert(err);
@@ -349,8 +348,8 @@ const MainMap = () => {
             </SearchBox>
             <Map
               center={{
-                lat: user_location.lat,
-                lng: user_location.lon,
+                lat: mapLocation.lat,
+                lng: mapLocation.lon,
               }}
               style={{ width: "100%", height: "792px" }}
             >
