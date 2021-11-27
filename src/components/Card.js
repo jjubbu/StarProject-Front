@@ -11,12 +11,12 @@ import ic_bookmark_off from "../img/ic_bookmark_off.svg";
 import ic_bookmark_on from "../img/ic_bookmark_on.svg";
 import ic_logo from "../img/ic_logo.svg";
 
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { actionCreators as likeActions } from "../redux/modules/card";
 
 const Card = (props) => {
   const dispatch = useDispatch();
-
+  const is_login = useSelector((state) => state.login.is_login);
   const cardClick = (e) => {
     console.log(props.cardID);
     history.push(`detail/${props.cardID}`);
@@ -65,10 +65,13 @@ const Card = (props) => {
             <img
               className="ic_heart_on"
               src={props.likeCheck ? ic_heart_on : ic_heart}
-              onClick={() => {
-                !is_login
-                  ? history.push("/login")
-                  : dispatch(likeActions.postLikeDB(props.id));
+              onClick={(e) => {
+                if (!is_login) {
+                  history.push("/login");
+                } else {
+                  dispatch(likeActions.postLikeDB(props.id));
+                }
+                e.stopPropagation();
               }}
               alt="ic_heart_on"
             />
@@ -79,8 +82,13 @@ const Card = (props) => {
                 className="ic_bookmark_off"
                 src={props.bookmarkCheck ? ic_bookmark_on : ic_bookmark_off}
                 alt="ic_bookmark_off"
-                onClick={() => {
-                  dispatch(likeActions.postBookmarkDB(props.id));
+                onClick={(e) => {
+                  if (!is_login) {
+                    history.push("/login");
+                  } else {
+                    dispatch(likeActions.postBookmarkDB(props.id));
+                  }
+                  e.stopPropagation();
                 }}
               />
             </div>
