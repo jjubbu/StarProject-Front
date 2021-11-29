@@ -21,9 +21,7 @@ const StyledFooter = styled.footer`
   width: 100%;
   background: #111111;
   .footer {
-    max-width: 1200px;
-    width: 100%;
-    height: 80px;
+    width: 1200px;
     display: flex;
     justify-content: space-between;
     align-items: center;

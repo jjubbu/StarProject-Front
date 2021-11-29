@@ -74,8 +74,7 @@ const StyledHeader = styled.header`
   display: flex;
   justify-content: space-between;
   align-self: center;
-  width: 100%;
-  max-width: 1200px;
+  width: 1200px;
   margin: 34px auto 33px;
   & > div {
     display: flex;
