@@ -39,22 +39,24 @@ const Login = () => {
       alert("값을 입력해주세요!");
       return;
     }
-    apis.loginAX(loginInfo).then((response) => {
-      console.log(response);
-      if (response.data.code === 200) {
-        const token = response.data.data.token;
-        cookie.set("token", token);
-        if (is_save) {
-          cookie.set("starCampID", loginInfo.username);
-        } else {
-          cookie.remove("starCampID");
+    apis
+      .loginAX(loginInfo)
+      .then((response) => {
+        if (response.data.code === 200) {
+          const token = response.data.data.token;
+          cookie.set("token", token);
+          if (is_save) {
+            cookie.set("starCampID", loginInfo.username);
+          } else {
+            cookie.remove("starCampID");
+          }
+          dispatch(lodinAction.isLogin(true));
+          window.location.replace("/");
+        } else if (response.data.code === 500) {
+          alert(response.data.msg);
         }
-        dispatch(lodinAction.isLogin(true));
-        window.location.replace("/");
-      } else if (response.data.code === 500) {
-        alert(response.data.msg);
-      }
-    });
+      })
+      .catch((err) => alert(err));
   };
 
   React.useEffect(() => {

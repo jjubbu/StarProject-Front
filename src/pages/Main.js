@@ -44,7 +44,7 @@ const Main = () => {
         setBoardList(newList);
       })
       .catch((err) => {
-        console.log(err);
+        alert(err);
       });
   };
 
@@ -55,14 +55,13 @@ const Main = () => {
       .getMainBoardAX()
       .then((response) => {
         if (response.data.msg === "성공") {
-          console.log("get main board data:::", response.data.data);
           setBoardList(response.data.data);
         } else {
           alert(`main board list ${response.data.msg}`);
         }
       })
       .catch((err) => {
-        console.log(err);
+        alert(err);
       });
   }, [dispatch]);
   return (

@@ -34,7 +34,7 @@ const Mypage = ({ history }) => {
         }
       })
       .catch((error) => {
-        console.log(error);
+        alert(error);
       });
   };
 
@@ -49,7 +49,7 @@ const Mypage = ({ history }) => {
         setTimeout(500);
       })
       .catch((err) => {
-        console.log(err);
+        alert(err);
       });
   };
 
@@ -62,7 +62,6 @@ const Mypage = ({ history }) => {
       .getMyBookmarkAX(offset)
       .then((response) => {
         const data = response.data.data;
-        console.log("data:::", data);
         setBookmarkList((prev) => [...prev, data.dataList]);
         setMaxPage((prev) => ({ ...prev, bookmark: data.maxPage }));
         setDataSize((prev) => ({ ...prev, bookmark: data.dataSize }));
@@ -70,7 +69,7 @@ const Mypage = ({ history }) => {
         setTimeout(500);
       })
       .catch((error) => {
-        console.log(error);
+        alert(error);
       });
   };
 

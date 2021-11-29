@@ -51,7 +51,6 @@ const UserInfoEdit = () => {
 
   const warnCheck = React.useCallback(
     _.debounce((name, value) => {
-      console.log("debounce!");
       setWarningFunc(
         name,
         "password",
@@ -82,7 +81,6 @@ const UserInfoEdit = () => {
 
   const inputValue = (e) => {
     const { name, value } = e.target;
-    console.log("input change!");
     setUserInfo((prevState) => ({ ...prevState, [name]: value }));
     warnCheck(name, value);
     warnCheckPw2(name, value);
@@ -105,7 +103,6 @@ const UserInfoEdit = () => {
     if (warn !== undefined) {
       return;
     }
-    console.log("userInfo server go!");
     apis
       .putUserInfoAX(userInfo)
       .then((response) => {
@@ -122,9 +119,7 @@ const UserInfoEdit = () => {
   };
 
   const overlapAxios = (code, check) => {
-    console.log("code?", code);
     if (code === 200) {
-      console.log("overlap set!");
       setWarning((prevState) => ({
         ...prevState,
         [check]: String(
@@ -162,7 +157,7 @@ const UserInfoEdit = () => {
           const code = Number(response.data.code);
           overlapAxios(code, check);
         })
-        .catch((err) => console.log(err));
+        .catch((err) => alert(err));
     }
   };
 

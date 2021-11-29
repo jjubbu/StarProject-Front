@@ -44,7 +44,7 @@ const starPhotoMW = () => {
         dispatch(loading({ photo: false }));
       })
       .catch((err) => {
-        console.log(err);
+        alert(err);
       });
   };
 };
@@ -71,7 +71,7 @@ const starNoticeMW = (lat, lon) => {
         dispatch(loading({ notice: false }));
       })
       .catch((err) => {
-        console.log(err);
+        alert(err);
       });
   };
 };
@@ -89,7 +89,7 @@ const starWeatherMW = (lat, lon, hour) => {
         dispatch(loading({ weather: false }));
       })
       .catch((err) => {
-        console.log(err);
+        alert(err);
       });
   };
 };
@@ -107,7 +107,7 @@ const starHotMW = () => {
         dispatch(loading({ hot: false }));
       })
       .catch((err) => {
-        console.log(err);
+        alert(err);
       });
   };
 };

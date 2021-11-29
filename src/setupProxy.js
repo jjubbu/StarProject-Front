@@ -7,7 +7,7 @@ module.exports = function (app) {
       target: "https://kapi.kakao.com/v2/user/me",
       changeOrigin: true,
       pathRewrite: {
-        "^/api": "", //url intialize
+        "^/api": "",
       },
     })
   );

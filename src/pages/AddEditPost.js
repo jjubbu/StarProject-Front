@@ -35,9 +35,9 @@ const AddEditPost = () => {
   const dispatch = useDispatch();
 
   AWS.config.update({
-    region: "ap-northeast-2", // 버킷이 존재하는 리전을 문자열로 입력합니다. (Ex. "ap-northeast-2")
+    region: "ap-northeast-2",
     credentials: new AWS.CognitoIdentityCredentials({
-      IdentityPoolId: "ap-northeast-2:9fd6954c-e11d-4e32-977b-f9457383a30a", // cognito 인증 풀에서 받아온 키를 문자열로 입력합니다. (Ex. "ap-northeast-2...")
+      IdentityPoolId: "ap-northeast-2:9fd6954c-e11d-4e32-977b-f9457383a30a",
     }),
   });
 
@@ -46,11 +46,8 @@ const AddEditPost = () => {
     const file = imageInputREF.current.files[0];
     console.log("file:::", file);
     if (file) {
-      //파일을 읽어온다!
       reader.readAsDataURL(file);
-      //파일 읽은 후 실행할 행동!
       reader.onloadend = () => {
-        // const range = quill.getSelection();
         const quill = QuillREF.current.getEditor();
         const range = quill.getSelection()?.index;
         quill.insertEmbed(range, "image", reader.result);
@@ -98,9 +95,7 @@ const AddEditPost = () => {
     (e) =>
       _.debounce((e) => {
         const address = e.target.value;
-        console.log("this is address:::", address);
         apis.getCheckAddressAX(address).then((response) => {
-          console.log("check address AX :::", response);
           const data = response.data;
           if (data.code === 200) {
             setWarn("none");
@@ -123,7 +118,6 @@ const AddEditPost = () => {
     let List = {};
     for (let i = 0; i < quillImage.length; i++) {
       List[quillImagebase[i]] = quillImage[i].name;
-      // List = {base:link,base:link, ...}
     }
     let content = quillValue;
     await quillImagebase.forEach((x, idx) => {
@@ -161,27 +155,21 @@ const AddEditPost = () => {
       } else {
         if (quillImage.length > 0) {
           quillImage.forEach((l, idx) => {
-            // S3 SDK에 내장된 업로드 함수
             const upload = new AWS.S3.ManagedUpload({
               params: {
-                Bucket: "star-project-post-storage", // 업로드할 대상 버킷명
-                Key: l.name, // 업로드할 파일명 (* 확장자를 추가해야 합니다!)
-                Body: l, // 업로드할 파일 객체
+                Bucket: "star-project-post-storage",
+                Key: l.name,
+                Body: l,
               },
             });
             const promise = upload.promise();
             promise.then(
-              function (data) {
-                console.log("이미지 업로드에 성공했습니다.");
-              },
-              function (err) {
-                return console.log("오류가 발생했습니다: ", err.message);
-              }
+              function (data) {},
+              function (err) {}
             );
           });
         }
         if (pathNow === "add") {
-          console.log("quillResult:::", uploadResult);
           apis.postAddPostAX(uploadResult).then((response) => {
             if (response.data.code === 200) {
               history.push("/community");
@@ -202,7 +190,7 @@ const AddEditPost = () => {
               }
             })
             .catch((err) => {
-              console.log(err);
+              alert(err);
             });
         }
       }

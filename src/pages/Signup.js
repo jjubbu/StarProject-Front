@@ -138,7 +138,6 @@ const Signup = () => {
       }));
     } else if (warn !== undefined) {
     } else {
-      console.log("signupInfo server go!");
       apis
         .signupAX(signupInfo)
         .then((response) => {
@@ -178,7 +177,6 @@ const Signup = () => {
 
   const overlapCheck = (e) => {
     const check = e.target.name;
-    console.log("overlap check Click!:::", signupInfo[check]);
     if (signupInfo[check] === "") {
       setWarning((prevState) => ({
         ...prevState,
@@ -190,12 +188,10 @@ const Signup = () => {
         .nicknameAX(signupInfo.nickname)
         .then((response) => {
           const code = Number(response.data.code);
-
-          console.log(check, " check:::", response);
           overlapAxios(code, check);
           setOvelapClick((prev) => ({ ...prev, nickname: true }));
         })
-        .catch((err) => console.log(err));
+        .catch((err) => alert(err));
     } else if (check === "username") {
       apis
         .usernameAX(signupInfo.username)
@@ -204,7 +200,7 @@ const Signup = () => {
           overlapAxios(code, check);
           setOvelapClick((prev) => ({ ...prev, username: true }));
         })
-        .catch((err) => console.log(err));
+        .catch((err) => alert(err));
     }
   };
 
