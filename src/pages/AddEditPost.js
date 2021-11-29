@@ -266,7 +266,7 @@ const AddEditPost = () => {
             <PostInput
               type="text"
               name="address"
-              placeholder="캠핑한 장소의 주소를 입력하세요"
+              placeholder="캠핑장 주소를 지번주소까지 정확하게 입력해주세요."
               onChange={(e) => {
                 addressCheck(e);
                 inputDataSet(e);

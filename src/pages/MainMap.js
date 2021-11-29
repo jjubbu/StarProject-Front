@@ -637,6 +637,7 @@ const ResultListBox = styled.ul`
     }
     .campInfo {
       display: flex;
+      flex: 1;
       height: 92px;
       flex-direction: column;
       justify-content: space-between;
@@ -644,6 +645,10 @@ const ResultListBox = styled.ul`
         font-weight: bold;
         font-size: 16px;
         line-height: 20px;
+        width: 100%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
       }
       .title p {
         font-weight: normal;
