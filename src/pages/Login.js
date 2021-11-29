@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { Cookies } from "react-cookie";
 
 import { CommonInput, InputBox } from "../elements";
+import HelmetComp from "../components/HelmetComp";
 
 import { history } from "../redux/configureStore";
 import { useDispatch } from "react-redux";
@@ -38,22 +39,24 @@ const Login = () => {
       alert("값을 입력해주세요!");
       return;
     }
-    apis.loginAX(loginInfo).then((response) => {
-      console.log(response);
-      if (response.data.code === 200) {
-        const token = response.data.data.token;
-        cookie.set("token", token);
-        if (is_save) {
-          cookie.set("starCampID", loginInfo.username);
-        } else {
-          cookie.remove("starCampID");
+    apis
+      .loginAX(loginInfo)
+      .then((response) => {
+        if (response.data.code === 200) {
+          const token = response.data.data.token;
+          cookie.set("token", token);
+          if (is_save) {
+            cookie.set("starCampID", loginInfo.username);
+          } else {
+            cookie.remove("starCampID");
+          }
+          dispatch(lodinAction.isLogin(true));
+          window.location.replace("/");
+        } else if (response.data.code === 500) {
+          alert(response.data.msg);
         }
-        dispatch(lodinAction.isLogin(true));
-        window.location.replace("/");
-      } else if (response.data.code === 500) {
-        alert(response.data.msg);
-      }
-    });
+      })
+      .catch((err) => alert(err));
   };
 
   React.useEffect(() => {
@@ -70,6 +73,7 @@ const Login = () => {
 
   return (
     <React.Fragment>
+      <HelmetComp title="로그인" url="https://stellakorea.co.kr/login" />
       <div className="CommonPageStyle CommonGap">
         <StyleArticle>
           <h3>로그인</h3>

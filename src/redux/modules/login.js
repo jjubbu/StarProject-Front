@@ -22,7 +22,6 @@ const isLoginMW = () => {
     const cookie = new Cookies();
     const token = await cookie.get("token");
     const state = getState().login.is_login;
-    console.log("token:::", token);
     if (token !== undefined && token !== "") {
       apis
         .loginCheckAX()
@@ -41,7 +40,7 @@ const isLoginMW = () => {
           }
         })
         .catch((err) => {
-          console.log(err);
+          alert(err);
         });
     } else if (token === undefined) {
       dispatch(isLogin(false));
