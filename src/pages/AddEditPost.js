@@ -212,7 +212,7 @@ const AddEditPost = () => {
       setPathNow("edit");
       setQuillValue(editData.content);
       setInputValue({ title: editData.title, address: editData.address });
-    } else {
+    } else if (path === "edit") {
       history.push("/community");
     }
   }, []);

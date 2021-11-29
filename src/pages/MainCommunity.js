@@ -38,11 +38,7 @@ const MainCommunity = (props) => {
   const [activeClass, setActive] = React.useState([true, false, false]);
   const [pageNum, setPageNum] = React.useState({ current: 1, max: 2 });
 
-  // React.useEffect(() => {}, []);
-
   React.useEffect(() => {
-    // 카드 가져오기
-
     dispatch(textLogo(false));
     dispatch(postActions.getCardDB("star", "", 1));
   }, [dispatch]);
