@@ -6,7 +6,8 @@ import { Provider } from "react-redux";
 import store from "./redux/configureStore";
 import { GlobalStyle } from "./shared/global";
 import { BrowserRouter } from "react-router-dom";
-import { render, hydrate } from "@testing-library/react";
+import { hydrate, render } from "react-dom";
+
 const rootElement = document.getElementById("root");
 
 if (rootElement.hasChildNodes()) {
