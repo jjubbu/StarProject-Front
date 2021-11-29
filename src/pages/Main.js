@@ -7,6 +7,7 @@ import ic_star from "../img/ic_star.svg";
 import ic_bookmark_off from "../img/ic_bookmark_off.svg";
 import ic_bookmark_on from "../img/ic_bookmark_on.svg";
 import ic_logo from "../img/ic_logo.svg";
+import HelmetComp from "../components/HelmetComp";
 
 import { apis } from "../lib/axios";
 
@@ -66,6 +67,7 @@ const Main = () => {
   }, [dispatch]);
   return (
     <React.Fragment>
+      <HelmetComp />
       <StyldMain className="CommonGap">
         <VisualBox>
           <video loop autoPlay muted>

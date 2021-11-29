@@ -1,13 +1,16 @@
 import React from "react";
 import styled from "styled-components";
-import { InputBox, CommonInput } from "../elements";
 import _ from "lodash";
+
+import { InputBox, CommonInput } from "../elements";
+import HelmetComp from "../components/HelmetComp";
 import { apis } from "../lib/axios";
 import ic_user from "../img/header/ic_mypage.svg";
 
 import { history } from "../redux/configureStore";
 import { useDispatch } from "react-redux";
 import { textLogo } from "../redux/modules/header";
+import { actionCreators as loginCheckAction } from "../redux/modules/login";
 
 const UserInfoEdit = () => {
   const [userInfo, setUserInfo] = React.useState({
@@ -165,9 +168,14 @@ const UserInfoEdit = () => {
 
   React.useEffect(() => {
     dispatch(textLogo(true));
+    dispatch(loginCheckAction.isLoginMW());
   }, []);
   return (
     <React.Fragment>
+      <HelmetComp
+        title="프로필수정"
+        url="https://stellakorea.co.kr/user/edit"
+      />
       <StyleArticle className="CommonGap">
         <h1>프로필수정</h1>
         <img src={ic_user} alt="user profile" className="userProfile" />

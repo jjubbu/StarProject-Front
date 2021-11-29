@@ -22,6 +22,7 @@ import { result } from "lodash";
 import { changeSortMW } from "../redux/modules/community";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
+import HelmetComp from "../components/HelmetComp";
 
 const MainCommunity = (props) => {
   const dispatch = useDispatch();
@@ -80,6 +81,7 @@ const MainCommunity = (props) => {
   };
   return (
     <React.Fragment>
+      <HelmetComp title="커뮤니티" url="https://stellakorea.co.kr/community" />
       <div
         onScroll={scrollEvent}
         id="card_container"

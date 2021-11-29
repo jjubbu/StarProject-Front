@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { Cookies } from "react-cookie";
 
 import { CommonInput, InputBox } from "../elements";
+import HelmetComp from "../components/HelmetComp";
 
 import { history } from "../redux/configureStore";
 import { useDispatch } from "react-redux";
@@ -70,6 +71,7 @@ const Login = () => {
 
   return (
     <React.Fragment>
+      <HelmetComp title="로그인" url="https://stellakorea.co.kr/login" />
       <div className="CommonPageStyle CommonGap">
         <StyleArticle>
           <h3>로그인</h3>

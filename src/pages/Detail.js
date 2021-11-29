@@ -7,6 +7,7 @@ import "slick-carousel/slick/slick-theme.css";
 import { Map, MapMarker } from "react-kakao-maps-sdk";
 import { apis } from "../lib/axios";
 
+import HelmetComp from "../components/HelmetComp";
 import ic_star from "../img/ic_star.svg";
 import ic_moonrise from "../img/ic_moonrise.svg";
 import ic_moonset from "../img/ic_moonset.svg";
@@ -227,6 +228,12 @@ const Detail = ({ history, location, match }) => {
 
   return (
     <React.Fragment>
+      <HelmetComp
+        title={data.title}
+        url={`https://stellakorea.co.kr/detail/${data.id}`}
+        contents={data.contents}
+        frame={data.img}
+      />
       <StyledDetail className="CommonPageStyle CommonGap">
         <div className="detailInfoETC">
           <MapBox>

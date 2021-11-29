@@ -8,6 +8,7 @@ import { CommonInput, InputBox } from "../elements";
 import { history } from "../redux/configureStore";
 import { useDispatch } from "react-redux";
 import { textLogo } from "../redux/modules/header";
+import HelmetComp from "../components/HelmetComp";
 
 const Signup = () => {
   const [signupInfo, setSignupInfo] = React.useState({
@@ -219,6 +220,7 @@ const Signup = () => {
 
   return (
     <React.Fragment>
+      <HelmetComp title="회원가입" url="https://stellakorea.co.kr/signup" />
       <StyleArticle className="CommonGap">
         <h1>회원가입</h1>
         <InputBoxSignup>

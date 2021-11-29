@@ -1,6 +1,7 @@
 import React from "react";
 import styled, { keyframes } from "styled-components";
 
+import HelmetComp from "../components/HelmetComp";
 import ic_sunny from "../img/weather/ic_sunny.svg"; //맑음
 import ic_cloudy from "../img/weather/ic_cloudy.svg"; //구름많음
 import ic_overcast from "../img/weather/ic_overcast.svg"; //흐림
@@ -46,6 +47,7 @@ const MainStar = () => {
 
   return (
     <React.Fragment>
+      <HelmetComp title="별자리" url="https://stellakorea.co.kr/star" />
       <div className="CommonPageStyle CommonGap">
         <StyledStar>
           <div>

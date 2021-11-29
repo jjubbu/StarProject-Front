@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { CustomOverlayMap, Map, MapMarker } from "react-kakao-maps-sdk";
 import _ from "lodash";
 
+import HelmetComp from "../components/HelmetComp";
 import ic_location_off from "../img/map/ic_location_off.svg";
 import ic_location_on from "../img/map/ic_location_on.svg";
 import ic_map from "../img/map/ic_map.svg";
@@ -245,6 +246,7 @@ const MainMap = () => {
 
   return (
     <React.Fragment>
+      <HelmetComp title="지도" url="https://stellakorea.co.kr/map" />
       <div className="CommonPageStyle CommonGap">
         <StyledMap>
           <ResultBox>

@@ -9,6 +9,7 @@ import ic_profile from "../img/ic_profile.svg";
 import ic_logo from "../img/ic_logo.svg";
 
 import { actionCreators as loginCheckAction } from "../redux/modules/login";
+import HelmetComp from "../components/HelmetComp";
 
 const Mypage = ({ history }) => {
   const user_info = useSelector((state) => state.login.user_info);
@@ -108,6 +109,7 @@ const Mypage = ({ history }) => {
 
   return (
     <React.Fragment>
+      <HelmetComp title="마이페이지" url="https://stellakorea.co.kr/mypage" />
       <MypageStyled className="CommonPageStyle">
         <div className="leftBox">
           <UserProfile>
