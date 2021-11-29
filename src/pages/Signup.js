@@ -12,24 +12,24 @@ import HelmetComp from "../components/HelmetComp";
 
 const Signup = () => {
   const [signupInfo, setSignupInfo] = React.useState({
-    nickname: "",
     username: "",
+    nickname: "",
     password: "",
     passwordCheck: "",
   });
 
   const [warning, setWarning] = React.useState({
     username: "",
+    nickname: "",
     password: "",
     passwordCheck: "",
-    nickname: "",
   });
 
   const [inputWarn, setInputWarn] = React.useState({
     username: "none",
+    nickname: "none",
     password: "none",
     passwordCheck: "none",
-    nickname: "none",
   });
 
   const [overlapClick, setOvelapClick] = React.useState({
@@ -48,11 +48,17 @@ const Signup = () => {
     if (name === nameValue) {
       if (name === "nickname" || name === "username") {
         setOvelapClick((prev) => ({ ...prev, [name]: false }));
+        setInputWarn((prevState) => ({
+          ...prevState,
+          [nameValue]: test ? "warn" : "none",
+        }));
+      } else {
+        setInputWarn((prevState) => ({
+          ...prevState,
+          [nameValue]: test ? "warn" : "success",
+        }));
       }
-      setInputWarn((prevState) => ({
-        ...prevState,
-        [nameValue]: test ? "warn" : "none",
-      }));
+
       setWarning((prevState) => ({
         ...prevState,
         [nameValue]: test ? text : "",
@@ -221,22 +227,6 @@ const Signup = () => {
         <h1>회원가입</h1>
         <InputBoxSignup>
           <label>
-            <LabelTitle>닉네임</LabelTitle>
-            <WithOverlapBox>
-              <CommonInput
-                name="nickname"
-                onChange={inputValue}
-                placeholder="1~8자, 국문/영문 대소문자/숫자 "
-                border={inputWarn.nickname}
-                onKeyPress={enterKeyEvent}
-              />
-              <button name="nickname" onClick={overlapCheck} className="roboto">
-                중복확인
-              </button>
-            </WithOverlapBox>
-            <Warning useable={inputWarn.nickname}>{warning.nickname}</Warning>
-          </label>
-          <label>
             <LabelTitle>아이디</LabelTitle>
             <WithOverlapBox>
               <CommonInput
@@ -251,6 +241,22 @@ const Signup = () => {
               </button>
             </WithOverlapBox>
             <Warning useable={inputWarn.username}>{warning.username}</Warning>
+          </label>
+          <label>
+            <LabelTitle>닉네임</LabelTitle>
+            <WithOverlapBox>
+              <CommonInput
+                name="nickname"
+                onChange={inputValue}
+                placeholder="1~8자, 국문/영문 대소문자/숫자 "
+                border={inputWarn.nickname}
+                onKeyPress={enterKeyEvent}
+              />
+              <button name="nickname" onClick={overlapCheck} className="roboto">
+                중복확인
+              </button>
+            </WithOverlapBox>
+            <Warning useable={inputWarn.nickname}>{warning.nickname}</Warning>
           </label>
           <label>
             <LabelTitle>비밀번호</LabelTitle>
