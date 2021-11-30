@@ -44,7 +44,6 @@ const AddEditPost = () => {
   const imageInputClick = (e) => {
     const reader = new FileReader();
     const file = imageInputREF.current.files[0];
-    console.log("file:::", file);
     if (file) {
       reader.readAsDataURL(file);
       reader.onloadend = () => {

@@ -42,14 +42,11 @@ const initialState = {
 };
 
 // middleware
-
 const setPageDB = (sort, cityName, offset) => {
   return function (dispatch, getState, { history }) {
     apis
       .getCardAX(sort, cityName, offset)
       .then((res) => {
-        console.log(res);
-
         const current_page = res.data.data.currentPage;
         const max_page = res.data.data.maxPage;
         const data_size = res.data.data.dataSize;
@@ -64,7 +61,6 @@ const setPageDB = (sort, cityName, offset) => {
       })
       .catch((err) => {
         window.alert("페이지 정보를 가져올 수 없습니다.");
-        console.log(err);
         return err;
       });
   };
@@ -75,10 +71,7 @@ const getSearchListDB = (sort, cityName, offset) => {
     apis
       .getCardAX(sort, cityName, offset)
       .then((res) => {
-        console.log(res);
         const cardList = res.data.data.dataList;
-        console.log(cardList);
-
         const newPaging = {
           currentPage: res.data.data.currentPage,
           maxPage: res.data.data.maxPage,
@@ -98,9 +91,7 @@ const getCardDB = (sort, cityName, offset) => {
     apis
       .getCardAX(sort, cityName, offset)
       .then((res) => {
-        console.log("getCardAX", res);
         const searchList = res.data.data.dataList;
-
         const newPaging = {
           currentPage: res.data.data.currentPage,
           maxPage: res.data.data.maxPage,
@@ -123,7 +114,6 @@ const getInfinityScrollCardDB = (sort, cityName) => {
       .getCardAX(sort, cityName, paging.currentPage)
       .then((res) => {
         const cardList = res.data.data.dataList;
-
         const newPaging = {
           currentPage: res.data.data.currentPage,
           maxPage: res.data.data.maxPage,
@@ -131,8 +121,6 @@ const getInfinityScrollCardDB = (sort, cityName) => {
         };
         dispatch(setPage(newPaging));
         dispatch(setInfinityCard(cardList));
-
-        console.log("무한스크롤 paging:::", paging);
         setTimeout(500);
       })
       .catch((err) => {
@@ -148,9 +136,7 @@ const postLikeDB = (id, offset) => {
     apis
       .postLikeAX(id, offset)
       .then((res) => {
-        console.log(res.data.data);
         const newLikeInfo = res.data.data;
-        console.log(newLikeInfo);
         dispatch(setLike(newLikeInfo));
       })
       .catch((error) => {
@@ -166,9 +152,7 @@ const postBookmarkDB = (id) => {
     apis
       .postBookmarkAX(id)
       .then((res) => {
-        console.log(res.data.data);
         const newBookmarkInfo = res.data.data;
-        console.log(newBookmarkInfo);
         dispatch(setBookmark(newBookmarkInfo));
       })
       .catch((error) => {
@@ -208,7 +192,6 @@ export default handleActions(
     [SET_LIKE]: (state, action) =>
       produce(state, (draft) => {
         draft.likeInfo = action.payload.likeInfo;
-        console.log(draft.likeInfo);
         let idx = draft.list.findIndex(
           (p) => p.id === action.payload.likeInfo.cardId
         );
@@ -219,7 +202,6 @@ export default handleActions(
     [SET_BOOKMARK]: (state, action) =>
       produce(state, (draft) => {
         draft.bookmarkCheck = action.payload.bookmarkCheck;
-        console.log(draft.bookmarkCheck);
         let idx = draft.list.findIndex(
           (p) => p.id === action.payload.bookmarkCheck.cardId
         );

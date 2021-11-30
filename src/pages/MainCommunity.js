@@ -65,7 +65,6 @@ const MainCommunity = (props) => {
 
   const tapClick = (e) => {
     const name = e.target.getAttribute("name");
-    console.log("name:::", name);
     dispatch(changeSortMW(name));
     setPageNum((prev) => ({
       ...prev,
