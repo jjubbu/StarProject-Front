@@ -673,7 +673,6 @@ const ContentFooter = styled.div`
   justify-content: right;
   align-items: flex-end;
   gap: 8px;
-  margin-bottom: 200px;
   button {
     background: #18191e;
     border-radius: 4px;
