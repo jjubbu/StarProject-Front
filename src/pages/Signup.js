@@ -354,5 +354,10 @@ const SignupButton = styled.button`
   color: white;
   border: none;
   cursor: pointer;
+  &:hover {
+    transform: scale(1.01);
+    box-shadow: 3px 3px 6px 3px rgba(0, 0, 0, 0.65);
+    transition: all 0.5s;
+  }
 `;
 export default Signup;

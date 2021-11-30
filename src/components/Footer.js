@@ -26,7 +26,7 @@ const StyledFooter = styled.footer`
     justify-content: space-between;
     align-items: center;
     margin: 0 auto;
-
+    padding: 31px 0;
     div {
       display: flex;
       gap: 63px;

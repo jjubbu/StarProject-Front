@@ -18,7 +18,6 @@ const Card = (props) => {
   const dispatch = useDispatch();
   const is_login = useSelector((state) => state.login.is_login);
   const cardClick = (e) => {
-    console.log(props.cardID);
     history.push(`detail/${props.cardID}`);
   };
 
@@ -34,7 +33,7 @@ const Card = (props) => {
               oject-fit={"cover"}
             />
           ) : (
-            <img src={ic_logo} height="128px" />
+            <img src={ic_logo} height="128px" alt="logoIcon" />
           )}
         </ImageArea>
 
@@ -54,7 +53,6 @@ const Card = (props) => {
           </ContentDiv>
         </TextDiv>
         <DateDiv>{props.modifiedAt} 작성</DateDiv>
-        {/* <HorizontalLine /> */}
         <BottomDiv>
           <div className="profile">
             <img src={ic_profile} alt="ic_profile" />
@@ -114,23 +112,6 @@ const ImageArea = styled.div`
   }
 `;
 
-const ImageBox = styled.div`
-  position: relative;
-  width: 100%;
-  height: 288px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  .campImage {
-    ${(props) =>
-      props.img !== ""
-        ? "width: 100%; height: 288px;"
-        : "width:128px; height:128px; margin-top:2px;"}
-
-    object-fit: cover;
-  }
-`;
-
 const BottomDiv = styled.div`
   padding: 18px 20px 18px 20px;
   display: flex;
@@ -177,11 +158,6 @@ const BottomDiv = styled.div`
     .ic_bookmark {
       margin-right: 2px;
     }
-    /* .bookmark {
-      margin-left: 4px;
-      font-size: 14px;
-      color: #cccccc;
-    } */
   }
 `;
 
@@ -212,18 +188,7 @@ const InfoDiv = styled.div`
   }
 `;
 
-const Location = styled.div`
-  font-size: 12px;
-  display: inline-block;
-  margin-left: 5px;
-`;
-
-const TextDiv = styled.div`
-  /* display: inline-flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: flex-start; */
-`;
+const TextDiv = styled.div``;
 
 const TitleDiv = styled.div`
   overflow: hidden;
@@ -251,31 +216,18 @@ const ContentDiv = styled.div`
   color: #ffffff;
 `;
 
-const HorizontalLine = styled.div`
-  height: 1px;
-  background: #666666;
-`;
-
 const Wrapper = styled.div`
   width: 384px;
   height: 504px;
   display: flex;
   flex-direction: column;
   justify-content: flex;
-  /* transition: box-shadow 0.25s ease-in 0s, transform 0.25s ease-in 0s; */
-  /* margin: 50px auto 20px auto; */
-  /* margin-right: 24px; */
   border-radius: 10px;
   background-color: #303136;
   & > div:first-child {
     height: fit-content;
     position: relative;
   }
-  /* :hover {
-    cursor: pointer;
-    transform: translateY(-12px);
-    box-shadow: 0 3px 40px 0 #ddd;
-  } */
   .defaultImage {
     display: flex;
     align-items: center;
@@ -283,6 +235,12 @@ const Wrapper = styled.div`
       width: 285px;
       height: 285px;
     }
+  }
+
+  &:hover {
+    transform: scale(1.02);
+    box-shadow: 3px 3px 6px 3px rgba(0, 0, 0, 0.65);
+    transition: all 0.5s;
   }
 `;
 
@@ -295,28 +253,5 @@ const DateDiv = styled.div`
   line-height: 18px;
   color: #999999;
 `;
-
-// const LikeDiv = styled.div`
-//   display: inline-block;
-//   float: right;
-//   margin-right: 15px;
-//   font-size: 15px;
-// `;
-
-// const NicknameDiv = styled.div`
-//   font-size: 12px;
-//   display: inline-block;
-//   float: left;
-//   size: 14px;
-//   color: gray;
-// `;
-
-// const InfoDiv = styled.div`
-//   height: 35px;
-//   display: flex;
-//   justify-content: flex-start;
-//   align-items: center;
-//   margin: 20px 20px 20px 20px;
-// `;
 
 export default Card;

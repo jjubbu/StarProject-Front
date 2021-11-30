@@ -203,6 +203,11 @@ const Card = styled.li`
     flex-direction: column;
     justify-content: space-between;
   }
+  &:hover {
+    transform: scale(1.02);
+    box-shadow: 3px 3px 6px 3px rgba(0, 0, 0, 0.65);
+    transition: all 0.5s;
+  }
 `;
 const ImageBox = styled.div`
   position: relative;

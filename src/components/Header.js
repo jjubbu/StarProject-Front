@@ -103,6 +103,10 @@ const StyledNav = styled.nav`
   p {
     font-size: 16px;
     cursor: pointer;
+    position: relative;
+  }
+  p:hover {
+    color: #ffce00;
   }
 `;
 
