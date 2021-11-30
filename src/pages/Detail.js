@@ -18,6 +18,7 @@ import ic_heart_on from "../img/ic_heart_on.svg";
 import ic_bookmark from "../img/ic_bookmark_off.svg";
 import ic_bookmark_on from "../img/ic_bookmark_on.svg";
 import ic_arrow from "../img/ic_slideArrow.svg";
+import ic_address from "../img/map/ic_map.svg";
 
 import { useDispatch, useSelector } from "react-redux";
 import { textLogo } from "../redux/modules/header";
@@ -354,7 +355,14 @@ const Detail = ({ history, location, match }) => {
           </ContentUser>
           <span className="line" />
           <section className="contents">
-            <div dangerouslySetInnerHTML={{ __html: data.content }}></div>
+            <div className="addressBox">
+              <img src={ic_address} alt="location icon" />
+              <p>{data.address}</p>
+            </div>
+            <div
+              dangerouslySetInnerHTML={{ __html: data.content }}
+              className="contentsInner"
+            ></div>
           </section>
           <span className="line" />
 
@@ -586,8 +594,24 @@ const ContentBox = styled.section`
   .contents {
     margin-top: 32px;
     flex: 1;
-    img {
+    .contentsInner {
+      font-size: 16px;
+      line-height: 20px;
+      color: #eee;
+    }
+    .contentsInner img {
       max-width: 100%;
+      margin: 38px 0;
+    }
+    .addressBox {
+      display: flex;
+      align-items: center;
+      border: 1px solid #ccc;
+      min-width: 326px;
+      width: fit-content;
+      border-radius: 40px;
+      padding: 21px 17px;
+      gap: 8px;
     }
   }
 `;
