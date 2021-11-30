@@ -106,7 +106,9 @@ const Main = () => {
                   <div className="contentBox">
                     <CardContent>
                       <h3>{l.title}</h3>
-                      <p dangerouslySetInnerHTML={{ __html: l.contents }}></p>
+                      <div
+                        dangerouslySetInnerHTML={{ __html: l.contents }}
+                      ></div>
                     </CardContent>
                     <CardEtcBox>
                       <div className="starGazing">
@@ -147,8 +149,6 @@ const VisualBox = styled.section`
   align-items: center;
   video {
     position: absolute;
-    /* max-width: 100vw;
-    min-height: 890px; */
     width: 100%;
     height: 890px;
     object-fit: cover;
@@ -202,6 +202,7 @@ const Card = styled.li`
     flex: 1;
     flex-direction: column;
     justify-content: space-between;
+    height: 194px;
   }
   &:hover {
     transform: scale(1.02);
@@ -250,17 +251,33 @@ const Address = styled.div`
 
 const CardContent = styled.section`
   padding: 28px 20px 0;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  overflow: hidden;
+
   h3 {
     font-weight: bold;
     font-size: 18px;
     line-height: 18px;
   }
 
-  p {
+  div {
     font-size: 16px;
     line-height: 18px;
     color: #cccccc;
-    margin-top: 10px;
+    padding-top: 10px;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: box;
+    margin-top: 1px;
+    max-height: 80px;
+    overflow: hidden;
+    vertical-align: top;
+    text-overflow: ellipsis;
+    word-break: break-all;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
   }
 `;
 
