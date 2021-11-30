@@ -6,10 +6,7 @@ const Footer = () => {
     <React.Fragment>
       <StyledFooter>
         <div className="footer">
-          <div>
-            <p>이용약관</p>
-            <p>개인정보처리방침</p>
-          </div>
+          <div></div>
           <p>Ⓒ2021 hanghae99team14. All rights reserved.</p>
         </div>
       </StyledFooter>

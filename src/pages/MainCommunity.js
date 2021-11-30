@@ -140,6 +140,8 @@ const MainCommunity = (props) => {
 
 const CommunityPage = styled.main`
   height: 100%;
+  flex: 1;
+  margin-bottom: 24px;
 `;
 
 const Wrapper = styled.div`

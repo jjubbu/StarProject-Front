@@ -35,6 +35,9 @@ html{
     width: 100%;
     height: 100%;
     position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 .CommonPageStyle{
@@ -45,5 +48,11 @@ html{
 
 .CommonGap{
     margin-bottom: 24px;
+}
+
+#card_container{
+    height: 100%;
+    display: flex;
+    flex-direction: column;
 }
 `;
