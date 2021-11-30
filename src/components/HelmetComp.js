@@ -38,9 +38,11 @@ const HelmetComp = (props) => {
 
 HelmetComp.defaultProps = {
   title: "별보러가지않을래?",
-  contents: "캠핑/차박 커뮤니티",
+  contents:
+    "캠핑 차박하실때 불멍만 즐기셨나요? 이제는 별도 구경해보세요! 별이 잘보이는 장소,날씨 정보보시고 나만의 캠핑,차박 장소도 공유 해보세요!",
   url: "https://stellakorea.co.kr/",
-  frame: "%PUBLIC_URL%/Frame.png",
+  frame:
+    "https://stella-image-storage.s3.ap-northeast-2.amazonaws.com/Frame.png",
 };
 
 export default HelmetComp;
