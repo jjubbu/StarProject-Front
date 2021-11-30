@@ -9,6 +9,7 @@ import star from "./modules/star";
 import user from "./modules/user";
 import edit from "./modules/edit";
 import community from "./modules/community";
+import comment from "./modules/comment";
 
 //만든 히스토리와 라우터가 연결. 스토어에 브라우저 히스토리가 저장되는 것.
 export const history = createBrowserHistory();

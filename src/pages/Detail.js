@@ -17,11 +17,15 @@ import ic_heart_on from "../img/ic_heart_on.svg";
 import ic_bookmark from "../img/ic_bookmark_off.svg";
 import ic_bookmark_on from "../img/ic_bookmark_on.svg";
 import ic_arrow from "../img/ic_slideArrow.svg";
+import ic_comment from "../img/ic_comment.svg";
+import ic_option from "../img/option.svg";
 
 import { useDispatch, useSelector } from "react-redux";
 import { textLogo } from "../redux/modules/header";
 import { actionCreators as loginCheckAction } from "../redux/modules/login";
 import { actionCreators as editDataAction } from "../redux/modules/edit";
+// import CommentWrite from "../components/CommentWrite";
+// import CommentList from "../components/CommentList";
 
 function SampleNextArrow(props) {
   const { className, style, onClick } = props;
@@ -370,6 +374,24 @@ const Detail = ({ history, location, match }) => {
               </React.Fragment>
             ) : null}
           </ContentFooter>
+          {/* <ContentComment>
+            <div className="commentnumber">
+              <button onClick>댓글 (14)</button>
+            </div>
+            <div className="commentbox">
+              <img src={ic_comment} alt="comment icon" />
+              <input type="text" placeholder="댓글을 작성해주세요." />
+              <button onClick>등록</button>
+            </div>
+            <img src={ic_mypage} alt="user profile" />
+            <h3 className="openSans">{data.writer}</h3>
+            <p className="openSans">{data.date}</p>
+            <div className="comment">
+              <p className="openSans">좋은 정보 감사합니다^^</p>
+            </div>
+          </ContentComment>
+          {/* <CommentWrite id={data.id} /> */}
+          {/* <CommentList id={data.id} /> */}
         </ContentBox>
       </StyledDetail>
     </React.Fragment>
@@ -655,6 +677,7 @@ const ContentFooter = styled.div`
   justify-content: right;
   align-items: flex-end;
   gap: 8px;
+  margin-bottom: 200px;
   button {
     background: #18191e;
     border-radius: 4px;
@@ -666,5 +689,93 @@ const ContentFooter = styled.div`
     color: #cccccc;
   }
 `;
+
+// const ContentComment = styled.div`
+//   /*외부테두리*/
+//   position: absolute;
+//   top: 980px;
+//   left: 50%;
+//   transform: translateX(-50%);
+//   width: 736px;
+//   height: 40px;
+//   border-radius: 30px;
+//   border: solid 1px;
+//   border-color: #c4c4c4;
+
+//   button {
+//     background: #18191e;
+//     top: 100px;
+//     margin-top: -30px;
+//     border-radius: 4px;
+//     border: none;
+//     width: 100px;
+//     height: 36px;
+//     padding: 0 11px 0 11px;
+//     font-size: 14px;
+//     line-height: 18px;
+//     color: #eeeeee;
+//   }
+
+//   .commentbox {
+//     display: flex;
+//     align-items: center;
+//     gap: 8px;
+
+//     img {
+//       width: 24px;
+//       height: 24px;
+//       margin: 8px 0 0 20px;
+//     }
+//     input /*내부 입력칸*/ {
+//       background: none;
+//       border: none;
+//       color: white;
+//       margin: 4px 0 0 10px;
+
+//       &::placeholder {
+//         color: #dddddd;
+//         font-size: 14px;
+//         line-height: 18px;
+//       }
+//       &:focus {
+//         outline: none;
+//       }
+//     }
+//     button {
+//       background: none;
+//       border: none;
+//       padding: 0 23px;
+//       font-size: 14px;
+//       line-height: 18px;
+//       margin: 6px 0 0 420px;
+//       color: #dddddd;
+//     }
+//   }
+//   img {
+//     width: 28px;
+//     height: 28px;
+//   }
+
+//   h3 {
+//     font-size: 13px;
+//     line-height: 16.28px;
+//     margin-bottom: 15px;
+//     color: #eeeeee;
+//   }
+//   p {
+//     font-size: 9px;
+//     line-height: 11.27px;
+//     margin: 0 0 -18px -32px;
+//     color: #ffffff;
+//   }
+//   .comment {
+//     p {
+//       font-size: 14px;
+//       line-height: 17.53px;
+//       color: #eeeeee;
+//       margin: 70px 0 0 -122px;
+//     }
+//   }
+// `;
 
 export default Detail;
