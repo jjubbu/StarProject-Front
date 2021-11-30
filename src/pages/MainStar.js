@@ -205,13 +205,19 @@ const MainStar = () => {
             >
               {is_loading.photo ? <span className="loader" /> : null}
 
-              <button>
+              <button
+                onClick={() => {
+                  document.getElementById("starInfoCheckbox").click();
+                }}
+              >
+                <input type="checkbox" id="starInfoCheckbox" />
                 <span className="buttonHover">별자리 설명</span>
                 <section className="buttonActive">
                   <h3>{star_photo?.starName}</h3>
                   <p>{star_photo?.comment}</p>
                 </section>
                 ?
+                <span className="none" />
               </button>
               <img src={star_photo?.starImg} alt="star" />
             </ImageBox>
@@ -341,7 +347,7 @@ const LocationBox = styled.section`
   .buttonHover {
     display: none;
   }
-  .location:hover ~ .buttonHover {
+  button:hover ~ .buttonHover {
     display: block;
     position: absolute;
     padding: 5px 7px;
@@ -579,7 +585,6 @@ const ImageBox = styled.div`
   }
   .buttonHover,
   .buttonActive {
-    display: none;
     &::after {
       content: "";
       position: absolute;
@@ -594,6 +599,7 @@ const ImageBox = styled.div`
     }
   }
   .buttonHover {
+    display: none;
     width: 72px;
     padding: 5px 7px;
     font-size: 12px;
@@ -630,14 +636,29 @@ const ImageBox = styled.div`
       text-align: left;
     }
   }
+  #starInfoCheckbox ~ .buttonActive {
+    display: none;
+  }
   button:hover .buttonHover,
-  button:active .buttonActive {
+  #starInfoCheckbox:checked ~ .buttonActive {
     display: block;
     position: absolute;
     background-color: rgba(0, 0, 0, 0.7);
   }
-  button:active .buttonHover {
+  #starInfoCheckbox:checked ~ .buttonActive {
+    display: block;
+  }
+  #starInfoCheckbox:checked ~ .buttonHover {
     display: none;
+  }
+
+  .none {
+    display: none;
+  }
+  input {
+    position: absolute;
+    top: 0;
+    z-index: -9999;
   }
 `;
 const RecommendBox = styled.section`
