@@ -7,6 +7,7 @@ import ic_star from "../img/ic_star.svg";
 import ic_bookmark_off from "../img/ic_bookmark_off.svg";
 import ic_bookmark_on from "../img/ic_bookmark_on.svg";
 import ic_logo from "../img/ic_logo.svg";
+import HelmetComp from "../components/HelmetComp";
 
 import { apis } from "../lib/axios";
 
@@ -43,7 +44,7 @@ const Main = () => {
         setBoardList(newList);
       })
       .catch((err) => {
-        console.log(err);
+        alert(err);
       });
   };
 
@@ -54,18 +55,18 @@ const Main = () => {
       .getMainBoardAX()
       .then((response) => {
         if (response.data.msg === "성공") {
-          console.log("get main board data:::", response.data.data);
           setBoardList(response.data.data);
         } else {
           alert(`main board list ${response.data.msg}`);
         }
       })
       .catch((err) => {
-        console.log(err);
+        alert(err);
       });
   }, [dispatch]);
   return (
     <React.Fragment>
+      <HelmetComp />
       <StyldMain className="CommonGap">
         <VisualBox>
           <video loop autoPlay muted>

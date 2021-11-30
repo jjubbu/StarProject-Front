@@ -49,7 +49,7 @@ const userLocationMW = (page) => {
     if ("geolocation" in navigator) {
       navigator.geolocation.getCurrentPosition(success, error, options);
     } else {
-      console.log("확인할 수 없다 ㅠㅠ");
+      alert("위치를 가져오지 못했습니다.");
     }
   };
 };

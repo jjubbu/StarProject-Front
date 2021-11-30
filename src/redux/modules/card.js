@@ -12,8 +12,10 @@ const SET_CARD = "SET_CARD";
 const SET_LIKE = "SET_LIKE";
 const SET_BOOKMARK = "SET_BOOKMARK";
 const SET_INFINITY_CARD = "SET_INFINITY_CARD";
-const SET_PAGE = "SET_PAGE";
+
 const SET_SEARCHLIST = "SET_SEARCHLIST";
+
+const SET_PAGE = "SET_PAGE";
 
 // Action creators
 
@@ -40,6 +42,33 @@ const initialState = {
 };
 
 // middleware
+
+const setPageDB = (sort, cityName, offset) => {
+  return function (dispatch, getState, { history }) {
+    apis
+      .getCardAX(sort, cityName, offset)
+      .then((res) => {
+        console.log(res);
+
+        const current_page = res.data.data.currentPage;
+        const max_page = res.data.data.maxPage;
+        const data_size = res.data.data.dataSize;
+
+        const paging = {
+          currentPage: current_page,
+          maxPage: max_page,
+          dataSize: data_size,
+        };
+
+        dispatch(setPage(paging));
+      })
+      .catch((err) => {
+        window.alert("페이지 정보를 가져올 수 없습니다.");
+        console.log(err);
+        return err;
+      });
+  };
+};
 
 const getSearchListDB = (sort, cityName, offset) => {
   return function (dispatch, getState, { history }) {
@@ -152,6 +181,11 @@ const postBookmarkDB = (id) => {
 
 export default handleActions(
   {
+    [SET_PAGE]: (state, action) =>
+      produce(state, (draft) => {
+        draft.paging = action.payload.pageInfo;
+      }),
+
     [SET_CARD]: (state, action) =>
       produce(state, (draft) => {
         draft.list = action.payload.card;
@@ -205,6 +239,7 @@ const actionCreators = {
   postBookmarkDB,
   getInfinityScrollCardDB,
   getSearchListDB,
+  setPageDB,
 };
 
 export { actionCreators };

@@ -7,6 +7,7 @@ import "slick-carousel/slick/slick-theme.css";
 import { Map, MapMarker } from "react-kakao-maps-sdk";
 import { apis } from "../lib/axios";
 
+import HelmetComp from "../components/HelmetComp";
 import ic_star from "../img/ic_star.svg";
 import ic_moonrise from "../img/ic_moonrise.svg";
 import ic_moonset from "../img/ic_moonset.svg";
@@ -134,7 +135,7 @@ const Detail = ({ history, location, match }) => {
       .then((response) => {
         markFunc(response.data, "bookmark");
       })
-      .catch((err) => console.log(err));
+      .catch((err) => alert(err));
   };
   const likeAxios = () => {
     apis
@@ -142,26 +143,19 @@ const Detail = ({ history, location, match }) => {
       .then((response) => {
         markFunc(response.data, "like");
       })
-      .catch((err) => console.log(err));
+      .catch((err) => alert(err));
   };
 
   const deleteAxios = () => {
     apis.getDeletePostAX(data.id).then((response) => {
-      if (is_login) {
-        alert("작성글이 삭제되었습니다.");
+      if (response.data.code === 200) {
+        alert("게시글이 삭제되었습니다.");
         history.push("/community");
+      } else {
+        alert(response.data.data);
       }
     });
   };
-
-  // const editAxios = (id) => {
-  //   apis.putEditPostAX(id).then((response) => {
-  //     console.log("edit::: ", response);
-  //     if (is_login) {
-  //       history.push("/post/add"); //페이지 먼저 넘기기
-  //     }
-  //   });
-  // };
 
   const editClick = () => {
     const editData = {
@@ -185,7 +179,6 @@ const Detail = ({ history, location, match }) => {
   };
 
   React.useEffect(() => {
-    // setData(getPostByID(id));
     dispatch(loginCheckAction.isLoginMW());
     const id = window.location.pathname.split("/")[2];
     apis
@@ -199,23 +192,20 @@ const Detail = ({ history, location, match }) => {
             bookmark: data.data.bookmarkCheck,
           });
           setLikeCount(data.data.likeCount);
-        } else {
         }
       })
-
-      .catch((err) => {});
+      .catch((err) => {
+        alert(err);
+      });
 
     dispatch(textLogo(false));
   }, [dispatch]);
 
-  //슬라이더 세팅
   const settings = {
     infinite: true,
     slidesToShow: 4,
     slidesToScroll: 4,
     swipeToSlide: true,
-    // adaptiveHeight:true,
-
     nextArrow: <SampleNextArrow />,
     prevArrow: <SamplePrevArrow />,
   };
@@ -231,6 +221,12 @@ const Detail = ({ history, location, match }) => {
 
   return (
     <React.Fragment>
+      <HelmetComp
+        title={data.title}
+        url={`https://stellakorea.co.kr/detail/${data.id}`}
+        contents={data.contents}
+        frame={data.img}
+      />
       <StyledDetail className="CommonPageStyle CommonGap">
         <div className="detailInfoETC">
           <MapBox>

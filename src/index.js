@@ -6,18 +6,30 @@ import { Provider } from "react-redux";
 import store from "./redux/configureStore";
 import { GlobalStyle } from "./shared/global";
 import { BrowserRouter } from "react-router-dom";
+import { hydrate, render } from "react-dom";
 
-ReactDOM.render(
-  <Provider store={store}>
-    <GlobalStyle />
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
-  </Provider>,
-  document.getElementById("root")
-);
+const rootElement = document.getElementById("root");
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
+if (rootElement.hasChildNodes()) {
+  hydrate(
+    <Provider store={store}>
+      <GlobalStyle />
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
+    </Provider>,
+    rootElement
+  );
+} else {
+  render(
+    <Provider store={store}>
+      <GlobalStyle />
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
+    </Provider>,
+    rootElement
+  );
+}
+
 reportWebVitals();

@@ -22,6 +22,7 @@ import { result } from "lodash";
 import { changeSortMW } from "../redux/modules/community";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
+import HelmetComp from "../components/HelmetComp";
 
 const MainCommunity = (props) => {
   const dispatch = useDispatch();
@@ -31,6 +32,8 @@ const MainCommunity = (props) => {
   const page_info = useSelector((state) => state.card.paging);
   const is_login = useSelector((state) => state.login.is_login);
   const sort = useSelector((state) => state.community.sort);
+
+  console.log(page_info);
 
   const [activeClass, setActive] = React.useState([true, false, false]);
   const [pageNum, setPageNum] = React.useState({ current: 1, max: 2 });
@@ -80,6 +83,7 @@ const MainCommunity = (props) => {
   };
   return (
     <React.Fragment>
+      <HelmetComp title="커뮤니티" url="https://stellakorea.co.kr/community" />
       <div
         onScroll={scrollEvent}
         id="card_container"

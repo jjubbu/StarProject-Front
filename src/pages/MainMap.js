@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { CustomOverlayMap, Map, MapMarker } from "react-kakao-maps-sdk";
 import _ from "lodash";
 
+import HelmetComp from "../components/HelmetComp";
 import ic_location_off from "../img/map/ic_location_off.svg";
 import ic_location_on from "../img/map/ic_location_on.svg";
 import ic_map from "../img/map/ic_map.svg";
@@ -16,13 +17,10 @@ import ic_logo from "../img/ic_logo.svg";
 import { apis } from "../lib/axios";
 
 import { history } from "../redux/configureStore";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { textLogo } from "../redux/modules/header";
-import { actionCreators as userLocationAction } from "../redux/modules/user";
 
 const MainMap = () => {
-  const user_location = useSelector((state) => state.user.user_location);
-
   const [is_search, setSearch] = React.useState(false);
   const [is_loading, setLoading] = React.useState();
   const [searchValue, setSearchValue] = React.useState("");
@@ -245,6 +243,7 @@ const MainMap = () => {
 
   return (
     <React.Fragment>
+      <HelmetComp title="지도" url="https://stellakorea.co.kr/map" />
       <div className="CommonPageStyle CommonGap">
         <StyledMap>
           <ResultBox>
@@ -638,6 +637,7 @@ const ResultListBox = styled.ul`
     }
     .campInfo {
       display: flex;
+      flex: 1;
       height: 92px;
       flex-direction: column;
       justify-content: space-between;
@@ -645,6 +645,10 @@ const ResultListBox = styled.ul`
         font-weight: bold;
         font-size: 16px;
         line-height: 20px;
+        width: 100%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
       }
       .title p {
         font-weight: normal;

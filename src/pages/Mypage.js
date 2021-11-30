@@ -9,6 +9,7 @@ import ic_profile from "../img/ic_profile.svg";
 import ic_logo from "../img/ic_logo.svg";
 
 import { actionCreators as loginCheckAction } from "../redux/modules/login";
+import HelmetComp from "../components/HelmetComp";
 
 const Mypage = ({ history }) => {
   const user_info = useSelector((state) => state.login.user_info);
@@ -33,7 +34,7 @@ const Mypage = ({ history }) => {
         }
       })
       .catch((error) => {
-        console.log(error);
+        alert(error);
       });
   };
 
@@ -48,7 +49,7 @@ const Mypage = ({ history }) => {
         setTimeout(500);
       })
       .catch((err) => {
-        console.log(err);
+        alert(err);
       });
   };
 
@@ -61,7 +62,6 @@ const Mypage = ({ history }) => {
       .getMyBookmarkAX(offset)
       .then((response) => {
         const data = response.data.data;
-        console.log("data:::", data);
         setBookmarkList((prev) => [...prev, data.dataList]);
         setMaxPage((prev) => ({ ...prev, bookmark: data.maxPage }));
         setDataSize((prev) => ({ ...prev, bookmark: data.dataSize }));
@@ -69,7 +69,7 @@ const Mypage = ({ history }) => {
         setTimeout(500);
       })
       .catch((error) => {
-        console.log(error);
+        alert(error);
       });
   };
 
@@ -108,6 +108,7 @@ const Mypage = ({ history }) => {
 
   return (
     <React.Fragment>
+      <HelmetComp title="마이페이지" url="https://stellakorea.co.kr/mypage" />
       <MypageStyled className="CommonPageStyle">
         <div className="leftBox">
           <UserProfile>
