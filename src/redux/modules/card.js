@@ -1,7 +1,6 @@
 import { createAction, handleActions } from "redux-actions";
 import { produce } from "immer";
 
-import { api } from "../../shared/apis";
 import { apis } from "../../lib/axios";
 
 import { actionCreators as loginCheckAction } from "./login";

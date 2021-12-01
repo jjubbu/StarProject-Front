@@ -25,11 +25,16 @@ const MainCommunity = (props) => {
   const sort = useSelector((state) => state.community.sort);
 
   const [pageNum, setPageNum] = React.useState({ current: 1, max: 2 });
+  const [cardList, setCardList] = React.useState([]);
 
   React.useEffect(() => {
     dispatch(textLogo(false));
     dispatch(postActions.getCardDB("star", "", 1));
   }, [dispatch]);
+
+  React.useEffect(() => {
+    setCardList(cardList);
+  }, [card_list]);
 
   const scrollEvent = () => {
     let scrollHeight = document.getElementById("card_container").scrollHeight;
@@ -46,6 +51,7 @@ const MainCommunity = (props) => {
         );
         apis.getCardAX(sort, "", pageNum.current + 1).then((response) => {
           const data = response.data.data;
+          console.log(data);
           const mergeData = card_list.concat(...data.dataList);
           dispatch(postActions.setCard(mergeData));
           setPageNum((prev) => ({ ...prev, max: data.maxPage }));
@@ -65,6 +71,8 @@ const MainCommunity = (props) => {
 
   const tapClick = (e) => {
     const name = e.target.getAttribute("name");
+    setPageNum((prev) => ({ ...prev, max: 2 }));
+
     dispatch(changeSortMW(name));
     setPageNum((prev) => ({
       ...prev,
