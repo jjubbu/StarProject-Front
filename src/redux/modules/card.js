@@ -5,6 +5,13 @@ import { apis } from "../../lib/axios";
 
 import { actionCreators as loginCheckAction } from "./login";
 
+const initialState = {
+  list: [],
+  likeInfo: [],
+  bookmarkCheck: [],
+  paging: { currentPage: 1, maxPage: 0, dataSize: 0 },
+};
+
 // Action Types
 
 const SET_CARD = "SET_CARD";
@@ -32,13 +39,6 @@ const setSearchList = createAction(SET_SEARCHLIST, (search_list) => ({
   search_list,
 }));
 // initial state
-
-const initialState = {
-  list: [],
-  likeInfo: [],
-  bookmarkCheck: [],
-  paging: { currentPage: 1, maxPage: 0, dataSize: 0 },
-};
 
 // middleware
 const setPageDB = (sort, cityName, offset) => {

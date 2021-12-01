@@ -33,7 +33,7 @@ const MainCommunity = (props) => {
   }, [dispatch]);
 
   React.useEffect(() => {
-    setCardList(cardList);
+    setCardList(card_list);
   }, [card_list]);
 
   const scrollEvent = () => {
@@ -51,11 +51,15 @@ const MainCommunity = (props) => {
         );
         apis.getCardAX(sort, "", pageNum.current + 1).then((response) => {
           const data = response.data.data;
-          console.log(data);
-          const mergeData = card_list.concat(...data.dataList);
-          dispatch(postActions.setCard(mergeData));
+          const mergeData = cardList.concat(...data.dataList);
+          if (sort === "star") {
+            dispatch(postActions.setCard(mergeData));
+          } else {
+            setCardList(mergeData);
+          }
           setPageNum((prev) => ({ ...prev, max: data.maxPage }));
-          setTimeout(500);
+          setTimeout(100);
+          console.log(response);
         });
       }
     }
@@ -71,17 +75,22 @@ const MainCommunity = (props) => {
 
   const tapClick = (e) => {
     const name = e.target.getAttribute("name");
-    setPageNum((prev) => ({ ...prev, max: 2 }));
-
+    setPageNum({ current: 1, max: 2 });
     dispatch(changeSortMW(name));
-    setPageNum((prev) => ({
-      ...prev,
-      current: 1,
-    }));
+
     const elements = document.getElementsByClassName("tab on");
     if (elements.length > 0) {
       elements[0].classList.remove("on");
       e.target.classList.add("on");
+    }
+
+    if (name === "star") {
+      setCardList(card_list);
+    } else {
+      apis.getCardAX(name, "", 1).then((response) => {
+        const data = response.data.data.dataList;
+        setCardList(data);
+      });
     }
   };
 
@@ -134,7 +143,7 @@ const MainCommunity = (props) => {
               </button>
             </TopDiv>
             <Wrapper>
-              {card_list.map((p, i) => {
+              {cardList.map((p, i) => {
                 return <Card key={i} cardID={p.id} {...p}></Card>;
               })}
             </Wrapper>
@@ -156,7 +165,6 @@ const Wrapper = styled.div`
   gap: 24px;
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
   margin: auto;
 `;
 
