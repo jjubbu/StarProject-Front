@@ -294,7 +294,6 @@ const Signup = () => {
 const StyleArticle = styled.article`
   margin: 56px auto 0;
   width: 432px;
-  height: 100%;
 
   h1 {
     text-align: center;
