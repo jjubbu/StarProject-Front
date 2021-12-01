@@ -43,7 +43,8 @@ const AddEditPost = () => {
 
   const imageInputClick = (e) => {
     const reader = new FileReader();
-    const file = imageInputREF.current.files[0];
+    const file = imageInputREF.current.files;
+    // console.log(file[1]);
     if (file) {
       reader.readAsDataURL(file);
       reader.onloadend = () => {
@@ -250,6 +251,7 @@ const AddEditPost = () => {
               ref={imageInputREF}
               id="imgInput"
               onChange={imageInputClick}
+              multiple
             />
 
             <CustomToolbar />
