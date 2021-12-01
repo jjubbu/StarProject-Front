@@ -13,6 +13,8 @@ import ic_moonrise from "../img/ic_moonrise.svg";
 import ic_moonset from "../img/ic_moonset.svg";
 import ic_mypage from "../img/ic_mypage.svg";
 import ic_sunny from "../img/weather/ic_sunny.svg";
+import ic_cloudy from "../img/weather/ic_cloudy.svg"; //구름많음
+import ic_overcast from "../img/weather/ic_overcast.svg"; //흐림
 import ic_heart from "../img/ic_heart.svg";
 import ic_heart_on from "../img/ic_heart_on.svg";
 import ic_bookmark from "../img/ic_bookmark_off.svg";
@@ -300,7 +302,18 @@ const Detail = ({ history, location, match }) => {
                           {l.time.slice(0, 2) + ":" + l.time.slice(2, 4)}
                         </td>
                         <td>
-                          <img src={ic_sunny} alt="weather" />
+                          <img
+                            src={
+                              l?.weather === "맑음"
+                                ? ic_sunny
+                                : l?.weather === "흐림"
+                                ? ic_overcast
+                                : l?.weather === "구름 조금 많음"
+                                ? ic_cloudy
+                                : null
+                            }
+                            alt="weather"
+                          />
                         </td>
                         <td className="openSans temperature">
                           {l.temperature}°
