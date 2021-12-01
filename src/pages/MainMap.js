@@ -69,6 +69,7 @@ const MainMap = () => {
     const longitude = position.longitude;
     setMapLocation({ lat: latitude, lon: longitude });
     const p = `x_location=${longitude}&y_location=${latitude}&`;
+    setParams(p);
     getMapList(p, 1);
     setLoading(false);
   };
@@ -115,7 +116,6 @@ const MainMap = () => {
     []
   );
 
-  //자동완성 클릭
   const autoSearchClick = (text) => {
     setParams(`cityName=${text}&`);
     if (text !== "검색 결과가 없습니다.") {
@@ -149,8 +149,6 @@ const MainMap = () => {
         });
     }
   };
-
-  //검색 엔터
   const searchCity = (e) => {
     const text = e.target.value;
     const p = `cityName=${text}&`;
@@ -195,7 +193,6 @@ const MainMap = () => {
     setMapLocation({ lat: latitude, lon: longitude });
   };
 
-  // 무한스크롤
   const scrollEvent = (e) => {
     let scrollHeight = document.getElementById("container").scrollHeight;
     let scrollTop = document.getElementById("container").scrollTop;
@@ -287,7 +284,9 @@ const MainMap = () => {
                   );
                 })
               ) : (
-                <h1>검색 결과가 없습니다.</h1>
+                <div>
+                  <h3>검색 결과가 없습니다.</h3>
+                </div>
               )}
             </ResultListBox>
           </ResultBox>
@@ -488,10 +487,10 @@ const SearchBox = styled.div`
   .on {
     display: none;
   }
-  .off:active {
+  .off:hover {
     display: none;
   }
-  .off:active ~ .on {
+  .off:hover ~ .on {
     display: block;
   }
   label {
@@ -541,7 +540,7 @@ const ResultHeader = styled.div`
   justify-content: space-between;
 
   h3 {
-    font-weight: bold;
+    font-weight: 600;
     font-size: 16px;
     line-height: 20px;
   }
@@ -642,7 +641,7 @@ const ResultListBox = styled.ul`
       flex-direction: column;
       justify-content: space-between;
       h3 {
-        font-weight: bold;
+        font-weight: 600;
         font-size: 16px;
         line-height: 20px;
         width: 100%;
@@ -689,6 +688,16 @@ const ResultListBox = styled.ul`
         color: #ffffff;
         padding-top: 6px;
       }
+    }
+  }
+  & > div {
+    display: flex;
+    width: 100%;
+    height: 710px;
+    align-items: center;
+    justify-content: center;
+    h3 {
+      font-weight: 400;
     }
   }
 `;
