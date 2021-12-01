@@ -3,8 +3,6 @@ import { produce } from "immer";
 
 import { apis } from "../../lib/axios";
 
-import { actionCreators as loginCheckAction } from "./login";
-
 const initialState = {
   list: [],
   paging: { currentPage: 1, maxPage: 0, dataSize: 0 },

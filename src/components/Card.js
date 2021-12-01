@@ -11,8 +11,8 @@ import ic_bookmark_off from "../img/ic_bookmark_off.svg";
 import ic_bookmark_on from "../img/ic_bookmark_on.svg";
 import ic_logo from "../img/ic_logo.svg";
 
-import { useDispatch, useSelector } from "react-redux";
-import { actionCreators as likeActions } from "../redux/modules/card";
+import { useSelector } from "react-redux";
+import { apis } from "../lib/axios";
 
 const Card = (props) => {
   const [state, setstate] = React.useState({
@@ -24,16 +24,32 @@ const Card = (props) => {
   const cardClick = () => {
     history.push(`detail/${props.cardID}`);
   };
+
+  const inApis = (code, name, msg) => {
+    const count =
+      name === "like"
+        ? { likeCount: state.likeCount + (state.like ? -1 : 1) }
+        : null;
+    code !== 500
+      ? setstate((prev) => ({
+          ...prev,
+          [name]: !state[name],
+          ...count,
+        }))
+      : alert(msg);
+  };
   const iconClick = (e) => {
     const name = e.target.getAttribute("name");
     if (!is_login) {
       history.push("/login");
     } else {
-      const count =
-        name === "like"
-          ? { likeCount: state.likeCount + (state.like ? -1 : 1) }
-          : null;
-      setstate((prev) => ({ ...prev, [name]: !state[name], ...count }));
+      name === "like"
+        ? apis.postLikeAX(props.cardID).then((response) => {
+            inApis(response.data.code, name, response.data.msg);
+          })
+        : apis.postBookmarkAX(props.cardID).then((response) => {
+            inApis(response.data.code, name, response.data.msg);
+          });
     }
     e.stopPropagation();
   };
