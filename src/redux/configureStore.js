@@ -8,7 +8,6 @@ import header from "./modules/header";
 import star from "./modules/star";
 import user from "./modules/user";
 import edit from "./modules/edit";
-import community from "./modules/community";
 
 export const history = createBrowserHistory();
 
@@ -19,7 +18,6 @@ const rootReducer = combineReducers({
   star: star,
   user: user,
   edit: edit,
-  community: community,
   router: connectRouter(history),
 });
 

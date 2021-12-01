@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import Card from "../components/Card";
 import { useHistory } from "react-router";
+import _ from "lodash";
 
 import { apis } from "../lib/axios";
 import ic_write from "../img/ic_write.svg";
@@ -13,7 +14,6 @@ import HelmetComp from "../components/HelmetComp";
 import { actionCreators as postActions } from "../redux/modules/card";
 import { useSelector, useDispatch } from "react-redux";
 import { textLogo } from "../redux/modules/header";
-import { changeSortMW } from "../redux/modules/community";
 
 const MainCommunity = () => {
   const dispatch = useDispatch();
@@ -21,10 +21,11 @@ const MainCommunity = () => {
 
   const card_list = useSelector((state) => state.card.list);
   const is_login = useSelector((state) => state.login.is_login);
-  const sort = useSelector((state) => state.community.sort);
 
   const [pageNum, setPageNum] = React.useState({ current: 1, max: 2 });
   const [cardList, setCardList] = React.useState([]);
+  const [searchKey, setSearchKey] = React.useState();
+  const [sort, setSort] = React.useState("star");
 
   React.useEffect(() => {
     dispatch(textLogo(false));
@@ -42,50 +43,64 @@ const MainCommunity = () => {
     if (scrollTop + clientHeight >= scrollHeight) {
       if (!(pageNum.current > pageNum.max)) {
         setPageNum((prev) => ({ ...prev, current: pageNum.current + 1 }));
-        apis.getCardAX(sort, "", pageNum.current + 1).then((response) => {
-          const data = response.data.data;
-          const mergeData = cardList.concat(...data.dataList);
-          if (sort === "star") {
-            dispatch(postActions.setCard(mergeData));
-          } else {
-            setCardList(mergeData);
-          }
-          setPageNum((prev) => ({ ...prev, max: data.maxPage }));
-          setTimeout(100);
-          console.log(response);
-        });
+        apis
+          .getCardAX(sort, searchKey, pageNum.current + 1)
+          .then((response) => {
+            const data = response.data.data;
+            const mergeData = cardList.concat(...data.dataList);
+            if (sort === "star") {
+              dispatch(postActions.setCard(mergeData));
+            } else {
+              setCardList(mergeData);
+            }
+            setPageNum((prev) => ({ ...prev, max: data.maxPage }));
+            setTimeout(100);
+          });
       }
-    }
-  };
-
-  const searchCity = (e) => {
-    const text = e.target.value;
-    const p = `&cityName=${text}`;
-    if (window.event.keyCode === 13) {
-      dispatch(postActions.getSearchListDB(sort, p, 1));
     }
   };
 
   const tapClick = (e) => {
     const name = e.target.getAttribute("name");
     setPageNum({ current: 1, max: 2 });
-    dispatch(changeSortMW(name));
-
+    setSort(name);
     const elements = document.getElementsByClassName("tab on");
     if (elements.length > 0) {
       elements[0].classList.remove("on");
       e.target.classList.add("on");
     }
 
-    if (name === "star") {
-      setCardList(card_list);
+    if (searchKey === "") {
+      name === "star" ? setCardList(card_list) : getCard(name, "");
     } else {
-      apis.getCardAX(name, "", 1).then((response) => {
-        const data = response.data.data.dataList;
-        setCardList(data);
-      });
+      getCard(name, searchKey);
     }
   };
+
+  const getCard = (sortWord, key) => {
+    apis
+      .getCardAX(sortWord, key, 1)
+      .then((response) => {
+        const data = response.data.data.dataList;
+        setCardList(data);
+      })
+      .catch((err) => alert(err));
+  };
+
+  const inputValue = React.useCallback(
+    _.debounce((e) => {
+      const value = e.target.value;
+      if (value === "") {
+        setSearchKey("");
+        getCard(sort, "");
+      } else {
+        const p = `&cityName=${value}`;
+        setSearchKey(p);
+        getCard(sort, p);
+      }
+    }, 500),
+    [sort]
+  );
 
   return (
     <React.Fragment>
@@ -118,7 +133,7 @@ const MainCommunity = () => {
                 <input
                   type="text"
                   placeholder="검색어를 입력하세요"
-                  onKeyPress={searchCity}
+                  onChange={inputValue}
                   className="openSans"
                 />
               </label>
