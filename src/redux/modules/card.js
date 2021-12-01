@@ -7,20 +7,14 @@ import { actionCreators as loginCheckAction } from "./login";
 
 const initialState = {
   list: [],
-  likeInfo: [],
-  bookmarkCheck: [],
   paging: { currentPage: 1, maxPage: 0, dataSize: 0 },
 };
 
 // Action Types
 
 const SET_CARD = "SET_CARD";
-const SET_LIKE = "SET_LIKE";
-const SET_BOOKMARK = "SET_BOOKMARK";
 const SET_INFINITY_CARD = "SET_INFINITY_CARD";
-
 const SET_SEARCHLIST = "SET_SEARCHLIST";
-
 const SET_PAGE = "SET_PAGE";
 
 // Action creators
@@ -29,11 +23,6 @@ const setInfinityCard = createAction(SET_INFINITY_CARD, (card_list) => ({
   card_list,
 }));
 const setCard = createAction(SET_CARD, (card) => ({ card }));
-
-const setLike = createAction(SET_LIKE, (likeInfo) => ({ likeInfo }));
-const setBookmark = createAction(SET_BOOKMARK, (bookmarkCheck) => ({
-  bookmarkCheck,
-}));
 const setPage = createAction(SET_PAGE, (pageInfo) => ({ pageInfo }));
 const setSearchList = createAction(SET_SEARCHLIST, (search_list) => ({
   search_list,
@@ -128,38 +117,6 @@ const getInfinityScrollCardDB = (sort, cityName) => {
   };
 };
 
-const postLikeDB = (id, offset) => {
-  return function (dispatch, getState, { history }) {
-    dispatch(loginCheckAction.isLoginMW());
-
-    apis
-      .postLikeAX(id, offset)
-      .then((res) => {
-        const newLikeInfo = res.data.data;
-        dispatch(setLike(newLikeInfo));
-      })
-      .catch((error) => {
-        window.alert("좋아요 정보를 가져올 수 없습니다");
-      });
-  };
-};
-
-const postBookmarkDB = (id) => {
-  return function (dispatch, getState, { history }) {
-    dispatch(loginCheckAction.isLoginMW());
-
-    apis
-      .postBookmarkAX(id)
-      .then((res) => {
-        const newBookmarkInfo = res.data.data;
-        dispatch(setBookmark(newBookmarkInfo));
-      })
-      .catch((error) => {
-        window.alert("좋아요 정보를 가져올 수 없습니다");
-      });
-  };
-};
-
 // reducer
 
 export default handleActions(
@@ -187,26 +144,6 @@ export default handleActions(
       produce(state, (draft) => {
         draft.list = draft.list.concat(...action.payload.card_list);
       }),
-
-    [SET_LIKE]: (state, action) =>
-      produce(state, (draft) => {
-        draft.likeInfo = action.payload.likeInfo;
-        let idx = draft.list.findIndex(
-          (p) => p.id === action.payload.likeInfo.cardId
-        );
-        draft.list[idx].likeCheck = action.payload.likeInfo.likeCheck;
-        draft.list[idx].likeCount = action.payload.likeInfo.likeCount;
-      }),
-
-    [SET_BOOKMARK]: (state, action) =>
-      produce(state, (draft) => {
-        draft.bookmarkCheck = action.payload.bookmarkCheck;
-        let idx = draft.list.findIndex(
-          (p) => p.id === action.payload.bookmarkCheck.cardId
-        );
-        draft.list[idx].bookmarkCheck =
-          action.payload.bookmarkCheck.bookmarkCheck;
-      }),
   },
   initialState
 );
@@ -216,8 +153,6 @@ const actionCreators = {
   setCard,
   setPage,
   getCardDB,
-  postLikeDB,
-  postBookmarkDB,
   getInfinityScrollCardDB,
   getSearchListDB,
   setPageDB,

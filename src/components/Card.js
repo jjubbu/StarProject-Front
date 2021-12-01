@@ -15,11 +15,35 @@ import { useDispatch, useSelector } from "react-redux";
 import { actionCreators as likeActions } from "../redux/modules/card";
 
 const Card = (props) => {
-  const dispatch = useDispatch();
+  const [state, setstate] = React.useState({
+    like: false,
+    bookmark: false,
+    likeCount: 0,
+  });
   const is_login = useSelector((state) => state.login.is_login);
-  const cardClick = (e) => {
+  const cardClick = () => {
     history.push(`detail/${props.cardID}`);
   };
+  const iconClick = (e) => {
+    const name = e.target.getAttribute("name");
+    if (!is_login) {
+      history.push("/login");
+    } else {
+      const count =
+        name === "like"
+          ? { likeCount: state.likeCount + (state.like ? -1 : 1) }
+          : null;
+      setstate((prev) => ({ ...prev, [name]: !state[name], ...count }));
+    }
+    e.stopPropagation();
+  };
+  React.useEffect(() => {
+    setstate({
+      like: props.likeCheck,
+      bookmark: props.bookmarkCheck,
+      likeCount: props.likeCount,
+    });
+  }, [props]);
 
   return (
     <Wrapper onClick={cardClick}>
@@ -62,32 +86,20 @@ const Card = (props) => {
           <div className="likeDiv">
             <img
               className="ic_heart_on"
-              src={props.likeCheck ? ic_heart_on : ic_heart}
-              onClick={(e) => {
-                if (!is_login) {
-                  history.push("/login");
-                } else {
-                  dispatch(likeActions.postLikeDB(props.id));
-                }
-                e.stopPropagation();
-              }}
+              src={state.like ? ic_heart_on : ic_heart}
+              name="like"
+              onClick={iconClick}
               alt="ic_heart_on"
             />
-            <p className="like">{props.likeCount}</p>
+            <p className="like">{state.likeCount}</p>
 
             <div className="bookmarkDiv">
               <img
                 className="ic_bookmark_off"
-                src={props.bookmarkCheck ? ic_bookmark_on : ic_bookmark_off}
+                src={state.bookmark ? ic_bookmark_on : ic_bookmark_off}
                 alt="ic_bookmark_off"
-                onClick={(e) => {
-                  if (!is_login) {
-                    history.push("/login");
-                  } else {
-                    dispatch(likeActions.postBookmarkDB(props.id));
-                  }
-                  e.stopPropagation();
-                }}
+                name="bookmark"
+                onClick={iconClick}
               />
             </div>
           </div>
