@@ -15,12 +15,11 @@ import { useSelector, useDispatch } from "react-redux";
 import { textLogo } from "../redux/modules/header";
 import { changeSortMW } from "../redux/modules/community";
 
-const MainCommunity = (props) => {
+const MainCommunity = () => {
   const dispatch = useDispatch();
   const history = useHistory();
 
   const card_list = useSelector((state) => state.card.list);
-  const page_info = useSelector((state) => state.card.paging);
   const is_login = useSelector((state) => state.login.is_login);
   const sort = useSelector((state) => state.community.sort);
 
@@ -43,12 +42,6 @@ const MainCommunity = (props) => {
     if (scrollTop + clientHeight >= scrollHeight) {
       if (!(pageNum.current > pageNum.max)) {
         setPageNum((prev) => ({ ...prev, current: pageNum.current + 1 }));
-        dispatch(
-          postActions.setPage({
-            ...page_info,
-            currentPage: page_info.currentPage + 1,
-          })
-        );
         apis.getCardAX(sort, "", pageNum.current + 1).then((response) => {
           const data = response.data.data;
           const mergeData = cardList.concat(...data.dataList);
