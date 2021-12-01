@@ -48,6 +48,11 @@ const Main = () => {
       });
   };
 
+  const scrollDown = () => {
+    const location = document.querySelector("#scrollDown").offsetTop;
+    window.scrollTo({ top: location, behavior: "smooth" });
+  };
+
   React.useEffect(() => {
     dispatch(textLogo(true));
     dispatch(loginCheckAction.isLoginMW());
@@ -79,7 +84,12 @@ const Main = () => {
             밤하늘 야경 명당 캠핑장 <br />
             실시간 별자리 찾기
           </h3>
-          <img src={arrow} alt="scroll down" />
+          <img
+            src={arrow}
+            alt="scroll down"
+            id="scrollDown"
+            onClick={scrollDown}
+          />
         </VisualBox>
         <ContentBox>
           <h3>별보기 좋은 곳</h3>
