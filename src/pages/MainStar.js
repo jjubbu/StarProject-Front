@@ -154,7 +154,13 @@ const MainStar = () => {
               <div className="title">
                 <img src={ic_star} alt="star icon" />
                 <h3>관측지수</h3>
-                <p>별보기 좋은날 :)</p>
+                <p>
+                  {star_notice.starGazing > 7
+                    ? "별보기 좋은날 :)"
+                    : star_notice.starGazing <= 7 && star_notice.starGazing > 4
+                    ? "별이 보이긴 하는 날 :|"
+                    : "별 보기 어려운 날 :("}
+                </p>
               </div>
               <div className="bar">
                 <div>
