@@ -92,7 +92,7 @@ const Card = (props) => {
             </Text>
           </ContentDiv>
         </TextDiv>
-        <DateDiv>{props.modifiedAt} 작성</DateDiv>
+        <DateDiv>{props.modifiedAt}</DateDiv>
         <BottomDiv>
           <div className="profile">
             <img src={ic_profile} alt="ic_profile" />
