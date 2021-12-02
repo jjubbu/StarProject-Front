@@ -14,6 +14,7 @@ import HelmetComp from "../components/HelmetComp";
 import { useSelector, useDispatch } from "react-redux";
 import { history } from "../redux/configureStore";
 import { actionCreators as editDataAction } from "../redux/modules/edit";
+import { actionCreators as loginCheckAction } from "../redux/modules/login";
 
 const AddEditPost = () => {
   const [pathNow, setPathNow] = React.useState("add");
@@ -140,13 +141,20 @@ const AddEditPost = () => {
       title: titleREF.current.value,
       address: addressREF.current.value,
     };
+    let contentInner = String(uploadResult.content).replace(
+      /<[^>]+>/g,
+      ""
+    ).length;
 
     if (
       Object.keys(uploadResult).find(
         (key) => key !== "img" && uploadResult[key] === ""
       )
     ) {
-      alert("제목, 글 내용, 주소를 전부 입력해주세요!");
+      alert("제목 혹은 주소를 전부 입력해주세요!");
+      return;
+    } else if (contentInner === 9) {
+      alert("게시글 내용을 입력해주세요!");
       return;
     } else {
       if (warn === "warn") {
