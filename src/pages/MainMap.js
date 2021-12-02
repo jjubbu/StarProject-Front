@@ -98,14 +98,13 @@ const MainMap = () => {
       _.debounce((e) => {
         const text = e.target.value;
         if (text !== "") {
-          setSearch(true);
           apis
             .getMapSearchAX(text)
             .then((response) => {
-              if (response.data.data.length !== 0) {
+              console.log(response);
+              if (response.data.data.length > 0) {
+                setSearch(true);
                 setSearchList(response.data.data);
-              } else {
-                setSearchList([{ address: "검색 결과가 없습니다." }]);
               }
             })
             .catch((err) => {
@@ -158,7 +157,6 @@ const MainMap = () => {
     if (window.event.keyCode === 13) {
       apis.getMapListAX(p, 1).then((response) => {
         const data = response.data.data;
-
         if (data) {
           const list = [...data.dataList].sort((x, y) => {
             return x.title > y.title ? -1 : x.title < y.title ? 1 : 0;
