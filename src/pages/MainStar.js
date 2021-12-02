@@ -34,9 +34,10 @@ const MainStar = () => {
 
   React.useEffect(() => {
     dispatch(textLogo(false));
-    dispatch(starUserAction.userLocationMW("star"));
-    dispatch(starAction.starHotMW());
-    dispatch(starAction.starPhotoMW());
+    if (is_loading.photo) dispatch(starAction.starPhotoMW());
+    if (is_loading.notice) dispatch(starAction.starHotMW());
+    if (is_loading.weather && is_loading.notice)
+      dispatch(starUserAction.userLocationMW("star"));
   }, [dispatch]);
 
   const liArray = Array.from(new Array(11).keys());

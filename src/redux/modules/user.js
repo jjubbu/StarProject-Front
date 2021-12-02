@@ -16,7 +16,7 @@ const userLocation = createAction(USER_LOCATION, (object) => ({
 }));
 
 const userLocationMW = (page) => {
-  return async function (dispatch) {
+  return async function (dispatch, getState) {
     dispatch(starAction.loading({ weather: true, notice: true }));
 
     const options = {
