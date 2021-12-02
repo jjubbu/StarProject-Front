@@ -2,8 +2,16 @@ import React from "react";
 import styled from "styled-components";
 
 const CommonInput = (props) => {
-  const { onChange, name, placeholder, value, border, background, type } =
-    props;
+  const {
+    onChange,
+    name,
+    placeholder,
+    value,
+    border,
+    background,
+    type,
+    onKeyPress,
+  } = props;
   return (
     <StyledInput
       onChange={onChange}
@@ -13,6 +21,7 @@ const CommonInput = (props) => {
       border={border}
       background={background}
       type={type}
+      onKeyPress={onKeyPress}
     />
   );
 };

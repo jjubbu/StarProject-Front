@@ -71,6 +71,12 @@ const Login = () => {
     }
   }, [dispatch]);
 
+  const keyPress = () => {
+    if (window.event.keyCode === 13) {
+      login();
+    }
+  };
+
   return (
     <React.Fragment>
       <HelmetComp title="로그인" url="https://stellakorea.co.kr/login" />
@@ -84,6 +90,7 @@ const Login = () => {
                 onChange={inputValue}
                 placeholder="아이디"
                 value={loginInfo.username}
+                onKeyPress={keyPress}
               />
             </label>
             <label>
@@ -92,6 +99,7 @@ const Login = () => {
                 onChange={inputValue}
                 placeholder="비밀번호"
                 type="password"
+                onKeyPress={keyPress}
               />
             </label>
             <CheckBox>
