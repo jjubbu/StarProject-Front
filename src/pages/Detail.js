@@ -614,7 +614,7 @@ const ContentBox = styled.section`
     }
     .contentsInner img {
       max-width: 100%;
-      margin: 38px 0;
+      margin: 10px 0;
     }
     .addressBox {
       display: flex;
@@ -624,6 +624,7 @@ const ContentBox = styled.section`
       width: fit-content;
       border-radius: 40px;
       padding: 21px 17px;
+      margin-bottom: 19px;
       gap: 8px;
     }
   }
