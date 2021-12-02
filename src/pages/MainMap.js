@@ -17,8 +17,9 @@ import ic_logo from "../img/ic_logo.svg";
 import { apis } from "../lib/axios";
 
 import { history } from "../redux/configureStore";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { textLogo } from "../redux/modules/header";
+import { actionCreators as locationAction } from "../redux/modules/user";
 
 const MainMap = () => {
   const [is_search, setSearch] = React.useState(false);
@@ -36,7 +37,7 @@ const MainMap = () => {
   const [is_markerClick, setIsMarkerClick] = React.useState(false);
   const [markerInfo, setMarkerInfo] = React.useState([{}]);
   const dispatch = useDispatch();
-
+  const user_location = useSelector((state) => state.user.user_location);
   const options = {
     enableHighAccuracy: true,
     timeout: 5000,
@@ -72,6 +73,7 @@ const MainMap = () => {
     setParams(p);
     getMapList(p, 1);
     setLoading(false);
+    dispatch(locationAction.userLocation({ lat: latitude, lon: longitude }));
   };
 
   const error = () => {
@@ -235,8 +237,15 @@ const MainMap = () => {
 
   React.useEffect(() => {
     dispatch(textLogo(false));
-    setLocation();
-  }, [dispatch]);
+    if (user_location.lon !== 0) {
+      setMapLocation(user_location);
+      const p = `x_location=${user_location.lon}&y_location=${user_location.lat}&`;
+      setParams(p);
+      getMapList(p, 1);
+    } else {
+      setLocation();
+    }
+  }, []);
 
   return (
     <React.Fragment>
