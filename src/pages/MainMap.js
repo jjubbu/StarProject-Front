@@ -198,7 +198,7 @@ const MainMap = () => {
     let scrollTop = document.getElementById("container").scrollTop;
     let clientHeight = document.getElementById("container").clientHeight;
     if (scrollTop + clientHeight >= scrollHeight) {
-      if (!(pageNum.page > pageNum.max)) {
+      if (pageNum.page <= pageNum.max) {
         setPageNum((prev) => ({ ...prev, page: pageNum.page + 1 }));
         apis
           .getMapListAX(params, Number(pageNum.page + 1))
@@ -206,7 +206,7 @@ const MainMap = () => {
             const data = response.data.data;
             const mergeData = resultList.concat(...data.dataList);
             setResultList(mergeData);
-            setDataSize(data.dataSize);
+            if (pageNum.page < pageNum.max) setDataSize(data.dataSize);
           })
           .catch((err) => {
             alert(err);
