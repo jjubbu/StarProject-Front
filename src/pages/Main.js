@@ -1,5 +1,5 @@
 import React from "react";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 
 import arrow from "../img/arrow.svg";
 import ic_map from "../img/map/ic_map.svg";
@@ -17,17 +17,8 @@ import { textLogo } from "../redux/modules/header";
 import { actionCreators as loginCheckAction } from "../redux/modules/login";
 
 const Main = () => {
-  const [boardList, setBoardList] = React.useState([
-    {
-      address: "",
-      bookmark: false,
-      contents: "",
-      id: 0,
-      img: "",
-      starGazing: 0,
-      title: "",
-    },
-  ]);
+  const [boardList, setBoardList] = React.useState([]);
+
   const is_login = useSelector((state) => state.login.is_login);
   const dispatch = useDispatch();
 
@@ -47,7 +38,6 @@ const Main = () => {
         alert(err);
       });
   };
-
   const scrollDown = () => {
     const location = document.querySelector("#scrollDown").offsetTop;
     window.scrollTo({ top: location, behavior: "smooth" });
@@ -84,64 +74,61 @@ const Main = () => {
             밤하늘 야경 명당 캠핑장 <br />
             실시간 별자리 찾기
           </h3>
-          <img
-            src={arrow}
-            alt="scroll down"
-            id="scrollDown"
-            onClick={scrollDown}
-          />
+          <img src={arrow} alt="scroll down" onClick={scrollDown} />
         </VisualBox>
-        <ContentBox>
+        <ContentBox id="scrollDown">
           <h3>별보기 좋은 곳</h3>
           <ul>
-            {boardList.map((l, idx) => {
-              return (
-                <Card
-                  key={idx}
-                  onClick={() => {
-                    history.push(`detail/${l.id}`);
-                  }}
-                >
-                  <ImageBox img={l.img}>
-                    <Address>
-                      <img src={ic_map} alt="address icon" />
-                      <p>{l.address}</p>
-                    </Address>
-                    <img
-                      src={l.img ? l.img : ic_logo}
-                      alt="camp"
-                      className="campImage"
-                    />
-                  </ImageBox>
-                  <div className="contentBox">
-                    <CardContent>
-                      <h3>{l.title}</h3>
-                      <div
-                        dangerouslySetInnerHTML={{ __html: l.contents }}
-                      ></div>
-                    </CardContent>
-                    <CardEtcBox>
-                      <div className="starGazing">
-                        <img src={ic_star} alt="star gazing icon" />{" "}
-                        <p>관측지수</p>
-                        <span className="openSans">{l.starGazing}</span>
-                      </div>
+            {boardList.length > 0
+              ? boardList.map((l, idx) => {
+                  return (
+                    <Card
+                      key={idx}
+                      onClick={() => {
+                        history.push(`detail/${l.id}`);
+                      }}
+                    >
+                      <ImageBox img={l.img}>
+                        <Address>
+                          <img src={ic_map} alt="address icon" />
+                          <p>{l.address}</p>
+                        </Address>
+                        <img
+                          src={l.img ? l.img : ic_logo}
+                          alt="camp"
+                          className="campImage"
+                        />
+                      </ImageBox>
+                      <div className="contentBox">
+                        <CardContent>
+                          <h3>{l.title}</h3>
+                          <div
+                            dangerouslySetInnerHTML={{ __html: l.contents }}
+                          ></div>
+                        </CardContent>
+                        <CardEtcBox>
+                          <div className="starGazing">
+                            <img src={ic_star} alt="star gazing icon" />{" "}
+                            <p>관측지수</p>
+                            <span className="openSans">{l.starGazing}</span>
+                          </div>
 
-                      <img
-                        src={l.bookmark ? ic_bookmark_on : ic_bookmark_off}
-                        alt="bookmark"
-                        className="bookmark"
-                        cardid={l.id}
-                        onClick={(e) => {
-                          bookmarkCheck(l.id, idx);
-                          e.stopPropagation();
-                        }}
-                      />
-                    </CardEtcBox>
-                  </div>
-                </Card>
-              );
-            })}
+                          <img
+                            src={l.bookmark ? ic_bookmark_on : ic_bookmark_off}
+                            alt="bookmark"
+                            className="bookmark"
+                            cardid={l.id}
+                            onClick={(e) => {
+                              bookmarkCheck(l.id, idx);
+                              e.stopPropagation();
+                            }}
+                          />
+                        </CardEtcBox>
+                      </div>
+                    </Card>
+                  );
+                })
+              : null}
           </ul>
         </ContentBox>
       </StyldMain>
@@ -150,6 +137,11 @@ const Main = () => {
 };
 
 const StyldMain = styled.div``;
+
+const fadeInAni = keyframes`
+0%{opacity:0;}
+100%{opacity:100%;}
+`;
 
 const VisualBox = styled.section`
   height: 772px;
@@ -166,6 +158,7 @@ const VisualBox = styled.section`
     z-index: -10;
     background-position: center;
     background-size: cover;
+    animation: ${fadeInAni} 1s ease-in;
   }
 
   .visualText {
@@ -185,6 +178,7 @@ const VisualBox = styled.section`
 const ContentBox = styled.main`
   max-width: 1200px;
   margin: 100px auto 114px;
+  animation: ${fadeInAni} 1s ease-in;
 
   & > h3 {
     font-weight: bold;
@@ -196,6 +190,8 @@ const ContentBox = styled.main`
     width: 100%;
     gap: 24px;
     margin-top: 24px;
+  }
+  &[ani="true"] {
   }
 `;
 
