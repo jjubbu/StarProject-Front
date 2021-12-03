@@ -1,12 +1,13 @@
 import React from "react";
-import ReactDOM from "react-dom";
-import App from "./shared/App";
 import reportWebVitals from "./reportWebVitals";
 import { Provider } from "react-redux";
-import store from "./redux/configureStore";
 import { GlobalStyle } from "./shared/global";
 import { BrowserRouter } from "react-router-dom";
 import { hydrate, render } from "react-dom";
+
+import App from "./shared/App";
+
+import store from "./redux/configureStore";
 
 const rootElement = document.getElementById("root");
 

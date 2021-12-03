@@ -2,13 +2,13 @@ import React from "react";
 import styled from "styled-components";
 import _ from "lodash";
 
+import { apis } from "../lib/axios";
 import { InputBox, CommonInput } from "../elements";
 import HelmetComp from "../components/HelmetComp";
-import { apis } from "../lib/axios";
 import ic_user from "../img/header/ic_mypage.svg";
 
-import { history } from "../redux/configureStore";
 import { useDispatch } from "react-redux";
+import { history } from "../redux/configureStore";
 import { textLogo } from "../redux/modules/header";
 import { actionCreators as loginCheckAction } from "../redux/modules/login";
 

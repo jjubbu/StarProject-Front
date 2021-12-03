@@ -3,10 +3,9 @@ import styled from "styled-components";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-
 import { Map, MapMarker } from "react-kakao-maps-sdk";
-import { apis } from "../lib/axios";
 
+import { apis } from "../lib/axios";
 import HelmetComp from "../components/HelmetComp";
 import ic_star from "../img/ic_star.svg";
 import ic_moonrise from "../img/ic_moonrise.svg";

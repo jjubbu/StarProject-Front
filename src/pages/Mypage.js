@@ -1,15 +1,15 @@
 import React from "react";
 import { Cookies } from "react-cookie";
-
-import { useDispatch, useSelector } from "react-redux";
-import { textLogo } from "../redux/modules/header";
 import styled from "styled-components";
+
 import { apis } from "../lib/axios";
+import HelmetComp from "../components/HelmetComp";
 import ic_profile from "../img/ic_profile.svg";
 import ic_logo from "../img/ic_logo.svg";
 
+import { useDispatch, useSelector } from "react-redux";
+import { textLogo } from "../redux/modules/header";
 import { actionCreators as loginCheckAction } from "../redux/modules/login";
-import HelmetComp from "../components/HelmetComp";
 
 const Mypage = ({ history }) => {
   const user_info = useSelector((state) => state.login.user_info);

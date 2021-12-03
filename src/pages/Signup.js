@@ -1,12 +1,12 @@
 import React from "react";
-import { apis } from "../lib/axios";
 import styled from "styled-components";
 import _ from "lodash";
 
+import { apis } from "../lib/axios";
 import { CommonInput, InputBox } from "../elements";
 
-import { history } from "../redux/configureStore";
 import { useDispatch } from "react-redux";
+import { history } from "../redux/configureStore";
 import { textLogo } from "../redux/modules/header";
 import HelmetComp from "../components/HelmetComp";
 

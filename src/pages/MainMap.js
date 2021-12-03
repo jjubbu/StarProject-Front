@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { CustomOverlayMap, Map, MapMarker } from "react-kakao-maps-sdk";
 import _ from "lodash";
 
+import { apis } from "../lib/axios";
 import HelmetComp from "../components/HelmetComp";
 import ic_location_off from "../img/map/ic_location_off.svg";
 import ic_location_on from "../img/map/ic_location_on.svg";
@@ -14,10 +15,8 @@ import ic_star from "../img/ic_star.svg";
 import ic_loading from "../img/loading.gif";
 import ic_logo from "../img/ic_logo.svg";
 
-import { apis } from "../lib/axios";
-
-import { history } from "../redux/configureStore";
 import { useDispatch, useSelector } from "react-redux";
+import { history } from "../redux/configureStore";
 import { textLogo } from "../redux/modules/header";
 import { actionCreators as locationAction } from "../redux/modules/user";
 

@@ -1,13 +1,13 @@
 import React from "react";
-import { apis } from "../lib/axios";
 import styled from "styled-components";
 import { Cookies } from "react-cookie";
 
+import { apis } from "../lib/axios";
 import { CommonInput, InputBox } from "../elements";
 import HelmetComp from "../components/HelmetComp";
 
-import { history } from "../redux/configureStore";
 import { useDispatch } from "react-redux";
+import { history } from "../redux/configureStore";
 import { actionCreators as lodinAction } from "../redux/modules/login";
 import { textLogo } from "../redux/modules/header";
 

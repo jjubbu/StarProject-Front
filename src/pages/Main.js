@@ -1,6 +1,7 @@
 import React from "react";
 import styled, { keyframes } from "styled-components";
 
+import { apis } from "../lib/axios";
 import arrow from "../img/arrow.svg";
 import ic_map from "../img/map/ic_map.svg";
 import ic_star from "../img/ic_star.svg";
@@ -8,8 +9,6 @@ import ic_bookmark_off from "../img/ic_bookmark_off.svg";
 import ic_bookmark_on from "../img/ic_bookmark_on.svg";
 import ic_logo from "../img/ic_logo.svg";
 import HelmetComp from "../components/HelmetComp";
-
-import { apis } from "../lib/axios";
 
 import { useDispatch, useSelector } from "react-redux";
 import { history } from "../redux/configureStore";
@@ -25,18 +24,20 @@ const Main = () => {
   const bookmarkCheck = (id, idx) => {
     if (!is_login) {
       history.push("/login");
+      return;
+    } else {
+      apis
+        .postBookmarkAX(id)
+        .then((response) => {
+          const check = response.data.data.bookmarkCheck;
+          let newList = [...boardList];
+          newList[idx].bookmark = check;
+          setBoardList(newList);
+        })
+        .catch((err) => {
+          alert(err);
+        });
     }
-    apis
-      .postBookmarkAX(id)
-      .then((response) => {
-        const check = response.data.data.bookmarkCheck;
-        let newList = [...boardList];
-        newList[idx].bookmark = check;
-        setBoardList(newList);
-      })
-      .catch((err) => {
-        alert(err);
-      });
   };
   const scrollDown = () => {
     const location = document.querySelector("#scrollDown").offsetTop;

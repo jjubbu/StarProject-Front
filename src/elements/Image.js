@@ -1,6 +1,5 @@
 import styled from "styled-components";
 import React from "react";
-import ic_logo from "../img/ic_logo.svg";
 
 const Image = (props) => {
   const { shape, src, size } = props;

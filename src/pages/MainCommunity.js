@@ -1,7 +1,6 @@
 import React from "react";
 import styled from "styled-components";
 import Card from "../components/Card";
-import { useHistory } from "react-router";
 import _ from "lodash";
 
 import { apis } from "../lib/axios";
@@ -11,13 +10,13 @@ import Header from "../components/Header";
 import Footer from "../components/Footer";
 import HelmetComp from "../components/HelmetComp";
 
-import { actionCreators as postActions } from "../redux/modules/card";
 import { useSelector, useDispatch } from "react-redux";
+import { history } from "../redux/configureStore";
+import { actionCreators as postActions } from "../redux/modules/card";
 import { textLogo } from "../redux/modules/header";
 
 const MainCommunity = () => {
   const dispatch = useDispatch();
-  const history = useHistory();
 
   const card_list = useSelector((state) => state.card.list);
   const is_login = useSelector((state) => state.login.is_login);
