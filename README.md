@@ -30,7 +30,8 @@
 <img width="1408" alt="03_map" src="https://user-images.githubusercontent.com/58936251/144454987-fdc7f17d-6b62-4f9f-8dc5-afbb5f572e52.png">
 <img width="1408" alt="04_commu" src="https://user-images.githubusercontent.com/58936251/144454989-729359f1-a30c-4376-92e8-ffeb6e5460c0.png">
 <img width="1408" alt="05_post" src="https://user-images.githubusercontent.com/58936251/144454997-c2cb9fb4-9c42-4e18-80fa-02c757945073.png">
-<img width="1408" alt="06_my" src="https://user-images.githubusercontent.com/58936251/144454999-00eaa400-00cf-4388-ac67-fb5971eafc29.png">
+<img width="1408" alt="06_detail" src="https://user-images.githubusercontent.com/58936251/144537175-4cd43cf8-6e3a-4035-85e6-c4ad6d97a3b9.png">
+<img width="1408" alt="07_mypage" src="https://user-images.githubusercontent.com/58936251/144454999-00eaa400-00cf-4388-ac67-fb5971eafc29.png">
 
 ## ❗️주요기능
 
