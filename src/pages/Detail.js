@@ -394,7 +394,7 @@ const Detail = ({ history, location, match }) => {
 
 const StyledDetail = styled.main`
   display: flex;
-  width: 100%;
+  width: 1200px;
   gap: 24px;
   .detailInfoETC {
     width: 32%;
