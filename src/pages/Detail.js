@@ -20,6 +20,9 @@ import ic_bookmark from "../img/ic_bookmark_off.svg";
 import ic_bookmark_on from "../img/ic_bookmark_on.svg";
 import ic_arrow from "../img/ic_slideArrow.svg";
 import ic_address from "../img/map/ic_map.svg";
+import ic_reply from "../img/icon_reply.svg";
+import ic_user from "../img/ic_mypage.svg";
+import ic_drop from "../img/icon_drop.svg";
 
 import { useDispatch, useSelector } from "react-redux";
 import { textLogo } from "../redux/modules/header";
@@ -379,13 +382,40 @@ const Detail = ({ history, location, match }) => {
           <span className="line" />
 
           <ContentFooter>
+            <button className="commentDrop">
+              댓글(1) <img src={ic_drop} alt="comment drop" />
+            </button>
+
             {is_login && user_info === writer ? (
               <React.Fragment>
-                <button onClick={editClick}>수정</button>
-                <button onClick={deleteAxios}>삭제</button>
+                <div className="onlyWriter">
+                  <button onClick={editClick}>수정</button>
+                  <button onClick={deleteAxios}>삭제</button>
+                </div>
               </React.Fragment>
             ) : null}
           </ContentFooter>
+          <CommentBox>
+            <CommentInput>
+              <button className="openSans">등록</button>
+              <label>
+                <img src={ic_reply} alt="reply" />
+                <textarea placeholder="댓글을 작성해주세요" />
+              </label>
+            </CommentInput>
+            <CommentList>
+              <li>
+                <div className="userInfo">
+                  <img src={ic_user} alt="user profile" />
+                  <div>
+                    <h3>nickname</h3>
+                    <p>0000.00.00</p>
+                  </div>
+                </div>
+                <p>contentcontentcontentcontentcontentcontent</p>
+              </li>
+            </CommentList>
+          </CommentBox>
         </ContentBox>
       </StyledDetail>
     </React.Fragment>
@@ -685,19 +715,115 @@ const ContentUser = styled.div`
 const ContentFooter = styled.div`
   height: 56px;
   display: flex;
-  justify-content: right;
+  justify-content: space-between;
+  div {
+    display: flex;
+    gap: 8px;
+  }
   align-items: flex-end;
-  gap: 8px;
   button {
     background: #18191e;
     border-radius: 4px;
     border: none;
     height: 36px;
-    padding: 0 23px;
     font-size: 14px;
     line-height: 18px;
     color: #cccccc;
   }
+  .onlyWriter {
+    button {
+      padding: 0 23px;
+    }
+  }
+  .commentDrop {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 0 11px;
+  }
 `;
 
+const CommentBox = styled.section`
+  margin-top: 20px;
+`;
+
+const CommentInput = styled.div`
+  position: relative;
+  button {
+    position: absolute;
+    right: 0;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 18px;
+    color: #ddd;
+    background: none;
+    border: none;
+    padding-right: 20px;
+    top: 11px;
+  }
+  label {
+    textarea {
+      width: 100%;
+      padding: 11px 54px;
+      border: 1px solid #c4c4c4;
+      border-radius: 30px;
+      background: none;
+      font-weight: normal;
+      font-size: 14px;
+      line-height: 18px;
+      color: #dddddd;
+      height: 40px;
+      resize: none;
+      &::placeholder {
+        font-weight: normal;
+        font-size: 14px;
+        line-height: 18px;
+        color: #dddddd;
+      }
+    }
+    img {
+      position: absolute;
+      left: 20px;
+      top: 8px;
+    }
+  }
+`;
+
+const CommentList = styled.ul`
+  display: flex;
+  gap: 20px;
+  flex-direction: column;
+  li:first-child {
+    margin-top: 24px;
+  }
+  li {
+    .userInfo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      img {
+        width: 28px;
+        height: 28px;
+      }
+      h3 {
+        color: #eeeeee;
+        font-size: 13px;
+        line-height: 16px;
+      }
+      p {
+        font-weight: normal;
+        font-size: 9px;
+        line-height: 11px;
+        color: #ffffff;
+      }
+    }
+    & > p {
+      margin-top: 8px;
+      font-weight: normal;
+      font-size: 14px;
+      line-height: 18px;
+      color: #eeeeee;
+    }
+  }
+`;
 export default Detail;
