@@ -105,6 +105,28 @@ const Detail = ({ history, location, match }) => {
   });
 
   const [likeCount, setLikeCount] = React.useState(0);
+  const [commentShow, setCommentShow] = React.useState(true);
+
+  const test_list = [
+    {
+      nickname: "안녕하새요",
+      date: "2021-12-14",
+      comment:
+        "우엑뿌엑쀼엑으엑쀽빾쀾빾우엑뿌엑쀼엑으엑쀽빾쀾빾우엑뿌엑쀼엑으엑쀽빾쀾빾우엑뿌엑쀼엑으엑쀽빾쀾빾우엑뿌엑쀼엑으엑쀽빾쀾빾우엑뿌엑쀼엑으엑쀽빾쀾빾우엑뿌엑쀼엑으엑쀽빾쀾빾우엑뿌엑쀼엑으엑쀽빾쀾빾우엑뿌엑쀼엑으엑쀽빾쀾빾우엑뿌엑쀼엑으엑쀽빾쀾빾우엑뿌엑쀼엑으엑쀽빾쀾빾우엑뿌엑쀼엑으엑쀽빾쀾빾우엑뿌엑쀼엑으엑쀽빾쀾빾우엑뿌엑쀼엑으엑쀽빾쀾빾우엑뿌엑쀼엑으엑쀽빾쀾빾우엑뿌엑쀼엑으엑쀽빾쀾빾",
+    },
+    {
+      nickname: "안녕하새요",
+      date: "2021-12-14",
+      comment:
+        "우엑뿌엑쀼엑으엑쀽빾쀾빾우엑뿌엑쀼엑으엑쀽빾쀾빾우엑뿌엑쀼엑으엑쀽빾쀾빾우엑뿌엑쀼엑으엑쀽빾쀾빾",
+    },
+    {
+      nickname: "안녕하새요",
+      date: "2021-12-14",
+      comment:
+        "우엑뿌엑쀼엑으엑쀽빾쀾빾우엑뿌엑쀼엑으엑쀽빾쀾빾우엑뿌엑쀼엑으엑쀽빾쀾빾우엑뿌엑쀼엑으엑쀽빾쀾빾",
+    },
+  ];
 
   const is_login = useSelector((state) => state.login.is_login);
   const weather = data.weather;
@@ -177,6 +199,10 @@ const Detail = ({ history, location, match }) => {
       alert("로그인을 해주세요!");
       history.push("/login");
     }
+  };
+
+  const showComment = () => {
+    setCommentShow((prev) => !prev);
   };
 
   React.useEffect(() => {
@@ -381,8 +407,8 @@ const Detail = ({ history, location, match }) => {
           </section>
           <span className="line" />
 
-          <ContentFooter>
-            <button className="commentDrop">
+          <ContentFooter comment={commentShow ? "on" : ""}>
+            <button className="commentDrop" onClick={showComment}>
               댓글(1) <img src={ic_drop} alt="comment drop" />
             </button>
 
@@ -395,7 +421,7 @@ const Detail = ({ history, location, match }) => {
               </React.Fragment>
             ) : null}
           </ContentFooter>
-          <CommentBox>
+          <CommentBox comment={commentShow ? "on" : ""}>
             <CommentInput>
               <button className="openSans">등록</button>
               <label>
@@ -404,16 +430,24 @@ const Detail = ({ history, location, match }) => {
               </label>
             </CommentInput>
             <CommentList>
-              <li>
-                <div className="userInfo">
-                  <img src={ic_user} alt="user profile" />
-                  <div>
-                    <h3>nickname</h3>
-                    <p>0000.00.00</p>
-                  </div>
-                </div>
-                <p>contentcontentcontentcontentcontentcontent</p>
-              </li>
+              {test_list.length > 0 ? (
+                test_list.map((l, idx) => {
+                  return (
+                    <li>
+                      <div className="userInfo">
+                        <img src={ic_user} alt="user profile" />
+                        <div>
+                          <h3>{l.nickname}</h3>
+                          <p>{l.date}</p>
+                        </div>
+                      </div>
+                      <p>{l.comment}</p>
+                    </li>
+                  );
+                })
+              ) : (
+                <></>
+              )}
             </CommentList>
           </CommentBox>
         </ContentBox>
@@ -636,6 +670,7 @@ const ContentBox = styled.section`
   .contents {
     margin-top: 32px;
     flex: 1;
+
     .contentsInner {
       font-size: 16px;
       line-height: 20px;
@@ -729,6 +764,7 @@ const ContentFooter = styled.div`
     font-size: 14px;
     line-height: 18px;
     color: #cccccc;
+    cursor: pointer;
   }
   .onlyWriter {
     button {
@@ -740,10 +776,14 @@ const ContentFooter = styled.div`
     align-items: center;
     gap: 4px;
     padding: 0 11px;
+    img {
+      ${(props) => (props.comment === "on" ? "" : "transform:rotate(180deg);")}
+    }
   }
 `;
 
 const CommentBox = styled.section`
+  ${(props) => (props.comment ? "display:block;" : "display:none;")}
   margin-top: 20px;
 `;
 
