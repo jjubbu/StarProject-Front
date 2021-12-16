@@ -655,8 +655,9 @@ const WeatherTable = styled.table`
 `;
 
 const ContentBox = styled.section`
-  flex: 1;
+  /* flex: 1; */
   display: flex;
+  width: 100%;
   flex-direction: column;
   background: #303136;
   border-radius: 10px;

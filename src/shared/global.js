@@ -12,6 +12,10 @@ ${normalize};
     list-style: none;
 }
 
+button{
+    cursor: pointer;
+}
+
 html{
     width: 100%;
     height: 100vh;
@@ -44,6 +48,10 @@ html{
     width: 1200px;
     margin: 0 auto;
     flex:1;
+    @media only screen and (max-width: 1200px) {
+    width: 100%;
+    padding: 0 20px;
+  }
 } 
 
 .CommonGap{

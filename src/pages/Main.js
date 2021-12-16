@@ -79,58 +79,62 @@ const Main = () => {
         </VisualBox>
         <ContentBox id="scrollDown">
           <h3>별보기 좋은 곳</h3>
-          <ul>
-            {boardList.length > 0
-              ? boardList.map((l, idx) => {
-                  return (
-                    <Card
-                      key={idx}
-                      onClick={() => {
-                        history.push(`detail/${l.id}`);
-                      }}
-                    >
-                      <ImageBox img={l.img}>
-                        <Address>
-                          <img src={ic_map} alt="address icon" />
-                          <p>{l.address}</p>
-                        </Address>
-                        <img
-                          src={l.img ? l.img : ic_logo}
-                          alt="camp"
-                          className="campImage"
-                        />
-                      </ImageBox>
-                      <div className="contentBox">
-                        <CardContent>
-                          <h3>{l.title}</h3>
-                          <div
-                            dangerouslySetInnerHTML={{ __html: l.contents }}
-                          ></div>
-                        </CardContent>
-                        <CardEtcBox>
-                          <div className="starGazing">
-                            <img src={ic_star} alt="star gazing icon" />{" "}
-                            <p>관측지수</p>
-                            <span className="openSans">{l.starGazing}</span>
-                          </div>
-
+          <div>
+            <ul>
+              {boardList.length > 0
+                ? boardList.map((l, idx) => {
+                    return (
+                      <Card
+                        key={idx}
+                        onClick={() => {
+                          history.push(`detail/${l.id}`);
+                        }}
+                      >
+                        <ImageBox img={l.img}>
+                          <Address>
+                            <img src={ic_map} alt="address icon" />
+                            <p>{l.address}</p>
+                          </Address>
                           <img
-                            src={l.bookmark ? ic_bookmark_on : ic_bookmark_off}
-                            alt="bookmark"
-                            className="bookmark"
-                            cardid={l.id}
-                            onClick={(e) => {
-                              bookmarkCheck(l.id, idx);
-                              e.stopPropagation();
-                            }}
+                            src={l.img ? l.img : ic_logo}
+                            alt="camp"
+                            className="campImage"
                           />
-                        </CardEtcBox>
-                      </div>
-                    </Card>
-                  );
-                })
-              : null}
-          </ul>
+                        </ImageBox>
+                        <div className="contentBox">
+                          <CardContent>
+                            <h3>{l.title}</h3>
+                            <div
+                              dangerouslySetInnerHTML={{ __html: l.contents }}
+                            ></div>
+                          </CardContent>
+                          <CardEtcBox>
+                            <div className="starGazing">
+                              <img src={ic_star} alt="star gazing icon" />{" "}
+                              <p>관측지수</p>
+                              <span className="openSans">{l.starGazing}</span>
+                            </div>
+
+                            <img
+                              src={
+                                l.bookmark ? ic_bookmark_on : ic_bookmark_off
+                              }
+                              alt="bookmark"
+                              className="bookmark"
+                              cardid={l.id}
+                              onClick={(e) => {
+                                bookmarkCheck(l.id, idx);
+                                e.stopPropagation();
+                              }}
+                            />
+                          </CardEtcBox>
+                        </div>
+                      </Card>
+                    );
+                  })
+                : null}
+            </ul>
+          </div>
         </ContentBox>
       </StyldMain>
     </React.Fragment>
@@ -192,12 +196,27 @@ const ContentBox = styled.main`
     gap: 24px;
     margin-top: 24px;
   }
-  &[ani="true"] {
+
+  @media only screen and (max-width: 1200px) {
+    & > h3 {
+      padding-left: 20px;
+    }
+    & > div {
+      width: 100vw;
+      overflow: scroll;
+    }
+    ul {
+      width: fit-content;
+      padding-bottom: 50px;
+      & > li:first-child {
+        margin-left: 20px;
+      }
+    }
   }
 `;
 
 const Card = styled.li`
-  width: 100%;
+  width: 384px;
   height: 482px;
   border-radius: 10px;
   overflow: hidden;
@@ -219,7 +238,6 @@ const Card = styled.li`
 `;
 const ImageBox = styled.div`
   position: relative;
-  width: 100%;
   height: 288px;
   display: flex;
   align-items: center;

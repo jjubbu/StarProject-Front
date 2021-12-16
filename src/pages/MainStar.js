@@ -246,11 +246,11 @@ const MainStar = () => {
                       <img src={l.img} alt="star" />
                       <div>
                         <h3>{l.cityName}</h3>
-                        <p>
+                        <p className="starGazing">
                           관측지수{" "}
                           <span className="openSans">{l.starGazing}</span>
                         </p>
-                        <p>
+                        <p className="temperature">
                           <span className="openSans">{l.temperature}°</span>
                         </p>
                       </div>
@@ -320,6 +320,23 @@ const StyledStar = styled.main`
     background: #303136;
     border-radius: 10px;
     width: 100%;
+  }
+
+  @media only screen and (max-width: 1000px) {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    & > div {
+      margin: 0 auto;
+    }
+    & > div:first-child {
+      max-width: 640px;
+      width: 100%;
+    }
+    & > div:last-child {
+      max-width: 640px;
+      width: 100%;
+    }
   }
 `;
 
@@ -450,9 +467,10 @@ const WeatherTemperature = styled.section`
 const WeatherETC = styled.div`
   display: flex;
   width: fit-content;
-  gap: 60px;
+  justify-content: space-between;
+  width: 100%;
   margin: 0 auto;
-  padding: 40px 0;
+  padding: 40px 50px;
   section {
     text-align: center;
     h3 {
@@ -481,6 +499,11 @@ const WeatherETC = styled.div`
         display: block;
       }
     }
+  }
+
+  @media only screen and (max-width: 1000px) {
+    justify-content: space-around;
+    gap: 60px;
   }
 `;
 
@@ -667,6 +690,12 @@ const ImageBox = styled.div`
     top: 0;
     z-index: -9999;
   }
+  @media only screen and (max-width: 1000px) {
+    height: 320px;
+    .buttonActive {
+      width: 300px;
+    }
+  }
 `;
 const RecommendBox = styled.section`
   height: 212px;
@@ -734,6 +763,30 @@ const RecommendBox = styled.section`
     border-top: 1px solid #666666;
     width: 100%;
     margin: 18px 0 24px;
+  }
+
+  @media only screen and (max-width: 1000px) {
+    height: auto;
+    ul {
+      li {
+        flex-direction: column;
+        text-align: center;
+        .starGazing {
+          font-size: 12px;
+          display: flex;
+          align-items: center;
+          gap: 4px;
+          line-height: 15px;
+          span {
+            font-size: 14px;
+            line-height: 19px;
+          }
+        }
+        p:last-child {
+          margin-top: 8px;
+        }
+      }
+    }
   }
 `;
 
