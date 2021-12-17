@@ -172,7 +172,8 @@ const Wrapper = styled.div`
   gap: 24px;
   display: flex;
   flex-wrap: wrap;
-  margin: auto;
+  width: 100%;
+  justify-content: center;
 `;
 
 const TopDiv = styled.div`
@@ -268,6 +269,36 @@ const TopDiv = styled.div`
       line-height: 20px;
       color: #ffffff;
       margin-right: 10px;
+    }
+  }
+  @media only screen and (max-width: 720px) {
+    padding-bottom: 68px;
+    position: relative;
+    .searchbox {
+      position: absolute;
+      bottom: 0px;
+      width: 100%;
+    }
+    .searchbox::before {
+      content: "";
+      position: absolute;
+      width: 100%;
+      height: 1px;
+      background: #333;
+      top: -20px;
+      left: 0;
+    }
+
+    & > ul {
+      p {
+        font-weight: 400;
+        font-size: 28px;
+        line-height: 120%;
+      }
+      .line {
+        bottom: -8px;
+        height: 2px;
+      }
     }
   }
 `;

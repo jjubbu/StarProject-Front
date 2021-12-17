@@ -59,7 +59,7 @@ const Card = (props) => {
       bookmark: props.bookmarkCheck,
       likeCount: props.likeCount,
     });
-  }, [props]);
+  }, []);
 
   return (
     <Wrapper onClick={cardClick}>
@@ -84,14 +84,14 @@ const Card = (props) => {
       </div>
 
       <div>
-        <TextDiv>
+        <div>
           <TitleDiv>{props.title}</TitleDiv>
           <ContentDiv>
             <Text size="16px" lineHeight="30px" color="white">
               {props.contents}
             </Text>
           </ContentDiv>
-        </TextDiv>
+        </div>
         <DateDiv>{props.modifiedAt}</DateDiv>
         <BottomDiv>
           <div className="profile">
@@ -134,9 +134,9 @@ const ImageArea = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  overflow: hidden;
   .img {
-    width: 125px;
-    height: 125px;
+    width: 100%;
   }
 `;
 
@@ -216,8 +216,6 @@ const InfoDiv = styled.div`
   }
 `;
 
-const TextDiv = styled.div``;
-
 const TitleDiv = styled.div`
   overflow: hidden;
   line-clamp: 1;
@@ -258,7 +256,8 @@ const ContentDiv = styled.div`
 `;
 
 const Wrapper = styled.div`
-  width: 384px;
+  /* width: 384px; */
+  flex: 1;
   height: 504px;
   display: flex;
   flex-direction: column;
@@ -282,6 +281,9 @@ const Wrapper = styled.div`
     transform: scale(1.02);
     box-shadow: 3px 3px 6px 3px rgba(0, 0, 0, 0.65);
     transition: all 0.5s;
+  }
+
+  @media only screen and (max-width: 1200px) {
   }
 `;
 

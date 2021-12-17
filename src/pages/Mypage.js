@@ -237,6 +237,16 @@ const MypageStyled = styled.div`
       margin-top: 24px;
     }
   }
+  @media only screen and (max-width: 1200px) {
+    flex-direction: column;
+    align-items: center;
+    .leftBox {
+      width: 100%;
+    }
+    .list {
+      width: 100%;
+    }
+  }
 `;
 
 const UserProfile = styled.div`
@@ -277,6 +287,15 @@ const UserProfile = styled.div`
       line-height: 19px;
       color: #fff;
       border: none;
+    }
+  }
+  @media only screen and (max-width: 1200px) {
+    background: none;
+
+    .buttonBox {
+      button {
+        background: #303136;
+      }
     }
   }
 `;
@@ -336,6 +355,9 @@ const ListBox = styled.section`
     min-height: 88px;
     margin-top: 28px;
     min-height: 260px;
+    @media only screen and (max-width: 1200px) {
+      grid-template-columns: 1fr;
+    }
   }
   .empty {
     width: 100%;
@@ -351,6 +373,7 @@ const ListStyled = styled.li`
   display: flex;
   width: 100%;
   gap: 20px;
+  cursor: pointer;
   img {
     width: 88px;
     height: 88px;

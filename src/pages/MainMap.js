@@ -440,7 +440,7 @@ const MapBox = styled.section`
     height: 100%;
     top: 0;
     left: 0;
-    z-index: 100;
+    z-index: 50;
     display: flex;
     justify-content: center;
     align-items: center;

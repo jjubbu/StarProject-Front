@@ -14,6 +14,7 @@ const Header = () => {
   const [changeMenu, setChangeMenu] = React.useState("off");
   const [pageName, setPageName] = React.useState("");
   const is_login = useSelector((state) => state.login.is_login);
+  const nickname = useSelector((state) => state.login.user_info.nickname);
   const is_textLogo = useSelector((state) => state.header.textLogo);
   const dispatch = useDispatch();
   const cookie = new Cookies();
@@ -40,6 +41,7 @@ const Header = () => {
 
   const changePageName = () => {
     const path = history.location.pathname;
+    setChangeMenu("");
     if (path === "/map") {
       setPageName("지도");
     } else if (path === "/star") {
@@ -65,7 +67,7 @@ const Header = () => {
           ) : (
             <React.Fragment>
               <p name="mypage" onClick={navClick}>
-                nickname
+                {nickname}
               </p>
             </React.Fragment>
           )}
@@ -149,7 +151,7 @@ const StyledHeader = styled.header`
     width: 100%;
     padding: 0 20px;
   }
-  @media only screen and (max-width: 640px) {
+  @media only screen and (max-width: 720px) {
     .pageTitle {
       display: block;
     }
@@ -183,7 +185,7 @@ const StyledNav = styled.nav`
   p:hover {
     color: #ffce00;
   }
-  @media only screen and (max-width: 640px) {
+  @media only screen and (max-width: 720px) {
     display: none;
   }
 `;
@@ -197,7 +199,7 @@ const StyledUser = styled.div`
     font-size: 12px;
     line-height: 24px;
     cursor: pointer;
-    @media only screen and (max-width: 640px) {
+    @media only screen and (max-width: 720px) {
       display: none;
     }
   }
@@ -208,7 +210,7 @@ const StyledUser = styled.div`
     background-color: #999db5;
     border-radius: 24px;
     overflow: hidden;
-    @media only screen and (max-width: 640px) {
+    @media only screen and (max-width: 720px) {
       display: none;
     }
   }
@@ -218,7 +220,7 @@ const StyledUser = styled.div`
 
   .menu {
     display: none;
-    @media only screen and (max-width: 640px) {
+    @media only screen and (max-width: 72720px) {
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -233,7 +235,7 @@ const StyledUser = styled.div`
         height: 2px;
         background: #fff;
         display: block;
-        transition: all 0.5s ease;
+        transition: all 0.2s ease;
       }
       &[name="on"] {
         position: relative;
@@ -244,14 +246,14 @@ const StyledUser = styled.div`
         }
         span:first-child {
           transform: rotate(45deg);
-          transition: transform 0.5s ease;
+          transition: transform 0.2s ease;
         }
         span:nth-child(2) {
           display: none;
         }
         span:last-child {
           transform: rotate(-45deg);
-          transition: transform 0.5s ease;
+          transition: transform 0.2s ease;
         }
       }
     }
@@ -262,7 +264,6 @@ const StyledMenu = styled.section`
   position: absolute;
   top: 0;
   right: -100%;
-  transition: right 1s ease;
 
   background: #18191e;
   z-index: 100;
@@ -306,6 +307,9 @@ const StyledMenu = styled.section`
   &[name="on"] {
     display: block;
     right: 0;
+    transition: right 1s ease;
+  }
+  &[name="off"] {
     transition: right 1s ease;
   }
 `;

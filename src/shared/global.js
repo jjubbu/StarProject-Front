@@ -21,6 +21,7 @@ html{
     height: 100vh;
     background-color: #18191E;
     color:white;
+    overflow-X:hidden;
     body{
         width: 100%;
         height: 100%;  
