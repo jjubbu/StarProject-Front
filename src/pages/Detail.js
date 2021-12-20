@@ -407,10 +407,10 @@ const Detail = ({ history, location, match }) => {
           </section>
           <span className="line" />
 
-          {/* <ContentFooter comment={commentShow ? "on" : ""}>
-            <button className="commentDrop" onClick={showComment}>
+          <ContentFooter comment={commentShow ? "on" : ""}>
+            {/* <button className="commentDrop" onClick={showComment}>
               댓글(1) <img src={ic_drop} alt="comment drop" />
-            </button>
+            </button> */}
 
             {is_login && user_info === writer ? (
               <React.Fragment>
@@ -421,7 +421,7 @@ const Detail = ({ history, location, match }) => {
               </React.Fragment>
             ) : null}
           </ContentFooter>
-          <CommentBox comment={commentShow ? "on" : ""}>
+          {/* <CommentBox comment={commentShow ? "on" : ""}>
             <CommentInput>
               <button className="openSans">등록</button>
               <label>
