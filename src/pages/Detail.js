@@ -259,7 +259,7 @@ const Detail = ({ history, location, match }) => {
           <MapBox>
             <Map
               center={{ lat: data.y_location, lng: data.x_location }}
-              style={{ width: "384px", height: "360px" }}
+              style={{ width: "100%", height: "100%" }}
             >
               <MapMarker
                 position={{ lat: data.y_location, lng: data.x_location }}
@@ -407,7 +407,7 @@ const Detail = ({ history, location, match }) => {
           </section>
           <span className="line" />
 
-          <ContentFooter comment={commentShow ? "on" : ""}>
+          {/* <ContentFooter comment={commentShow ? "on" : ""}>
             <button className="commentDrop" onClick={showComment}>
               댓글(1) <img src={ic_drop} alt="comment drop" />
             </button>
@@ -449,7 +449,7 @@ const Detail = ({ history, location, match }) => {
                 <></>
               )}
             </CommentList>
-          </CommentBox>
+          </CommentBox> */}
         </ContentBox>
       </StyledDetail>
     </React.Fragment>
@@ -471,6 +471,20 @@ const StyledDetail = styled.main`
     background: #666;
     margin-top: 20px;
   }
+  @media only screen and (max-width: 1200px) {
+    flex-direction: column-reverse;
+    width: 100%;
+    .detailInfoETC {
+      width: 100%;
+      display: flex;
+      gap: 20px;
+    }
+  }
+  @media only screen and (max-width: 720px) {
+    .detailInfoETC {
+      display: block;
+    }
+  }
 `;
 
 const MapBox = styled.div`
@@ -478,6 +492,14 @@ const MapBox = styled.div`
   height: 360px;
   border-radius: 10px;
   overflow: hidden;
+  @media only screen and (max-width: 1200px) {
+    width: 50%;
+    height: 614px;
+  }
+  @media only screen and (max-width: 720px) {
+    width: 100%;
+    height: 360px;
+  }
 `;
 
 const WeatherInfoBox = styled.section`
@@ -487,6 +509,14 @@ const WeatherInfoBox = styled.section`
   border-radius: 10px;
   margin-top: 20px;
   padding: 36px 36px 56px;
+  @media only screen and (max-width: 1200px) {
+    width: 50%;
+    margin-top: 0px;
+  }
+  @media only screen and (max-width: 720px) {
+    width: 100%;
+    margin-top: 20px;
+  }
 `;
 
 const WeatherHeader = styled.div`
@@ -655,7 +685,6 @@ const WeatherTable = styled.table`
 `;
 
 const ContentBox = styled.section`
-  /* flex: 1; */
   display: flex;
   width: 100%;
   flex-direction: column;
@@ -691,6 +720,27 @@ const ContentBox = styled.section`
       padding: 21px 17px;
       margin-bottom: 19px;
       gap: 8px;
+    }
+  }
+  @media only screen and (max-width: 480px) {
+    overflow-x: hidden;
+    .line {
+      width: 100vw;
+      margin-left: -28px;
+      margin-top: 25px;
+    }
+    .contents {
+      margin-top: 24px;
+      .addressBox {
+        padding: 10px 8px;
+        img {
+          width: 16px;
+          height: 16px;
+        }
+        p {
+          font-size: 12px;
+        }
+      }
     }
   }
 `;
@@ -732,6 +782,24 @@ const ContentHeader = styled.div`
       font-size: 14px;
       line-height: 18px;
       color: #cccccc;
+    }
+  }
+  @media only screen and (max-width: 480px) {
+    position: relative;
+    .titleBox {
+      flex-direction: column-reverse;
+      margin-top: 0;
+      gap: 8px;
+      align-items: start;
+      h3 {
+        font-size: 18px;
+        line-height: 18px;
+      }
+    }
+    .buttonBox {
+      position: absolute;
+      right: 0;
+      bottom: -40px;
     }
   }
 `;

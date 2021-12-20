@@ -237,7 +237,7 @@ const AddEditPost = () => {
 
       <AddEditStyled className="CommonPageStyle CommonGap">
         <AddEditHeader>
-          <h3>커뮤니티 게시글 {pathNow === "add" ? "작성" : "수정"}</h3>
+          <h3>게시글 {pathNow === "add" ? "작성하기" : "수정하기"}</h3>
           <button onClick={uploadPost}>
             업로드 <img src={ic_save} alt="save" />
           </button>
@@ -274,7 +274,7 @@ const AddEditPost = () => {
             <PostInput
               type="text"
               name="address"
-              placeholder="캠핑장 주소를 지번주소까지 정확하게 입력해주세요."
+              placeholder="캠핑장 주소를 정확하게 입력해주세요."
               onChange={(e) => {
                 addressCheck(e);
                 inputDataSet(e);
@@ -302,6 +302,9 @@ const AddEditStyled = styled.div`
   flex-direction: column;
   height: fit-content;
   gap: 42px;
+  @media only screen and (max-width: 720px) {
+    gap: 0;
+  }
 `;
 
 const AddEditHeader = styled.header`
@@ -333,6 +336,36 @@ const AddEditHeader = styled.header`
     line-height: 20px;
     color: #fff;
   }
+  @media only screen and (max-width: 720px) {
+    h3 {
+      font-size: 28px;
+      padding-bottom: 32px;
+      border-bottom: 1px solid #333;
+      width: 100vw;
+      transform: translateX(-20px);
+    }
+    button {
+      padding: 6px 13px;
+      img {
+        display: none;
+      }
+    }
+  }
+  @media only screen and (max-width: 480px) {
+    h3 {
+      font-size: 14px;
+      line-height: 20px;
+      padding-bottom: 16px;
+    }
+    button {
+      font-size: 12px;
+      line-height: 15px;
+      height: 28px;
+      img {
+        display: none;
+      }
+    }
+  }
 `;
 
 const PostWriteBox = styled.main`
@@ -342,6 +375,12 @@ const PostWriteBox = styled.main`
   flex: 1;
   display: flex;
   flex-direction: column;
+  @media only screen and (max-width: 720px) {
+    background: #18191e;
+    width: 100vw;
+    transform: translateX(-20px);
+    padding: 0;
+  }
 `;
 
 const PostInput = styled(StyledInput)`
@@ -387,6 +426,41 @@ const PostInput = styled(StyledInput)`
     font-size: 18px;
     line-height: 44px;
   }
+  @media only screen and (max-width: 720px) {
+    &[name="title"] {
+      padding: 0 20px;
+    }
+    &[name="title"],
+    &[name="title"]::placeholder {
+      font-weight: normal;
+    }
+    &[name="address"] {
+      padding: 10px 20px;
+      border: 1px solid #303136;
+      border-radius: 0;
+      border-left: none;
+      border-right: none;
+      opacity: 1;
+      color: ${(props) => (props.border === "warn" ? "#CE3030" : "white")};
+      margin: 0;
+    }
+    &[name="address"],
+    &[name="address"]::placeholder {
+      font-size: 14px;
+      line-height: 40px;
+    }
+  }
+  @media only screen and (max-width: 480px) {
+    &[name="title"],
+    &[name="title"]::placeholder {
+      font-size: 14px;
+      line-height: 20px;
+    }
+    &[name="address"],
+    &[name="address"]::placeholder {
+      line-height: 20px;
+    }
+  }
 `;
 
 const TextEditorBox = styled.div`
@@ -400,6 +474,7 @@ const TextEditorBox = styled.div`
   #imgInput {
     position: absolute;
     z-index: -9990;
+    opacity: 0;
   }
 
   .quill {
@@ -431,6 +506,17 @@ const TextEditorBox = styled.div`
   }
   .ql-editor {
     padding-top: 28px;
+  }
+  @media only screen and (max-width: 720px) {
+    border-bottom: none;
+    padding-bottom: 0px;
+    margin: 0;
+    .ql-toolbar {
+      justify-content: center;
+      border: 1px solid #303136;
+      border-left: none;
+      border-right: none;
+    }
   }
 `;
 

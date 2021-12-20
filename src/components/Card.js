@@ -66,12 +66,7 @@ const Card = (props) => {
       <div>
         <ImageArea>
           {props.img ? (
-            <Image
-              height="288px"
-              shape={"rectangle"}
-              src={props.img}
-              oject-fit={"cover"}
-            />
+            <img src={props.img} alt="게시글 대표 이미지" />
           ) : (
             <img src={ic_logo} height="128px" alt="logoIcon" />
           )}
@@ -135,8 +130,14 @@ const ImageArea = styled.div`
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  .img {
+  border-radius: 10px 10px 0 0;
+  img {
+    object-fit: cover;
     width: 100%;
+    height: 288px;
+  }
+  @media only screen and (max-width: 480px) {
+    height: 220px;
   }
 `;
 
@@ -229,7 +230,8 @@ const TitleDiv = styled.div`
 `;
 
 const ContentDiv = styled.div`
-  width: 344px;
+  min-width: 344px;
+  width: 100%;
   height: 40px;
   resize: none;
   overflow: hidden;
@@ -237,7 +239,7 @@ const ContentDiv = styled.div`
   white-space: wrap;
   line-clamp: 3;
   line-height: 20.03px;
-  margin-left: 20px;
+  padding: 0 20px;
   margin-top: 16px;
   color: #ffffff;
   p {
@@ -253,12 +255,13 @@ const ContentDiv = styled.div`
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;
   }
+  @media only screen and (max-width: 364px) {
+    min-width: 100%;
+  }
 `;
 
 const Wrapper = styled.div`
-  /* width: 384px; */
   flex: 1;
-  height: 504px;
   display: flex;
   flex-direction: column;
   justify-content: flex;
@@ -281,9 +284,6 @@ const Wrapper = styled.div`
     transform: scale(1.02);
     box-shadow: 3px 3px 6px 3px rgba(0, 0, 0, 0.65);
     transition: all 0.5s;
-  }
-
-  @media only screen and (max-width: 1200px) {
   }
 `;
 

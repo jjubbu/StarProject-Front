@@ -14,5 +14,8 @@ const StyledDiv = styled.div`
   flex-direction: column;
   gap: 16px;
   margin-top: 48px;
+  @media only screen and (max-width: 480px) {
+    margin-top: 50px;
+  }
 `;
 export default InputBox;

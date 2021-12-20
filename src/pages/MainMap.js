@@ -426,6 +426,13 @@ const StyledMap = styled.main`
       height: 600px;
     }
   }
+  @media only screen and (max-width: 480px) {
+    flex-direction: column-reverse;
+    height: auto;
+    & > section {
+      height: 400px;
+    }
+  }
 `;
 
 const MapBox = styled.section`
@@ -530,6 +537,32 @@ const SearchBox = styled.div`
       outline: none;
     }
   }
+  @media only screen and (max-width: 480px) {
+    width: calc(100% - 32px);
+    top: 20px;
+    & > div {
+      width: 100%;
+      height: 40px;
+    }
+    button {
+      width: 16px;
+      height: 16px;
+    }
+    img {
+      width: 16px;
+      height: 16px;
+    }
+    input {
+      font-size: 12px;
+      line-height: 16px;
+      color: #eeeeee;
+      &::placeholder {
+        font-size: 12px;
+        line-height: 16px;
+        color: #eeeeee;
+      }
+    }
+  }
 `;
 
 const SearchList = styled.ul`
@@ -553,6 +586,9 @@ const ResultBox = styled.section`
   flex-direction: column;
   @media only screen and (max-width: 1000px) {
     width: 100%;
+  }
+  @media only screen and (max-width: 480px) {
+    padding: 24px 24px 0 24px;
   }
 `;
 
@@ -719,6 +755,9 @@ const ResultListBox = styled.ul`
     justify-content: center;
     h3 {
       font-weight: 400;
+    }
+    @media only screen and (max-width: 480px) {
+      height: 356px;
     }
   }
 `;

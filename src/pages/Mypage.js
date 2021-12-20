@@ -235,6 +235,9 @@ const MypageStyled = styled.div`
     .feedback {
       display: block;
       margin-top: 24px;
+      @media only screen and (max-width: 480px) {
+        font-size: 12px;
+      }
     }
   }
   @media only screen and (max-width: 1200px) {
@@ -298,6 +301,36 @@ const UserProfile = styled.div`
       }
     }
   }
+  @media only screen and (max-width: 480px) {
+    padding: 0;
+    margin-top: 4px;
+    img {
+      width: 40px;
+      height: 40px;
+    }
+    .infoText {
+      margin: 16px 0;
+      h3 {
+        font-weight: bold;
+        font-size: 14px;
+        line-height: 18px;
+      }
+      p {
+        font-weight: normal;
+        font-size: 12px;
+        line-height: 16px;
+        margin-top: 0px;
+      }
+    }
+    .buttonBox {
+      button {
+        font-size: 10px;
+        line-height: 12px;
+        padding: 7px 11px;
+        width: auto;
+      }
+    }
+  }
 `;
 
 const ListBox = styled.section`
@@ -356,7 +389,9 @@ const ListBox = styled.section`
     margin-top: 28px;
     min-height: 260px;
     @media only screen and (max-width: 1200px) {
-      grid-template-columns: 1fr;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
     }
   }
   .empty {
@@ -367,6 +402,27 @@ const ListBox = styled.section`
     font-weight: normal;
     font-size: 18px;
     color: #eee;
+  }
+
+  @media only screen and (max-width: 480px) {
+    padding: 20px;
+
+    .boxHeader {
+      padding-bottom: 10px;
+    }
+    .title {
+      font-weight: bold;
+      font-size: 14px;
+      line-height: 18px;
+    }
+    .buttonBox {
+      font-size: 14px;
+      line-height: 18px;
+      button {
+        width: 14px;
+        height: 14px;
+      }
+    }
   }
 `;
 const ListStyled = styled.li`
@@ -382,6 +438,7 @@ const ListStyled = styled.li`
   }
 
   div {
+    flex: 1;
     h3 {
       font-weight: bold;
       font-size: 16px;
@@ -407,6 +464,24 @@ const ListStyled = styled.li`
       }
       iframe {
         display: none;
+      }
+    }
+  }
+  @media only screen and (max-width: 480px) {
+    img {
+      width: 60px;
+      height: 60px;
+    }
+    div {
+      h3 {
+        font-size: 12px;
+        line-height: 15px;
+      }
+      .contents {
+        font-size: 10px;
+        line-height: 13px;
+        margin-top: 16px;
+        -webkit-line-clamp: 2;
       }
     }
   }

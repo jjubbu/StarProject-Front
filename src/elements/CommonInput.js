@@ -57,5 +57,14 @@ export const StyledInput = styled.input`
   &:focus {
     outline: none;
   }
+  @media only screen and (max-width: 480px) {
+    height: 40px;
+    font-size: 14px;
+    line-height: 18px;
+    &::placeholder {
+      font-size: 14px;
+      line-height: 18px;
+    }
+  }
 `;
 export default CommonInput;

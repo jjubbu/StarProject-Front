@@ -167,16 +167,30 @@ const VisualBox = styled.section`
   }
 
   .visualText {
-    padding-top: 227px;
+    padding: 227px 60px 0;
     font-weight: bold;
     font-size: 56px;
     line-height: 70px;
     text-align: center;
+    word-break: keep-all;
   }
   img {
     width: 25.5px;
     height: 55px;
     margin-bottom: 41px;
+  }
+
+  @media only screen and (max-width: 480px) {
+    height: 395px;
+    video {
+      height: 456px;
+    }
+    .visualText {
+      font-size: 24px;
+      line-height: 40px;
+      padding: 96px 30px 0;
+      word-break: keep-all;
+    }
   }
 `;
 
@@ -192,31 +206,32 @@ const ContentBox = styled.main`
   }
   ul {
     display: flex;
+    flex-wrap: wrap;
     width: 100%;
     gap: 24px;
     margin-top: 24px;
+    padding: 0 20px;
   }
 
   @media only screen and (max-width: 1200px) {
     & > h3 {
       padding-left: 20px;
     }
-    & > div {
-      width: 100vw;
-      overflow: scroll;
-    }
-    ul {
-      width: fit-content;
-      padding-bottom: 50px;
-      & > li:first-child {
-        margin-left: 20px;
-      }
+  }
+
+  @media only screen and (max-width: 480px) {
+    margin: 24px auto;
+    & > h3 {
+      padding-left: 20px;
+      font-size: 18px;
+      line-height: 23px;
     }
   }
 `;
 
 const Card = styled.li`
-  width: 384px;
+  min-width: 320px;
+  flex: 1;
   height: 482px;
   border-radius: 10px;
   overflow: hidden;
@@ -235,6 +250,20 @@ const Card = styled.li`
     box-shadow: 3px 3px 6px 3px rgba(0, 0, 0, 0.65);
     transition: all 0.5s;
   }
+  @media only screen and (max-width: 1047px) {
+    &:last-child {
+      max-width: calc(50% - 12px);
+    }
+  }
+  @media only screen and (max-width: 703px) {
+    &:last-child {
+      max-width: 100%;
+    }
+  }
+  @media only screen and (max-width: 480px) {
+    height: 408px;
+    min-width: 100%;
+  }
 `;
 const ImageBox = styled.div`
   position: relative;
@@ -249,6 +278,17 @@ const ImageBox = styled.div`
         : "width:128px; height:128px; margin-top:2px;"}
 
     object-fit: cover;
+  }
+  @media only screen and (max-width: 480px) {
+    height: 220px;
+    .campImage {
+      ${(props) =>
+        props.img !== ""
+          ? "width: 100%; height: 220px;"
+          : "width:128px; height:128px; margin-top:2px;"}
+
+      object-fit: cover;
+    }
   }
 `;
 const Address = styled.div`
@@ -271,6 +311,9 @@ const Address = styled.div`
     font-weight: normal;
     font-size: 12px;
     line-height: 18px;
+  }
+  @media only screen and (max-width: 480px) {
+    left: 17px;
   }
 `;
 
@@ -303,6 +346,9 @@ const CardContent = styled.section`
     word-break: break-all;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 3;
+  }
+  @media only screen and (max-width: 480px) {
+    padding: 28px 16px 0;
   }
 `;
 

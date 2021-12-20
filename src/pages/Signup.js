@@ -4,6 +4,7 @@ import _ from "lodash";
 
 import { apis } from "../lib/axios";
 import { CommonInput, InputBox } from "../elements";
+import ic_goBack from "../img/ic_goBack.svg";
 
 import { useDispatch } from "react-redux";
 import { history } from "../redux/configureStore";
@@ -224,7 +225,16 @@ const Signup = () => {
     <React.Fragment>
       <HelmetComp title="회원가입" url="https://stellakorea.co.kr/signup" />
       <StyleArticle className="CommonGap">
-        <h1>회원가입</h1>
+        <h1>
+          <button
+            onClick={() => {
+              history.push("/login");
+            }}
+          >
+            <img src={ic_goBack} alt="로그인으로 돌아가기" />
+          </button>
+          회원가입
+        </h1>
         <InputBoxSignup>
           <label>
             <LabelTitle>아이디</LabelTitle>
@@ -248,7 +258,7 @@ const Signup = () => {
               <CommonInput
                 name="nickname"
                 onChange={inputValue}
-                placeholder="1~8자, 국문/영문 대소문자/숫자 "
+                placeholder="1~8자"
                 border={inputWarn.nickname}
                 onKeyPress={enterKeyEvent}
               />
@@ -263,7 +273,7 @@ const Signup = () => {
             <CommonInput
               name="password"
               onChange={inputValue}
-              placeholder="비밀번호"
+              placeholder="영문,숫자,특수문자가 포함된 1~8자"
               border={inputWarn.password}
               type="password"
               onKeyPress={enterKeyEvent}
@@ -275,7 +285,7 @@ const Signup = () => {
             <CommonInput
               name="passwordCheck"
               onChange={inputValue}
-              placeholder="비밀번호 확인"
+              placeholder="영문,숫자,특수문자가 포함된 1~8자"
               border={inputWarn.passwordCheck}
               type="password"
               onKeyPress={enterKeyEvent}
@@ -299,18 +309,45 @@ const StyleArticle = styled.article`
     text-align: center;
     margin: 0;
   }
+  @media only screen and (max-width: 480px) {
+    width: 100%;
+    padding: 0 20px 20px;
+
+    margin: 0;
+    flex: 1;
+    h1 {
+      position: relative;
+      width: 100vw;
+      transform: translateX(-20px);
+      font-size: 14px;
+      line-height: 20px;
+      font-weight: normal;
+      padding-bottom: 16px;
+      border-bottom: 1px solid #333;
+      button {
+        position: absolute;
+        left: 20px;
+        top: -50%;
+        transform: translateY(50%);
+        border: none;
+        background: none;
+      }
+    }
+  }
 `;
 
 const InputBoxSignup = styled(InputBox)`
   gap: 20px;
+  @media only screen and (max-width: 480px) {
+    gap: 24px;
+  }
 `;
 
 const Warning = styled.p`
-  margin: 12px 0 0 20px;
   font-weight: normal;
   font-size: 12px;
   line-height: 15px;
-
+  ${(props) => (props.useable === "warn" ? "margin: 12px 0 0 20px;" : null)};
   color: ${(props) => (props.useable === "warn" ? "#ce3030" : "#17AD26")};
 `;
 
@@ -321,6 +358,12 @@ const LabelTitle = styled.h3`
   line-height: 18px;
   color: #eeeeee;
   margin-bottom: 12px;
+  @media only screen and (max-width: 480px) {
+    margin-bottom: 8px;
+    font-size: 12px;
+    line-height: 15px;
+    height: auto;
+  }
 `;
 
 const WithOverlapBox = styled.div`
@@ -338,6 +381,11 @@ const WithOverlapBox = styled.div`
     font-weight: normal;
     font-size: 16px;
     line-height: 19px;
+    @media only screen and (max-width: 480px) {
+      font-size: 14px;
+      line-height: 20px;
+      height: 40px;
+    }
   }
 `;
 
@@ -357,6 +405,11 @@ const SignupButton = styled.button`
     transform: scale(1.01);
     box-shadow: 3px 3px 6px 3px rgba(0, 0, 0, 0.65);
     transition: all 0.5s;
+  }
+  @media only screen and (max-width: 480px) {
+    height: 40px;
+    font-size: 14px;
+    line-height: 20px;
   }
 `;
 export default Signup;

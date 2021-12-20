@@ -67,6 +67,9 @@ const ToolBox = styled.div`
     align-items: center;
     justify-content: center;
   }
+  @media only screen and (max-width: 720px) {
+    padding: 0 20px;
+  }
 `;
 
 const ButtonBox = styled.div`
@@ -88,12 +91,25 @@ const ButtonBox = styled.div`
     border: none;
   }
 
-  &.align {
-    button[value=""] {
+  @media only screen and (max-width: 720px) {
+    gap: 0px;
+    width: 100%;
+
+    border: none;
+    &:nth-child(1) {
+      padding: 0;
+      flex: 2;
+      justify-content: space-around;
     }
-    button[value="center"] {
+    &:nth-child(2) {
+      padding: 0;
+      flex: 3;
+      justify-content: space-around;
     }
-    button[value="right"] {
+    &:nth-child(3) {
+      padding: 0;
+      flex: 3;
+      justify-content: space-around;
     }
   }
 `;

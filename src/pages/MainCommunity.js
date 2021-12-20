@@ -166,6 +166,9 @@ const CommunityPage = styled.main`
   height: 100%;
   flex: 1;
   margin-bottom: 24px;
+  @media only screen and (max-width: 480px) {
+    margin-top: -4px;
+  }
 `;
 
 const Wrapper = styled.div`
@@ -299,6 +302,44 @@ const TopDiv = styled.div`
         bottom: -8px;
         height: 2px;
       }
+    }
+  }
+  @media only screen and (max-width: 480px) {
+    align-items:end;
+    margin-bottom:20px;
+    .searchbox::before{
+      top:-18px;
+      z-index:0;
+    }
+    & > ul {
+      .tab{
+        height: 17px;
+      }
+      p {
+        font-size: 14px;
+      }
+      .tab.on {
+      p {
+        font-weight: bold;
+      }
+    }
+    .line{
+      width: 100%;
+      bottom:-12px;
+      z-index:50;
+    }
+  }
+  .btn-write{
+    width:auto;
+    height:auto;
+    padding:0;
+
+    img{display:none;}
+    p{
+      margin:0; 
+      font-size: 14px;
+      line-height: 18px;
+      padding:8px 12px 6px 13px;
     }
   }
 `;

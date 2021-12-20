@@ -402,6 +402,10 @@ const LocationBox = styled.section`
   .location:active ~ .location_on {
     display: block;
   }
+  @media only screen and (max-width: 760px) {
+    height: auto;
+    padding: 12px 16px;
+  }
 `;
 const WeatherBox = styled.div`
   height: 404px;
@@ -418,6 +422,9 @@ const WeatherBox = styled.div`
       height: 1px;
       background-color: #545454;
     }
+  }
+  @media only screen and (max-width: 480px) {
+    height: auto;
   }
 `;
 
@@ -455,12 +462,16 @@ const WeatherTemperature = styled.section`
     p {
       font-size: 16px;
       margin-left: 8px;
+      color: #ccc;
     }
   }
   .comment {
     font-size: 18px;
     text-align: center;
     margin-top: 16px;
+  }
+  @media only screen and (max-width: 480px) {
+    padding: 24px 0 24px;
   }
 `;
 
@@ -473,6 +484,7 @@ const WeatherETC = styled.div`
   padding: 40px 50px;
   section {
     text-align: center;
+    flex: 1;
     h3 {
       font-size: 14px;
       font-weight: 400;
@@ -504,6 +516,11 @@ const WeatherETC = styled.div`
   @media only screen and (max-width: 1000px) {
     justify-content: space-around;
     gap: 60px;
+  }
+  @media only screen and (max-width: 480px) {
+    justify-content: space-around;
+    gap: 0;
+    padding: 24px 36px;
   }
 `;
 
@@ -785,6 +802,66 @@ const RecommendBox = styled.section`
         p:last-child {
           margin-top: 8px;
         }
+      }
+    }
+  }
+  @media only screen and (max-width: 480px) {
+    padding: 20px;
+    & > div {
+      h3 {
+        font-size: 16px;
+        line-height: 18px;
+      }
+      p {
+        font-size: 10px;
+        line-height: 18px;
+      }
+    }
+    .line {
+      margin: 8px 0 20px;
+    }
+    ul {
+      li {
+        gap: 10px;
+
+        h3 {
+          font-size: 12px;
+          line-height: 18px;
+        }
+        p {
+          font-size: 12px;
+          line-height: 15px;
+          span {
+            font-size: 14px;
+            line-height: 19px;
+            margin-left: 4px;
+          }
+        }
+        p:last-child {
+          margin-top: 6px;
+          font-size: 10px;
+          line-height: 18px;
+          span {
+            font-weight: 400;
+            font-size: 12px;
+          }
+        }
+      }
+
+      img {
+        width: 80px;
+        height: 80px;
+        object-fit: cover;
+        border-radius: 10px;
+      }
+    }
+  }
+  @media only screen and (max-width: 350px) {
+    & > div {
+      flex-direction: column;
+      p {
+        width: 100%;
+        text-align: right;
       }
     }
   }

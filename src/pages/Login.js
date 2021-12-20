@@ -126,7 +126,7 @@ const Login = () => {
 const StyleArticle = styled.article`
   margin: 120px auto 0;
   max-width: 432px;
-  width: 36%;
+  width: 432px;
   height: 100%;
 
   h3 {
@@ -134,6 +134,25 @@ const StyleArticle = styled.article`
     font-size: 32px;
     line-height: 40px;
     text-align: center;
+  }
+  @media only screen and (max-width: 720px) {
+    width: 100%;
+  }
+  @media only screen and (max-width: 480px) {
+    width: 100%;
+    padding-bottom: 20px;
+    margin: 0;
+    flex: 1;
+    h3 {
+      position: relative;
+      width: 100vw;
+      transform: translateX(-20px);
+      font-size: 14px;
+      line-height: 20px;
+      font-weight: bold;
+      padding-bottom: 16px;
+      border-bottom: 1px solid #333;
+    }
   }
 `;
 
@@ -173,6 +192,11 @@ const LoginButton = styled.button`
     transform: scale(1.01);
     box-shadow: 3px 3px 6px 3px rgba(0, 0, 0, 0.65);
     transition: all 0.5s;
+  }
+  @media only screen and (max-width: 480px) {
+    height: 40px;
+    font-size: 14px;
+    line-height: 20px;
   }
 `;
 

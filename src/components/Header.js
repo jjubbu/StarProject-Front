@@ -13,6 +13,7 @@ import ic_user from "../img/header/ic_mypage.svg";
 const Header = () => {
   const [changeMenu, setChangeMenu] = React.useState("off");
   const [pageName, setPageName] = React.useState("");
+  const [border, setBorder] = React.useState(false);
   const is_login = useSelector((state) => state.login.is_login);
   const nickname = useSelector((state) => state.login.user_info.nickname);
   const is_textLogo = useSelector((state) => state.header.textLogo);
@@ -42,12 +43,21 @@ const Header = () => {
   const changePageName = () => {
     const path = history.location.pathname;
     setChangeMenu("");
+    setBorder(true);
+
     if (path === "/map") {
       setPageName("지도");
     } else if (path === "/star") {
       setPageName("별자리");
     } else if (path === "/community") {
       setPageName("커뮤니티");
+    } else if (path === "/login" || path === "/signup") {
+      setPageName("");
+    } else if (path === "/mypage") {
+      setPageName("마이페이지");
+    } else {
+      setBorder(false);
+      setPageName("");
     }
   };
 
@@ -67,7 +77,7 @@ const Header = () => {
           ) : (
             <React.Fragment>
               <p name="mypage" onClick={navClick}>
-                {nickname}
+                {nickname} <span>{String(">")}</span>
               </p>
             </React.Fragment>
           )}
@@ -82,9 +92,14 @@ const Header = () => {
           <li name="community" onClick={navClick}>
             커뮤니티
           </li>
+          {is_login ? (
+            <li name="logout-" onClick={logout}>
+              로그아웃
+            </li>
+          ) : null}
         </ul>
       </StyledMenu>
-      <StyledHeader>
+      <StyledHeader borderBottom={border}>
         <div>
           <StyledLogo name="" onClick={navClick}>
             <img src={ic_logo} alt="logo" name="" />
@@ -140,6 +155,9 @@ const StyledHeader = styled.header`
   margin: 34px auto 33px;
   & > div {
     display: flex;
+    &:first-child {
+      flex: 1;
+    }
   }
   .pageTitle {
     display: none;
@@ -152,8 +170,27 @@ const StyledHeader = styled.header`
     padding: 0 20px;
   }
   @media only screen and (max-width: 720px) {
+    ${(props) => (props.borderBottom ? "border-bottom: 1px solid #333;" : null)}
+    margin: 0;
+    margin-bottom: 16px;
+    padding: 19px 20px 18px;
+    & > div {
+      display: flex;
+      &:first-child {
+        flex: 0;
+      }
+    }
     .pageTitle {
       display: block;
+    }
+  }
+  @media only screen and (max-width: 480px) {
+    margin: 0;
+    margin-bottom: 16px;
+    padding: 19px 20px 18px;
+    .pageTitle {
+      font-size: 16px;
+      line-height: 24px;
     }
   }
 `;
@@ -165,17 +202,28 @@ const StyledLogo = styled.div`
   gap: 48px;
   h3 {
     font-size: 24px;
+    @media only screen and (max-width: 720px) {
+      display: none;
+    }
   }
   img {
     width: 40px;
     height: 40px;
+    @media only screen and (max-width: 480px) {
+      width: 24px;
+      height: 24px;
+    }
   }
 `;
 
 const StyledNav = styled.nav`
   display: flex;
   align-self: center;
-  gap: 84px;
+  max-width: 302px;
+  width: 30%;
+  height: 20px;
+  /* width: 25%; */
+  justify-content: space-between;
   margin-left: ${(props) => (props.textLogo ? "108px" : "51px")};
   p {
     font-size: 16px;
@@ -220,7 +268,7 @@ const StyledUser = styled.div`
 
   .menu {
     display: none;
-    @media only screen and (max-width: 72720px) {
+    @media only screen and (max-width: 720px) {
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -257,6 +305,14 @@ const StyledUser = styled.div`
         }
       }
     }
+
+    @media only screen and (max-width: 480px) {
+      width: 24px;
+      height: 24px;
+      span {
+        height: 1px;
+      }
+    }
   }
 `;
 
@@ -274,7 +330,8 @@ const StyledMenu = styled.section`
     align-items: center;
     gap: 16px;
     position: relative;
-    padding: 79px 0 20px 32px;
+    margin-top: 59px;
+    padding: 20px 0 20px 32px;
     border-bottom: 1px solid #333;
     img {
       width: 40px;
@@ -287,6 +344,9 @@ const StyledMenu = styled.section`
       cursor: pointer;
       flex: 1;
       padding: 8px;
+      span {
+        margin-left: 15px;
+      }
     }
   }
   ul {
@@ -300,6 +360,12 @@ const StyledMenu = styled.section`
       cursor: pointer;
       &:hover {
         color: #ffce00;
+      }
+      &[name="logout"] {
+        position: relative;
+        margin-top: 63px;
+        border-top: 1px solid #333;
+        color: #666;
       }
     }
   }
