@@ -223,6 +223,7 @@ const MypageStyled = styled.div`
   display: flex;
   gap: 24px;
   margin-bottom: 40px;
+  width: 1200px;
 
   .list {
     flex: 1;
@@ -231,7 +232,7 @@ const MypageStyled = styled.div`
     gap: 24px;
   }
   .leftBox {
-    width: 32%;
+    width: 384px;
     .feedback {
       display: block;
       margin-top: 24px;
@@ -241,6 +242,7 @@ const MypageStyled = styled.div`
     }
   }
   @media only screen and (max-width: 1200px) {
+    width: 100%;
     flex-direction: column;
     align-items: center;
     .leftBox {
@@ -294,15 +296,18 @@ const UserProfile = styled.div`
   }
   @media only screen and (max-width: 1200px) {
     background: none;
-
+    padding: 0;
+    margin-top: 20px;
     .buttonBox {
+      justify-content: center;
       button {
+        padding: 14px 22px;
+        flex: initial;
         background: #303136;
       }
     }
   }
   @media only screen and (max-width: 480px) {
-    padding: 0;
     margin-top: 4px;
     img {
       width: 40px;
@@ -312,22 +317,22 @@ const UserProfile = styled.div`
       margin: 16px 0;
       h3 {
         font-weight: bold;
-        font-size: 14px;
-        line-height: 18px;
+        font-size: 18px;
+        line-height: 22px;
       }
       p {
         font-weight: normal;
-        font-size: 12px;
-        line-height: 16px;
-        margin-top: 0px;
+        font-size: 16px;
+        line-height: 20px;
+        margin-top: 4px;
       }
     }
     .buttonBox {
+      justify-content: center;
       button {
-        font-size: 10px;
-        line-height: 12px;
+        font-size: 12px;
+        line-height: 18px;
         padding: 7px 11px;
-        width: auto;
       }
     }
   }
@@ -385,7 +390,6 @@ const ListBox = styled.section`
     grid-template-columns: 1fr 1fr;
     column-gap: 40px;
     row-gap: 28px;
-    min-height: 88px;
     margin-top: 28px;
     min-height: 260px;
     @media only screen and (max-width: 1200px) {
@@ -438,7 +442,7 @@ const ListStyled = styled.li`
   }
 
   div {
-    flex: 1;
+    width: 260px;
     h3 {
       font-weight: bold;
       font-size: 16px;
@@ -453,7 +457,7 @@ const ListStyled = styled.li`
 
       white-space: normal;
       display: -webkit-box;
-      -webkit-line-clamp: 3; /* 텍스트를 자를 때 원하는 단위 ex) 3줄 */
+      -webkit-line-clamp: 3;
       -webkit-box-orient: vertical;
       overflow: hidden;
       img {
@@ -467,20 +471,25 @@ const ListStyled = styled.li`
       }
     }
   }
+  @media only screen and (max-width: 1200px) {
+    div {
+      flex: 1;
+  }
   @media only screen and (max-width: 480px) {
     img {
       width: 60px;
       height: 60px;
     }
     div {
+      flex:1;
       h3 {
-        font-size: 12px;
-        line-height: 15px;
+        font-size: 14px;
+        line-height: 17px;
       }
       .contents {
-        font-size: 10px;
-        line-height: 13px;
-        margin-top: 16px;
+        width: 100%;
+        font-size: 12px;
+        line-height: 15px;
         -webkit-line-clamp: 2;
       }
     }
