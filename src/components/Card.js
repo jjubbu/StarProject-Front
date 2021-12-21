@@ -68,7 +68,12 @@ const Card = (props) => {
           {props.img ? (
             <img src={props.img} alt="게시글 대표 이미지" />
           ) : (
-            <img src={ic_logo} height="128px" alt="logoIcon" />
+            <img
+              src={ic_logo}
+              height="128px"
+              alt="logoIcon"
+              className="logoIcon"
+            />
           )}
         </ImageArea>
 
@@ -135,6 +140,10 @@ const ImageArea = styled.div`
     object-fit: cover;
     width: 100%;
     height: 288px;
+  }
+  img.logoIcon {
+    width: 128px;
+    height: 128px;
   }
   @media only screen and (max-width: 480px) {
     height: 220px;
